@@ -24,5 +24,4 @@ install_github("aprof", "MarcoDVisser")
 
 ## Dependancies 
 
-aprof like the vast majority of my code has no other dependancies 
-other than the base R installation.
+aprof has no other dependancies other than the base R installation.
