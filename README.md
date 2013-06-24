@@ -15,11 +15,14 @@ To install decompress these and run `R CMD INSTALL` on the conents of the
 achives, or use the **devtools** package to install the current 
 development version.
 
-aprof like the vast majority of my code has no other dependancies 
-other than the base R installation.
 
 ```r
 ## devtools is required
 library(devtools)
 install_github("aprof", "MarcoDVisser")
 ```
+
+## Dependancies 
+
+aprof like the vast majority of my code has no other dependancies 
+other than the base R installation.
