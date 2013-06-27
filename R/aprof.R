@@ -273,7 +273,7 @@ PropLines<-LineProf$Time.Density/LineProf$Total.Time
 
 Speedups<-2^c(0:4)
 SpeedTable<-sapply(Speedups,function(X) AmLaw(P=PropLines,S=X))
-dimnames(SpeedTable)<-list(paste("Max Speed-up line", 
+dimnames (SpeedTable)<-list(paste("Max Speed-up line", 
 LineProf$Line.Numbers,":"),Speedups)
 SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
 ExecTimeTable<-LineProf$Total.Time/SpeedTable

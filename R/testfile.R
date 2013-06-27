@@ -22,7 +22,7 @@ return(pop)
 }
 "
 run=FALSE
-if(run=TRUE){
+if(run==TRUE){
 source(textConnection(filestring))
 
 tmpsource<-tempfile()
