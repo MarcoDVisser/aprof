@@ -27,7 +27,7 @@ source(textConnection(filestring))
 tmpsource<-tempfile()
 write(filestring,tmpsource)
 
-N<-1e3
+N<-2e4
 tmpout<-tempfile()
 Rprof(file=tmpout,interval = 0.0002,line.profiling =TRUE)
 
@@ -38,5 +38,7 @@ Rprof(append=F)
 CallsInt<-readOutput(tmpout)
 
 readLineDensity(CallsInt$calls,CallsInt$interval)
+
+aprof(CallsInt$calls,CallsInt$interval)
 
 PlotExcDens(tmpsource,tmpout)
