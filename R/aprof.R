@@ -66,24 +66,29 @@ readLineDensity<-function(calls,interval,Silent=FALSE){
 
 	Finallist<-list(Line.Numbers=as.numeric(names(LineDensity)),
 	Call.Density=as.numeric(LineDensity),
-	Time.Density=Call.Density*interval)
+	Time.Density=Call.Density*interval,
+	Total.Calls=sum(as.numeric(LineDensity))+1,
+	Total.Time=sum(Call.Density*interval+interval))
+	
 	if(Silent==FALSE){
 	# Pretty table 
 	CallTable<-cbind(as.character(Finallist$Line.Numbers),
 					Finallist$Call.Density,
 					Finallist$Time.Density)
-	CallTable[order(CallTable[,2]),]
+	CallTable<-CallTable[order(CallTable[,2]),]
 	dimnames(CallTable)<-list(NULL,
-							c("Line","Call Density","Time Density (s)"))
+					c("Line","Call Density","Time Density (s)"))
 
 					
 	  cat("\n Call Density and Execution time per line number:\n\n")
 	 print.default(format(CallTable,digits = 3),print.gap = 2L, 
 					quote = FALSE)
 	  
+	  cat("\nInterval (s)\t",interval,"\n\n")
+	  
 			 cat(paste("\n Totals:\n\n",
-			 "Calls  ",sum(Finallist$Call.Density+1),"\n"
-			 ,"Time (s)  ",sum(Finallist$Time.Density+interval)),"\n\n")
+			 "Calls\t\t",Finallist$Total.Calls,"\n",
+			 "Time (s)\t",Finallist$Total.Time,"\n"))
 			
 	invisible(Finallist)
 	} else{return(Finallist)}
@@ -253,13 +258,40 @@ PlotSourceCode(SourceFilename)
 	par(opar)
 }
 
-
-
-
-
+# Amdahl's law
+AmLaw<-function(P=1,S=2){
+	1/((1-P)+P/S)
+}
 
 
 # make a pretty Amdahl's profiler table
-aprof<-function(calls,interval){
+aprof<-function(calls,interval,type="line"){
+if(type=="line"){
+
+LineProf<-readLineDensity(CallsInt$calls,CallsInt$interval,Silent=TRUE)
+PropLines<-LineProf$Time.Density/LineProf$Total.Time
+
+Speedups<-2^c(0:4)
+SpeedTable<-sapply(Speedups,function(X) AmLaw(P=PropLines,S=X))
+dimnames(SpeedTable)<-list(paste("Max Speed-up line", 
+LineProf$Line.Numbers,":"),Speedups)
+SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
+ExecTimeTable<-LineProf$Total.Time/SpeedTable
+
+				
+	  cat("\n Maximum thoeretical attainable speed-up per line number:\n\n")
+	  cat("\t\t\t Speed up factor \n")
+	 print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
+					quote = FALSE)
+	  
+	 cat("\n Maximum thoeretical attainable improvement in execution time:\n\n")
+	 cat("\t\t\t Speed up factor \n")
+	 print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
+					quote = FALSE)
+			
+	invisible(SpeedTable)
+
+} else {stop("Only line profiling in this version")}
+
 
 }

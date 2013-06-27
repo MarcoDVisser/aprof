@@ -36,6 +36,7 @@ naivefunction(N)
 Rprof(append=F)
 
 CallsInt<-readOutput(tmpout)
+
 readLineDensity(CallsInt$calls,CallsInt$interval)
 
 PlotExcDens(tmpsource,tmpout)
