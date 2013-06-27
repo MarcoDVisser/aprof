@@ -181,7 +181,7 @@ PlotSourceCode<-function(SourceFilename){
 	length(x),USE.NAMES=F)
 	
 	par(mar=c(0,0,0,0))
-	plot(0,0,xlim=c(-strwidth("M"),max(Nchar))+strwidth("M"),
+	plot(0,0,xlim=c(-strwidth("M"),max(Nchar)+strwidth("M")),
 	ylim=c(0,NCodeLines),
 	type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
 	abline(h=1:NCodeLines,col='white')
@@ -189,9 +189,10 @@ PlotSourceCode<-function(SourceFilename){
 	Codewidth<-sapply(CleanLines,strwidth,USE.NAMES=F)
 	Codeheight<-sapply(CleanLines,strheight,USE.NAMES=F)
 	
+	
 	SizeText<-0.98*min(c(
-	length(CleanLines)/sum(Codeheight),
-	max(Nchar)/max(Codewidth))
+	diff(par("usr")[3:4])/(sum(Codeheight)*1.5),
+	diff(par("usr")[1:2])/(max(Codewidth)*1.1))
 	)
 
 
