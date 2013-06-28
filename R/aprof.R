@@ -205,8 +205,8 @@ PlotSourceCode<-function(SourceFilename){
 	text(1+strwidth("M"),ypos,labels=CleanLines,adj=c(0,0),
 	cex=SizeText)
 	
-	text(0,ypos,labels=1:length(CleanLines),adj=c(1,0),
-	cex=SizeText*0.95)
+	text(0+0.5*strwidth("M"),ypos,labels=1:length(CleanLines),adj=c(1,0),
+	cex=SizeText*0.90)
 }
 
 
