@@ -277,7 +277,7 @@ dimnames (SpeedTable)<-list(paste("Max Speed-up line",
 LineProf$Line.Numbers,":"),Speedups)
 SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
 ExecTimeTable<-LineProf$Total.Time/SpeedTable
-ExecTimeTable<-rbind(ExecTimeTable,LineProf$Time.Density/Speedups)
+ExecTimeTable<-rbind(ExecTimeTable,LineProf$Total.Time/Speedups)
 
 dimnames (SpeedTable)<-list(c(paste("Max improvemnt in time", 
 LineProf$Line.Numbers,":"),"All lines"),Speedups)
