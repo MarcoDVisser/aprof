@@ -18,7 +18,7 @@ development version.
 
 ```r
 ## devtools is required
-library(devtools)
+require(devtools)
 install_github("aprof", "MarcoDVisser")
 ```
 
