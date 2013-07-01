@@ -273,13 +273,19 @@ PropLines<-LineProf$Time.Density/LineProf$Total.Time
 
 Speedups<-2^c(0:4)
 SpeedTable<-sapply(Speedups,function(X) AmLaw(P=PropLines,S=X))
-dimnames(SpeedTable)<-list(paste("Max Speed-up line", 
-LineProf$Line.Numbers,":"),Speedups)
-SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
+
+#Time improvement table
 ExecTimeTable<-LineProf$Total.Time/SpeedTable
 ExecTimeTable<-rbind(ExecTimeTable,LineProf$Total.Time/Speedups)
 
-dimnames(ExecTimeTable)<-list(c(paste("Max improvemnt in time", 
+# limits of Amdahl's law as S goes to inf
+cbind(SpeedTable,1/PropLines)
+SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
+dimnames(SpeedTable)<-list(paste("Max Speed-up line:", 
+LineProf$Line.Numbers,":"),c(Speedups,"Lim S -> Inf"))
+
+
+dimnames(ExecTimeTable)<-list(c(paste("Improvemnt in time line:", 
 LineProf$Line.Numbers,":"),"All lines"),Speedups)
 
 	  cat("\n Maximum thoeretical attainable speed-up per line number:\n\n")
