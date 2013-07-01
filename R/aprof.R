@@ -279,10 +279,10 @@ ExecTimeTable<-LineProf$Total.Time/SpeedTable
 ExecTimeTable<-rbind(ExecTimeTable,LineProf$Total.Time/Speedups)
 
 # limits of Amdahl's law as S goes to inf
-SpeedTable<-cbind(SpeedTable,1/PropLines)
+SpeedTable<-cbind(SpeedTable,1/(1-PropLines))
 SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
 dimnames(SpeedTable)<-list(paste("Max Speed-up line:", 
-LineProf$Line.Numbers,":"),c(Speedups,"Lim S -> Inf"))
+LineProf$Line.Numbers,":"),c(Speedups,"S -> Inf"))
 
 
 dimnames(ExecTimeTable)<-list(c(paste("Improvemnt in time line:", 
