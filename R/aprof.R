@@ -274,7 +274,7 @@ PropLines<-LineProf$Time.Density/LineProf$Total.Time
 Speedups<-2^c(0:4)
 SpeedTable<-sapply(Speedups,function(X) AmLaw(P=PropLines,S=X))
 
-#Time improvement table
+#Time improvement table 
 ExecTimeTable<-LineProf$Total.Time/SpeedTable
 ExecTimeTable<-rbind(ExecTimeTable,LineProf$Total.Time/Speedups)
 
