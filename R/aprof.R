@@ -212,36 +212,37 @@ PlotSourceCode<-function(SourceFilename){
 
 PlotExcDens<-function(SourceFilename,outputfilename){
 
-NCodeLines<-length(readLines(SourceFilename))
+	NCodeLines<-length(readLines(SourceFilename))
 
-CallsInt<-readOutput(outputfilename)
+	CallsInt<-readOutput(outputfilename)
 
-LineDensity<-readLineDensity(CallsInt$calls,
+	LineDensity<-readLineDensity(CallsInt$calls,
 			CallsInt$interval,Silent=T)
 
 # Line reversed to correspond to source code plot
-DensityData<-list(Lines=NCodeLines:1,
-Time.Density=rep(0,NCodeLines))
+	DensityData<-list(Lines=NCodeLines:1,
+	Time.Density=rep(0,NCodeLines))
 
-DensityData$Time.Density[LineDensity$Line.Numbers]<-LineDensity$Time.Density
+	DensityData$Time.Density[LineDensity$Line.Numbers]<-LineDensity$Time.Density
 
-Spn<-spline(DensityData$Lines,DensityData$Time.Density,n=250)
-Spn$y<-ifelse(Spn$y<0,0,Spn$y)
+	Spn<-spline(DensityData$Lines,DensityData$Time.Density,n=250)
+	Spn$y<-ifelse(Spn$y<0,0,Spn$y)
 
 
-layoutmat<-matrix(c(
+	layoutmat<-matrix(c(
 			1,1,1,1,3,3,
 			rep(c(2,2,2,2,4,4),10)),
 			byrow=T,ncol=6)
 						
-layout(layoutmat)
-opar<-par("mar","bg")
-par(mar=c(0,0,0,0),bg='grey90')
+	layout(layoutmat)
+	opar<-par("mar","bg")
+	par(mar=c(0,0,0,0),bg='grey90')
 	plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
 	text(0,0.55,SourceFilename,cex=2)
 	segments(-.75,0,.75,0,lwd=1.2)
 	segments(c(-.75,.75),c(0,0),c(-.75,.75),c(-0.1,-0.1),lwd=1.2)
-PlotSourceCode(SourceFilename)
+	
+	PlotSourceCode(SourceFilename)
 	plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
 		
 	plot(DensityData$Time.Density,DensityData$Lines,
@@ -266,43 +267,51 @@ AmLaw<-function(P=1,S=2){
 
 # make a pretty Amdahl's profiler table
 aprof<-function(calls,interval,type="line"){
-if(type=="line"){
 
-LineProf<-readLineDensity(CallsInt$calls,CallsInt$interval,Silent=TRUE)
-PropLines<-LineProf$Time.Density/LineProf$Total.Time
+	if(type=="line"){
 
-Speedups<-2^c(0:4)
-SpeedTable<-sapply(Speedups,function(X) AmLaw(P=PropLines,S=X))
+	LineProf<-readLineDensity(CallsInt$calls,CallsInt$interval,Silent=TRUE)
+	PropLines<-LineProf$Time.Density/LineProf$Total.Time
 
-#Time improvement table 
-ExecTimeTable<-LineProf$Total.Time/SpeedTable
-ExecTimeTable<-rbind(ExecTimeTable,LineProf$Total.Time/Speedups)
+	Speedups<-2^c(0:4)
+	SpeedTable<-sapply(Speedups,function(X) AmLaw(P=PropLines,S=X))
 
-# limits of Amdahl's law as S goes to inf
-SpeedTable<-cbind(SpeedTable,1/(1-PropLines))
-dimnames(SpeedTable)<-list(paste("Max Speed-up line:", 
-LineProf$Line.Numbers,":"),c(Speedups,"S -> Inf"))
-SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
+	#Time improvement table 
+	ExecTimeTable<-LineProf$Total.Time/SpeedTable
+	ExecTimeTable<-rbind(ExecTimeTable,LineProf$Total.Time/Speedups)
 
-dimnames(ExecTimeTable)<-list(c(paste("Improvemnt in time line:", 
-LineProf$Line.Numbers,":"),"All lines"),Speedups)
-ExecTimeTable<-ExecTimeTable[order(
-c(PropLines,sum(PropLines)),decreasing=TRUE),]
+	# limits of Amdahl's law as S goes to inf
+	SpeedTable<-cbind(SpeedTable,1/(1-PropLines))
+	dimnames(SpeedTable)<-list(paste("Max Speed-up line:", 
+	LineProf$Line.Numbers,":"),c(Speedups,"S -> Inf"))
+	SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
 
-
-	  cat("\n Maximum thoeretical attainable speed-up per line number:\n\n")
-	  cat("\t\t\t Speed up factor \n")
-	 print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
-					quote = FALSE)
-	  
-	 cat("\n Maximum thoeretical attainable improvement in execution time:\n\n")
-	 cat("\t\t\t Speed up factor \n")
-	 print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
-					quote = FALSE)
-			
-	invisible(SpeedTable)
-
-} else {stop("Only line profiling in this version")}
+	dimnames(ExecTimeTable)<-list(c(paste("Improvemnt in time line:", 
+	LineProf$Line.Numbers,":"),"All lines"),Speedups)
+	ExecTimeTable<-ExecTimeTable[order(
+	c(PropLines,sum(PropLines)),decreasing=TRUE),]
 
 
+		  cat("\n Maximum thoeretical attainable speed-up per line number:\n\n")
+		  cat("\t\t\t Speed up factor \n")
+		 print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
+						quote = FALSE)
+		  
+		 cat("\n Maximum thoeretical attainable improvement in execution time:\n\n")
+		 cat("\t\t\t Speed up factor \n")
+		 print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
+						quote = FALSE)
+				
+		invisible(SpeedTable)
+
+		} else {stop("Only line profiling in this version")}
+
+}
+
+
+targetedSummary<-function(target=NULL,calls,interval){
+	
+	if(is.null(target)){stop("Function requires target line number")}
+
+	calls
 }
