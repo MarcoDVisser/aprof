@@ -1,1 +1,1 @@
-exportPattern("^[[:alpha:]]+")
+export(aprof,readLineDensity,PlotExcDens,readOutput)

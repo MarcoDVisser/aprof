@@ -313,5 +313,13 @@ targetedSummary<-function(target=NULL,calls,interval){
 	
 	if(is.null(target)){stop("Function requires target line number")}
 
-	calls
+        #Identify lines of interest
+        Lcalls<-sapply(calls,function(x) gsub("1#","L",x),USE.NAMES=F)
+        #Subset to target line
+        TargetCalls<-Lcalls[sapply(Lcalls,function(X)
+                                   paste("L",44,sep='')%in%X)]
+
+        #test
+
+
 }
