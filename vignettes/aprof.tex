@@ -1,0 +1,71 @@
+%\VignetteIndexEntry{choosecolor}
+\documentclass{article}
+
+\usepackage{Sweave}
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+
+\title{aprof: Title: Amdahl's profiler, directed optimization made easy}
+\date{\today}
+\author{Marco D. Visser}
+\maketitle
+
+\section{Introduction}
+
+A R package meant to help evaluate whether and where to focus 
+code optimization using Amdahl's law.
+
+\begin{Schunk}
+\begin{Sinput}
+> library(aprof)
+> filestring<-
++ "
++ naivefunction=function(T){
++ 
++ pop=data.frame(SP1=1,SP2=1,time=1)
++ 
++ # Naive way of buidling file
++ for(i in 2:T){
++ 	SP1=pop$SP1[i-1]*rnorm(1)*(1-(pop$SP1[i-1]+
++ 	(rnorm(1)*pop$SP2[i-1])))
++ 	SP2=pop$SP2[i-1]*rnorm(1)*
++ 	(1-(pop$SP2[i-1]+(rnorm(1)*pop$SP1[i-1])))
++ 	pop=rbind(pop,c(SP1,SP2,i))
++ }
++ #useless piece of code
++ for(i in 2:T){
++ t(pop)
++ }
++ 
++ return(pop)
++ }
++ "
+> source(textConnection(filestring))
+> write(filestring,"naivesource.r")
+> N<-3e3
+> Rprof(file="naiveoutput.out",interval = 0.0002,line.profiling =TRUE)
+> result<-naivefunction(N)
+> Rprof(append=F)
+> CallsInt<-readOutput("./naiveoutput.out")
+> readLineDensity(CallsInt$calls,CallsInt$interval)
+\end{Sinput}
+\begin{Soutput}
+ Call Density and Execution time per line number:
+
+      Line  Call Density  Time Density (s)
+
+Interval (s)	 2e-04 
+
+
+ Totals:
+
+ Calls		 1 
+ Time (s)	 0 
+\end{Soutput}
+\begin{Sinput}
+> 
+> #PlotExcDens(tmpsource,tmpout)
+> 
+\end{Sinput}
+\end{Schunk}
+\end{document}

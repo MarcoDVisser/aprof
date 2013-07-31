@@ -1,0 +1,6 @@
+sample.interval=20000
+"strsplit" "FUN" "lapply" "sapply" "readOutput" "eval" "eval" "withVisible" "doTryCatch" "tryCatchOne" "tryCatchList" "tryCatch" "try" "evalFunc" "<Anonymous>" "<Anonymous>" "do.call" "<Anonymous>" 
+"gsub" "rev" "FUN" "lapply" "sapply" "readOutput" "eval" "eval" "withVisible" "doTryCatch" "tryCatchOne" "tryCatchList" "tryCatch" "try" "evalFunc" "<Anonymous>" "<Anonymous>" "do.call" "<Anonymous>" 
+"gsub" "rev" "FUN" "lapply" "sapply" "readOutput" "eval" "eval" "withVisible" "doTryCatch" "tryCatchOne" "tryCatchList" "tryCatch" "try" "evalFunc" "<Anonymous>" "<Anonymous>" "do.call" "<Anonymous>" 
+"grep" "FUN" "lapply" "sapply" "readLineDensity" "eval" "eval" "withVisible" "doTryCatch" "tryCatchOne" "tryCatchList" "tryCatch" "try" "evalFunc" "<Anonymous>" "<Anonymous>" "do.call" "<Anonymous>" 
+"FUN" "lapply" "sapply" "unlist" "table" "readLineDensity" "eval" "eval" "withVisible" "doTryCatch" "tryCatchOne" "tryCatchList" "tryCatch" "try" "evalFunc" "<Anonymous>" "<Anonymous>" "do.call" "<Anonymous>" 
