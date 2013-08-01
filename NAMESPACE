@@ -1,1 +1,1 @@
-export(aprof,readLineDensity,PlotExcDens,readOutput)
+export(aprof,readLineDensity,PlotExcDens,readOutput,targetedSummary)
