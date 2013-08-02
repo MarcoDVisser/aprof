@@ -321,7 +321,7 @@ targetedSummary<-function(target=NULL,calls,interval){
                                    paste("L",target,sep='')%in%X)]
         # Remove all functions calls before target line
         trimmedTargetCalls<-lapply(TargetCalls,function(X)
-                                   X[1+grep(paste("L",target,sep=""),X):length(X)])
+                                   X[1+max(grep(paste("L",target,sep=''),X)):length(X)])
         # Count function calls
         CallCounts<-table(na.omit(unlist(trimmedTargetCalls)))
 
