@@ -282,26 +282,28 @@ aprof<-function(calls,interval,type="line"){
 
 	# limits of Amdahl's law as S goes to inf
 	SpeedTable<-cbind(SpeedTable,1/(1-PropLines))
-	dimnames(SpeedTable)<-list(paste("Max Speed-up line:", 
-	LineProf$Line.Numbers,":"),c(Speedups,"S -> Inf"))
+	dimnames(SpeedTable)<-list(paste("Max Speed-up line*:", 
+	LineProf$Line.Numbers,":"),c(Speedups,"S -> Inf**"))
 	SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
 
-	dimnames(ExecTimeTable)<-list(c(paste("Improvemnt in time line:", 
+	dimnames(ExecTimeTable)<-list(c(paste("Improvemnt in time line*:", 
 	LineProf$Line.Numbers,":"),"All lines"),Speedups)
 	ExecTimeTable<-ExecTimeTable[order(
 	c(PropLines,sum(PropLines)),decreasing=TRUE),]
 
 
-		  cat("\n Maximum thoeretical attainable speed-up per line number:\n\n")
-		  cat("\t\t\t Speed up factor \n")
-		 print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
+        cat("\n Maximum thoeretical attainable speed-up per line number:\n\n")
+        cat("\t\t\t Speed up factor \n")
+        print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
 						quote = FALSE)
 		  
-		 cat("\n Maximum thoeretical attainable improvement in execution time:\n\n")
-		 cat("\t\t\t Speed up factor \n")
-		 print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
+        cat("\n Maximum thoeretical attainable improvement in execution time:\n\n")
+        cat("\t\t\t Speed up factor \n")
+        print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
 						quote = FALSE)
-				
+        cat("\n *  Expected improvement at current scaling\n\n")
+        cat("\n ** Asymtotic max. improvement at current scaling\n\n")
+        
 		invisible(SpeedTable)
 
 		} else {stop("Only line profiling in this version")}
