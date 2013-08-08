@@ -35,13 +35,18 @@ readOutput<-function(outputfilename="Rprof.out"){
 	return(list(calls=calls,interval=Samp.Int*1e-6))
 }
 
-readLineDensity<-function(calls,interval,Silent=FALSE){
+readLineDensity<-function(calls,interval,TargetFile=NULL,Silent=FALSE){
 
+  if(is.null(TargetFile)){FileNumber<-"1:"}
+  else{FileNumber<-unlist(calls)[which(unlist(calls)==TargetFile)+1]}
+
+  FileNumber <- substr(FileNumber,1,1)
+         
 	cleancalls<-sapply(calls, function(x) 
 	gsub("#File", NA, x))
 
 	LineCalls<- sapply(cleancalls,
-		function(X) X[grep("#",X)],USE.NAMES=F)
+		function(X) X[grep(paste(FileNumber,"#",sep=''),X)],USE.NAMES=F)
 		
 	Pathways<-unique(sapply(LineCalls,
 		paste,collapse="-"))
@@ -301,7 +306,7 @@ aprof<-function(calls,interval,type="line"){
         cat("\t\t\t Speed up factor \n")
         print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
 						quote = FALSE)
-        cat("\n *  Expected improvement at current scaling\n\n")
+        cat("\n *  Expected improvement at current scaling")
         cat("\n ** Asymtotic max. improvement at current scaling\n\n")
         
 		invisible(SpeedTable)
