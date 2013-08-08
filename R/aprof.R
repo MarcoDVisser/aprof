@@ -316,13 +316,28 @@ aprof<-function(calls,interval,type="line"){
 }
 
 
-targetedSummary<-function(target=NULL,calls,interval){
+targetedSummary<-function(target=NULL,calls,interval,sourcefile=NULL){
 	
 	if(is.null(target)){stop("Function requires target line number")}
+        if(is.null(sourcefile)){TargetFile<-"1#"} else {
+             FileNumber<-unlist(calls)[which(unlist(calls)==sourcefile)+1]
+             TargetFile <- paste(substr(FileNumber,1,1),"#",sep="")
+           }
+
+           #identify all unique file names
+           FileNames<-unlist(calls)[which(unlist(calls)=="#File")-2]
+           
         # What was the total execution time?
         TotalTime<-length(calls)*interval
         #Identify lines of interest
-        Lcalls<-sapply(calls,function(x) gsub("1#","L",x),USE.NAMES=F)
+        Lcalls<-sapply(calls,function(x) gsub(TargetFile,"L",x),USE.NAMES=F)
+        #Remove all file references with Actual file names
+           for(i in 1:length(FileNames)){
+           Lcalls<-sapply(Lcalls,function(x) gsub(paste(i,"#",sep='')
+                                                 ,paste(FileNames[i],'#',sep=''),
+                                                  x),USE.NAMES=F)
+
+         }
         #Subset to target line
         TargetCalls<-Lcalls[sapply(Lcalls,function(X)
                                    paste("L",target,sep='')%in%X)]
