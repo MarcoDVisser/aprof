@@ -306,6 +306,7 @@ aprof<-function(calls,interval,type="line"){
         cat("\t\t\t Speed up factor \n")
         print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
 						quote = FALSE)
+        cat("\n    Total sampling time: ",round(LineProf$Total.Time,2) ," seconds/n")
         cat("\n *  Expected improvement at current scaling")
         cat("\n ** Asymtotic max. improvement at current scaling\n\n")
         
