@@ -297,16 +297,16 @@ aprof<-function(calls,interval,type="line"){
 	c(PropLines,sum(PropLines)),decreasing=TRUE),]
 
 
-        cat("\n Maximum thoeretical attainable speed-up per line number:\n\n")
+        cat("\n Maximum theoretical attainable speed-up per line number:\n\n")
         cat("\t\t\t Speed up factor \n")
         print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
 						quote = FALSE)
 		  
-        cat("\n Maximum thoeretical attainable improvement in execution time:\n\n")
+        cat("\n Maximum theoretical attainable improvement in execution time:\n\n")
         cat("\t\t\t Speed up factor \n")
         print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
 						quote = FALSE)
-        cat("\n    Total sampling time: ",round(LineProf$Total.Time,2) ," seconds/n")
+        cat("\n    Total sampling time: ",round(LineProf$Total.Time,2) ," seconds")
         cat("\n *  Expected improvement at current scaling")
         cat("\n ** Asymtotic max. improvement at current scaling\n\n")
         
