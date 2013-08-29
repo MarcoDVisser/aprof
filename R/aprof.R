@@ -19,8 +19,22 @@
 #  
 #  
 
-# Read the outfile return by Rprof and prepare for 
+# Reads the outfile return by Rprof and prepare for 
 # usage in the different programs below.
+
+#' readOutput
+#' 
+#' Reads and organises output files created by the R
+#' profiler for further analysis. This program will
+#' be updated to generate a "aprof class" for
+#' default plotting and printing. 
+#'
+#' @param outputfilename The file name (and path if not in the working
+#' directory) of a previously created profiling exercise.
+#' 
+#' @author Marco D. Visser
+#' 
+#' @export
 
 readOutput<-function(outputfilename="Rprof.out"){
 	#Read and prepare output file
@@ -34,6 +48,23 @@ readOutput<-function(outputfilename="Rprof.out"){
 	#return function calls and interval
 	return(list(calls=calls,interval=Samp.Int*1e-6))
 }
+
+#' readLineDensity
+#' 
+#' Reads and calculates the line density of an aprof object
+#' returned by the readOutput function. Returns summary
+#' information for the aprof object, when Silent = False.
+#'
+#' @param calls Stack calls as returned by readOutput
+#' @param interval the profiler sampling interval
+#' @param TargetFile a plain text file (e.g. txt, .R) including the
+#' source code of the previously profiled program.
+#' @param Silent Logical. Should the function return summary information?
+#' Otherwise the default is to return line call density and execution
+#' time counts. Based on the profiler output organized by readOutput.
+#' @author Marco D. Visser
+#' 
+#' @export
 
 readLineDensity<-function(calls,interval,TargetFile=NULL,Silent=FALSE){
 
@@ -99,6 +130,17 @@ readLineDensity<-function(calls,interval,TargetFile=NULL,Silent=FALSE){
 	} else{return(Finallist)}
 }
 
+# MakeBranchPlot
+#
+# Incomplete function, originally meant to build
+# and plot a tree showing the interdependancy
+# between programs in the call stack
+#
+# @param calls Stack calls as returned by readOutput
+# @param interval the profiler sampling interval
+# @author Marco D. Visser
+# 
+#
 #Attempt to define brancing structure
 MakeBranchPlot<-function(calls,interval){
 
@@ -177,6 +219,21 @@ MakeBranchPlot<-function(calls,interval){
 	
 #}
 
+# PlotSourceCode
+#
+# Helper function, meant to do the actual plotting
+# of sourcefile for full program of plotting
+# the execution density per line (PlotExcDens)
+# Eventually these programs will be replace
+# through the use of a aprof calls and plot.defaults.
+#
+# @param SourceFilename  The file name (and path if not in
+# the working directory) of source program.
+#
+# @author Marco D. Visser
+# 
+#
+
 PlotSourceCode<-function(SourceFilename){
 
 	CodeLines<-readLines(SourceFilename)
@@ -214,6 +271,21 @@ PlotSourceCode<-function(SourceFilename){
 	cex=SizeText*0.90)
 }
 
+#' PlotExcDens
+#'
+#' Plot execution density per line of code from a given and previously
+#' profiled source file. It attempt to shows you visually where
+#' the bottlenecks in execution time are, right in the place where you
+#' where are most familiar with the code: your source file.
+#'
+#' @param SourceFilename The file name (and path if not in
+#' the working directory) of source program.
+#' @param outputfilename The file name (and path if not in
+#' the working directory) of Rprof's output file.
+#' 
+#' @author Marco D. Visser
+#' 
+#' @export
 
 PlotExcDens<-function(SourceFilename,outputfilename){
 
@@ -265,12 +337,44 @@ PlotExcDens<-function(SourceFilename,outputfilename){
 }
 
 # Amdahl's law
+#
+# function calculates the theoretical maximal
+# speed up at current scaling of the profiled
+# program using Amdahl's law.
+#
+# @param P proportion of the program under study
+# @param S factor with which P can be sped-up
+#
+# @author Marco D. Visser
+# 
+#
+
 AmLaw<-function(P=1,S=2){
 	1/((1-P)+P/S)
 }
 
 
 # make a pretty Amdahl's profiler table
+#' aprof
+#'
+#' function calculates the theoretical maximal
+#' speed up at current scaling of the profiled
+#' program using Amdahl's law.
+#' Reads and calculates the line density of an aprof object
+#' returned by the readOutput function. Returns summary
+#' information for the aprof object, when Silent = False.
+#'
+#' @param calls Stack calls as returned by readOutput
+#' @param interval the profiler sampling interval
+#' @param TargetFile a plain text file (e.g. txt, .R) including the
+#' source code of the previously profiled program.
+#' @param Silent Logical. Should the function return summary information?
+#' Otherwise the default is to return line call density and execution
+#' time counts. Based on the profiler output organized by readOutput.
+#' @author Marco D. Visser
+#' 
+#' @export
+
 aprof<-function(calls,interval,type="line"){
 
 	if(type=="line"){
@@ -316,6 +420,22 @@ aprof<-function(calls,interval,type="line"){
 
 }
 
+#' readLineDensity
+#' 
+#' Reads and calculates the line density of an aprof object
+#' returned by the readOutput function. Returns summary
+#' information for the aprof object, when Silent = False.
+#'
+#' @param calls Stack calls as returned by readOutput
+#' @param interval the profiler sampling interval
+#' @param TargetFile a plain text file (e.g. txt, .R) including the
+#' source code of the previously profiled program.
+#' @param Silent Logical. Should the function return summary information?
+#' Otherwise the default is to return line call density and execution
+#' time counts. Based on the profiler output organized by readOutput.
+#' @author Marco D. Visser
+#' 
+#' @export
 
 targetedSummary<-function(target=NULL,calls,interval,sourcefile=NULL){
 	
