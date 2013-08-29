@@ -357,20 +357,25 @@ AmLaw<-function(P=1,S=2){
 # make a pretty Amdahl's profiler table
 #' aprof
 #'
-#' function calculates the theoretical maximal
-#' speed up at current scaling of the profiled
-#' program using Amdahl's law.
-#' Reads and calculates the line density of an aprof object
-#' returned by the readOutput function. Returns summary
-#' information for the aprof object, when Silent = False.
-#'
+#' aprof or "Amdahl's profiler", aims to make directed optimization easy by
+#' calculating the theoretical maximal speed up for
+#' each line of code (at current scaling) of the profiled
+#' program using Amdahl's law. It aims to help anwser question
+#' as, whether it is worthwhile to spend hours of time optimizing
+#' bits of code (e.i. refactoring in C)?
+#' What is going to be your maximum possible gain for the effort
+#' you put in? Or is it better to patient and just let the slow program
+#' calculate for days on a server somewhere? These considerations are
+#' important to know, as idealy one wishes to balance development time
+#' vs execution time... or we may end up gaining nothing.
+#' Aprof aims to help in this choice.
+#' 
 #' @param calls Stack calls as returned by readOutput
 #' @param interval the profiler sampling interval
-#' @param TargetFile a plain text file (e.g. txt, .R) including the
-#' source code of the previously profiled program.
-#' @param Silent Logical. Should the function return summary information?
-#' Otherwise the default is to return line call density and execution
-#' time counts. Based on the profiler output organized by readOutput.
+#' @references Amdahl, Gene (1967). "Validity of the Single Processor
+#' Approach to Achieving Large-Scale Computing Capabilities". AFIPS
+#' Conference Proceedings (30): 483-485.
+
 #' @author Marco D. Visser
 #' 
 #' @export
@@ -420,19 +425,19 @@ aprof<-function(calls,interval,type="line"){
 
 }
 
-#' readLineDensity
+#' targetedSummary
 #' 
-#' Reads and calculates the line density of an aprof object
-#' returned by the readOutput function. Returns summary
-#' information for the aprof object, when Silent = False.
-#'
+#' Allows a detailed look into certain lines of code,
+#' which have previously been identified as bottlenecks
+#' by PlotExcDens or aprof in combination with a source file.
+#' 
+#' @param target the specific line of code to take a detailed look
+#' at.
 #' @param calls Stack calls as returned by readOutput
 #' @param interval the profiler sampling interval
-#' @param TargetFile a plain text file (e.g. txt, .R) including the
+#' @param sourcefile a plain text file (e.g. txt, .R) including the
 #' source code of the previously profiled program.
-#' @param Silent Logical. Should the function return summary information?
-#' Otherwise the default is to return line call density and execution
-#' time counts. Based on the profiler output organized by readOutput.
+#' 
 #' @author Marco D. Visser
 #' 
 #' @export

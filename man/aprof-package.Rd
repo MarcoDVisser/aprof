@@ -30,7 +30,7 @@ Maintainer: Who to complain to <yourfault@somewhere.net>
 \references{
 Amdahl, Gene (1967). "Validity of the Single Processor Approach to Achieving Large-Scale Computing Capabilities".
 AFIPS Conference Proceedings (30): 483–485.
-}
+ }
 \keyword{ package }
 \seealso{
 ~~ Optional links to other man pages, e.g. ~~
