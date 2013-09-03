@@ -1,3 +1,4 @@
+export(PlotExcDens)
 export(aprof)
 export(readLineDensity)
 export(readOutput)

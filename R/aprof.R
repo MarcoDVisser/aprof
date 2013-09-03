@@ -284,7 +284,7 @@ PlotSourceCode<-function(SourceFilename){
 #' the working directory) of Rprof's output file.
 #' 
 #' @author Marco D. Visser
-#' 
+#' @export
 PlotExcDens<-function(SourceFilename,outputfilename){
 
 	NCodeLines<-length(readLines(SourceFilename))
