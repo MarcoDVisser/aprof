@@ -403,8 +403,7 @@ aprof<-function(calls,interval,type="line"){
 	ExecTimeTable<-ExecTimeTable[order(
 	c(PropLines,sum(PropLines)),decreasing=TRUE),]
 
-        cat(" Largest attainable speed-up factor for the entire program\n
-        when 1 line is sped-up with factor (S): \n\n")
+        cat("Largest attainable speed-up factor for the entire program\n        when 1 line is sped-up with factor (S): \n\n")
 
         cat("\t Speed up factor (S) of a line \n")
         print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
