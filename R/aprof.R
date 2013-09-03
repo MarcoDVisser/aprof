@@ -409,7 +409,7 @@ aprof<-function(calls,interval,type="line"){
         cat("\t Speed up factor (S) of a line \n")
         print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
 						quote = FALSE)
-        cat("Lowest attainable execution time for the entire program when\n             lines are sped-up with factor (S):\n\n")
+        cat("\nLowest attainable execution time for the entire program when\n             lines are sped-up with factor (S):\n\n")
         
         cat("\t Speed up factor (S) of a line  \n")
         print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
