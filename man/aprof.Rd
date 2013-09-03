@@ -1,6 +1,7 @@
 \name{aprof}
 \alias{aprof}
-\title{aprof}
+\title{Amdahl's profiler
+#'}
 \usage{
   aprof(calls, interval, type = "line")
 }
@@ -10,6 +11,9 @@
   \item{interval}{the profiler sampling interval}
 }
 \description{
+  aprof
+}
+\details{
   aprof or "Amdahl's profiler", aims to make directed
   optimization easy by calculating the theoretical maximal
   speed up for each line of code (at current scaling) of
@@ -26,11 +30,5 @@
 }
 \author{
   Marco D. Visser
-}
-\references{
-  Amdahl, Gene (1967). "Validity of the Single Processor
-  Approach to Achieving Large-Scale Computing
-  Capabilities". AFIPS Conference Proceedings (30):
-  483-485.
 }
 

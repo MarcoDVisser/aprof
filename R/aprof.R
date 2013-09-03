@@ -223,7 +223,7 @@ MakeBranchPlot<-function(calls,interval){
 #
 # Helper function, meant to do the actual plotting
 # of sourcefile for full program of plotting
-# the execution density per line (PlotExcDens)
+# the execution density per line (PlotExDens)
 # Eventually these programs will be replace
 # through the use of a aprof calls and plot.defaults.
 #
@@ -285,8 +285,6 @@ PlotSourceCode<-function(SourceFilename){
 #' 
 #' @author Marco D. Visser
 #' 
-#' @export
-
 PlotExcDens<-function(SourceFilename,outputfilename){
 
 	NCodeLines<-length(readLines(SourceFilename))
@@ -370,16 +368,13 @@ AmLaw<-function(P=1,S=2){
 #' vs execution time... or we may end up gaining nothing.
 #' Aprof aims to help in this choice.
 #' 
-#' @param calls Stack calls as returned by readOutput
+#' @title Amdahl's profiler
+#' #' @param calls Stack calls as returned by readOutput
 #' @param interval the profiler sampling interval
-#' @references Amdahl, Gene (1967). "Validity of the Single Processor
-#' Approach to Achieving Large-Scale Computing Capabilities". AFIPS
-#' Conference Proceedings (30): 483-485.
-
+#' 
 #' @author Marco D. Visser
 #' 
 #' @export
-
 aprof<-function(calls,interval,type="line"){
 
 	if(type=="line"){
@@ -441,7 +436,6 @@ aprof<-function(calls,interval,type="line"){
 #' @author Marco D. Visser
 #' 
 #' @export
-
 targetedSummary<-function(target=NULL,calls,interval,sourcefile=NULL){
 	
 	if(is.null(target)){stop("Function requires target line number")}
