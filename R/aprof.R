@@ -369,9 +369,12 @@ AmLaw<-function(P=1,S=2){
 #' Aprof aims to help in this choice.
 #' 
 #' @title Amdahl's profiler
-#' #' @param calls Stack calls as returned by readOutput
+#' @param calls Stack calls as returned by readOutput
 #' @param interval the profiler sampling interval
-#' 
+#' @references Amdahl, Gene (1967). Validity of the Single Processor
+#' Approach to Achieving Large-Scale Computing Capabilities. AFIPS
+#' Conference Proceedings (30): 483-485.
+
 #' @author Marco D. Visser
 #' 
 #' @export

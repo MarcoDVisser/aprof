@@ -1,7 +1,6 @@
 \name{aprof}
 \alias{aprof}
-\title{Amdahl's profiler
-#'}
+\title{Amdahl's profiler}
 \usage{
   aprof(calls, interval, type = "line")
 }
@@ -30,5 +29,10 @@
 }
 \author{
   Marco D. Visser
+}
+\references{
+  Amdahl, Gene (1967). Validity of the Single Processor
+  Approach to Achieving Large-Scale Computing Capabilities.
+  AFIPS Conference Proceedings (30): 483-485.
 }
 
