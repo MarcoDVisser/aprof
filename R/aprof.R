@@ -503,7 +503,7 @@ targetedSummary<-function(target=NULL,calls,interval=0.02,sourcefile=NULL,
           }
           
         # Sort decending and save as data.frame
-        CallOrder <- order(CallCounts)
+        CallOrder <- order(CallCounts,decreasing=TRUE)
         CallCounts <- CallCounts[CallOrder]
         parentCalls <- parentCalls[CallOrder]
 
