@@ -441,11 +441,17 @@ aprof<-function(calls,interval,type="line"){
 #' @param interval the profiler sampling interval
 #' @param sourcefile a plain text file (e.g. txt, .R) including the
 #' source code of the previously profiled program.
+#' @param findParent Logical, should an attempt be made to find
+#' the parent of a function call? E.g. lm would be a parent call of
+#' lm.fit or mean a parent call of mean.default. Note that the
+#' option only returns the most frequently accociated parent call
+#' when multiple unique parents exist.
 #' 
 #' @author Marco D. Visser
 #' 
 #' @export
-targetedSummary<-function(target=NULL,calls,interval,sourcefile=NULL){
+targetedSummary<-function(target=NULL,calls,interval=0.02,sourcefile=NULL,
+                          findParent=FALSE){
 	
 	if(is.null(target)){stop("Function requires target line number")}
         if(is.null(sourcefile)){TargetFile<-"1#"} else {
@@ -460,27 +466,61 @@ targetedSummary<-function(target=NULL,calls,interval,sourcefile=NULL){
         TotalTime<-length(calls)*interval
         #Identify lines of interest
         Lcalls<-sapply(calls,function(x) gsub(TargetFile,"L",x),USE.NAMES=F)
-        #Remove all file references with Actual file names
+        #Replace all file references with Actual file names
            for(i in 1:length(FileNames)){
            Lcalls<-sapply(Lcalls,function(x) gsub(paste(i,"#",sep='')
-                                                 ,paste(FileNames[i],'#',sep=''),
+                                                 ,paste(FileNames[i],
+                                                        '#',sep=''),
                                                   x),USE.NAMES=F)
 
          }
+        
         #Subset to target line
         TargetCalls<-Lcalls[sapply(Lcalls,function(X)
                                    paste("L",target,sep='')%in%X)]
+
         # Remove all functions calls before target line
         trimmedTargetCalls<-lapply(TargetCalls,function(X)
-                                   X[1+max(grep(paste("L",target,sep=''),X)):length(X)])
+                                   X[1+max(grep(paste("L",target,sep=''),
+                                                X)):length(X)])
+
         # Count function calls
         CallCounts<-table(na.omit(unlist(trimmedTargetCalls)))
 
+        # Find parent call before target call?
+        if(findParent==TRUE) {
+        # Find unique parent calls for each unique call
+          parentCalls <- vector(mode="character", length=
+                                length(CallCounts))
+          
+       for(i in 1:length(CallCounts)){
+            parentCalls[i]<-names(sort(table(unlist(
+              lapply(TargetCalls,function(X)
+                     X[which(names(CallCounts)[i]==X)[1]-1]
+                     ))),decreasing=TRUE)[1])
+                     
+                    
+          }
+          
         # Sort decending and save as data.frame
-        CallCounts<-sort(CallCounts,decending=TRUE)
+        CallOrder <- order(CallCounts)
+        CallCounts <- CallCounts[CallOrder]
+        parentCalls <- parentCalls[CallOrder]
 
         FinalTable<-data.frame(Function=names(CallCounts),
-                               Calls=CallCounts, Time=CallCounts*interval)
+                               Parent=parentCalls,
+                               Calls=CallCounts,
+                               Time=CallCounts*interval)
+        } else {
+
+          CallCounts <- sort(CallCounts,decreasing=TRUE)
+          
+          FinalTable <- data.frame(Function=names(CallCounts),
+                                 Calls=CallCounts,
+                                 Time=CallCounts*interval)
+        }
+        
+        row.names(FinalTable) <- NULL
         return(FinalTable)
                              
 
