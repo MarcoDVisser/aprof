@@ -358,7 +358,7 @@ AmLaw<-function(P=1,S=2){
 #' aprof or "Amdahl's profiler", returns a table with
 #' the theoretical maximal improvent in execution
 #' time for the entire profiled program when a given line
-#' of code is speed-up by a factor (called S in the
+#' of code is sped-up by a factor (called S in the
 #' output). Calculations are done using using R's profiler
 #' output, and requires line profiling to be switched on.
 #' Expected improvements are estimated for the entire

@@ -5,27 +5,31 @@
   aprof(calls, interval, type = "line")
 }
 \arguments{
-  \item{calls}{Stack calls as returned by readOutput}
+  \item{calls}{Stack calls as returned by readOutput. Line
+  profiling must be activated for this to work.}
 
-  \item{interval}{the profiler sampling interval}
+  \item{interval}{the profiler sampling interval.}
 }
 \description{
   aprof
 }
 \details{
-  aprof or "Amdahl's profiler", aims to make directed
-  optimization easy by calculating the theoretical maximal
-  speed up for each line of code (at current scaling) of
-  the profiled program using Amdahl's law. It aims to help
-  anwser question as, whether it is worthwhile to spend
-  hours of time optimizing bits of code (e.i. refactoring
-  in C)? What is going to be your maximum possible gain for
-  the effort you put in? Or is it better to patient and
-  just let the slow program calculate for days on a server
-  somewhere? These considerations are important to know, as
-  idealy one wishes to balance development time vs
-  execution time... or we may end up gaining nothing. Aprof
-  aims to help in this choice.
+  aprof or "Amdahl's profiler", returns a table with the
+  theoretical maximal improvent in execution time for the
+  entire profiled program when a given line of code is
+  sped-up by a factor (called S in the output).
+  Calculations are done using using R's profiler output,
+  and requires line profiling to be switched on. Expected
+  improvements are estimated for the entire program using
+  Amdahl's law (Amdahl 1967). Calculations are subject to
+  the scaling of the problem at profiling. The table output
+  aims to anwser whether it is worthwhile to spend hours of
+  time optimizing bits of code (e.i. refactoring in C) and
+  where these efforts should be focussed. Using aprof one
+  can get estimates of the maximum possible gain for any
+  optimization efforts. Such considerations are important
+  when one wishes to balance development time vs execution
+  time.
 }
 \author{
   Marco D. Visser
