@@ -37,7 +37,9 @@
 #' @export
 
 readOutput<-function(outputfilename="Rprof.out"){
-	#Read and prepare output file
+  
+  
+        #Read and prepare output file
 	RprofSamples<-readLines(outputfilename)
 	splitCalls<- sapply(RprofSamples[-1],
 	function(X) strsplit(X, split = " "),USE.NAMES=F)
@@ -67,6 +69,9 @@ readOutput<-function(outputfilename="Rprof.out"){
 #' @export
 
 readLineDensity<-function(calls,interval,TargetFile=NULL,Silent=FALSE){
+
+  if(is.null(calls)){stop("calls appear empty, were enough samples
+                                 made by the profiler?")}
 
   if(is.null(TargetFile)){FileNumber<-"1:"}
   else{FileNumber<-unlist(calls)[which(unlist(calls)==TargetFile)+1]}
@@ -375,7 +380,9 @@ AmLaw<-function(P=1,S=2){
 #' @title Amdahl's profiler
 #' @param calls Stack calls as returned by readOutput.
 #' Line profiling must be activated for this to work.
-#' @param interval the profiler sampling interval. 
+#' @param interval the profiler sampling interval.
+#' @param type currently ignored. Only line profiling is
+#' available in this version.
 #' @references Amdahl, Gene (1967). Validity of the Single Processor
 #' Approach to Achieving Large-Scale Computing Capabilities. AFIPS
 #' Conference Proceedings (30): 483-485.
@@ -384,6 +391,9 @@ AmLaw<-function(P=1,S=2){
 #' 
 #' @export
 aprof<-function(calls,interval,type="line"){
+
+     if(is.null(calls)){stop("calls appear empty, were enough samples
+                                 made by the profiler?")}
 
 	if(type=="line"){
 
@@ -408,12 +418,14 @@ aprof<-function(calls,interval,type="line"){
 	ExecTimeTable<-ExecTimeTable[order(
 	c(PropLines,sum(PropLines)),decreasing=TRUE),]
 
-        cat("Largest attainable speed-up factor for the entire program\n        when 1 line is sped-up with factor (S): \n\n")
+        cat("Largest attainable speed-up factor for the entire program\n
+        when 1 line is sped-up with factor (S): \n\n")
 
         cat("\t Speed up factor (S) of a line \n")
         print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
 						quote = FALSE)
-        cat("\nLowest attainable execution time for the entire program when\n             lines are sped-up with factor (S):\n\n")
+        cat("\nLowest attainable execution time for the entire program when\n
+             lines are sped-up with factor (S):\n\n")
         
         cat("\t Speed up factor (S) of a line  \n")
         print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
@@ -440,7 +452,9 @@ aprof<-function(calls,interval,type="line"){
 #' @param calls Stack calls as returned by readOutput
 #' @param interval the profiler sampling interval
 #' @param sourcefile a plain text file (e.g. txt, .R) including the
-#' source code of the previously profiled program.
+#' source code of the previously profiled program. If empty
+#' the function will attempt to extract this information from
+#' the stack calls.
 #' @param findParent Logical, should an attempt be made to find
 #' the parent of a function call? E.g. lm would be a parent call of
 #' lm.fit or mean a parent call of mean.default. Note that the
@@ -454,6 +468,8 @@ targetedSummary<-function(target=NULL,calls,interval=0.02,sourcefile=NULL,
                           findParent=FALSE){
 	
 	if(is.null(target)){stop("Function requires target line number")}
+        if(is.null(calls)){stop("calls appear empty, were enough samples
+                                 made by the profiler?")}
         if(is.null(sourcefile)){TargetFile<-"1#"} else {
              FileNumber<-unlist(calls)[which(unlist(calls)==sourcefile)+1]
              TargetFile <- paste(substr(FileNumber,1,1),"#",sep="")

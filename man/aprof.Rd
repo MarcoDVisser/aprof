@@ -9,6 +9,9 @@
   profiling must be activated for this to work.}
 
   \item{interval}{the profiler sampling interval.}
+
+  \item{type}{currently ignored. Only line profiling is
+  available in this version.}
 }
 \description{
   aprof
