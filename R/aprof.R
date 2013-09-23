@@ -70,8 +70,8 @@ readOutput<-function(outputfilename="Rprof.out"){
 
 readLineDensity<-function(calls,interval,TargetFile=NULL,Silent=FALSE){
 
-  if(is.null(calls)){stop("calls appear empty, were enough samples
-                                 made by the profiler?")}
+  if(is.null(calls)|length(calls)==0){
+    stop("calls appear empty, were enough samples made by the profiler?")}
 
   if(is.null(TargetFile)){FileNumber<-"1:"}
   else{FileNumber<-unlist(calls)[which(unlist(calls)==TargetFile)+1]}
@@ -392,9 +392,8 @@ AmLaw<-function(P=1,S=2){
 #' @export
 aprof<-function(calls,interval,type="line"){
 
-     if(is.null(calls)){stop("calls appear empty, were enough samples
-                                 made by the profiler?")}
-
+  if(is.null(calls)|length(calls)==0){
+    stop("calls appear empty, were enough samples made by the profiler?")}
 	if(type=="line"){
 
 	LineProf<-readLineDensity(CallsInt$calls,CallsInt$interval,Silent=TRUE)
@@ -467,27 +466,29 @@ aprof<-function(calls,interval,type="line"){
 targetedSummary<-function(target=NULL,calls,interval=0.02,sourcefile=NULL,
                           findParent=FALSE){
 	
-	if(is.null(target)){stop("Function requires target line number")}
-        if(is.null(calls)){stop("calls appear empty, were enough samples
-                                 made by the profiler?")}
-        if(is.null(sourcefile)){TargetFile<-"1#"} else {
-             FileNumber<-unlist(calls)[which(unlist(calls)==sourcefile)+1]
-             TargetFile <- paste(substr(FileNumber,1,1),"#",sep="")
-           }
+  if(is.null(target)){stop("Function requires target line number")}
+  if(is.null(calls)|length(calls)==0){
+    stop("calls appear empty, were enough samples made by the profiler?")}
+  if(is.null(sourcefile)){TargetFile<-"1#"} else {
 
-           #identify all unique file names
-           FileNames<-unlist(calls)[which(unlist(calls)=="#File")-2]
+    FileNumber<-unlist(calls)[which(unlist(calls)==sourcefile)+1]
+             TargetFile <- paste(substr(FileNumber,1,1),"#",sep="")
+  }
+
+  # identify all unique file names
+  FileNames<-unlist(calls)[which(unlist(calls)=="#File")-2]
            
         # What was the total execution time?
-        TotalTime<-length(calls)*interval
-        #Identify lines of interest
-        Lcalls<-sapply(calls,function(x) gsub(TargetFile,"L",x),USE.NAMES=F)
+  TotalTime<-length(calls)*interval
+        # Identify lines of interest
+  Lcalls<-sapply(calls,function(x) gsub(TargetFile,"L",x),USE.NAMES=F)
         #Replace all file references with Actual file names
-           for(i in 1:length(FileNames)){
-           Lcalls<-sapply(Lcalls,function(x) gsub(paste(i,"#",sep='')
-                                                 ,paste(FileNames[i],
-                                                        '#',sep=''),
-                                                  x),USE.NAMES=F)
+
+  for(i in 1:length(FileNames)){
+    Lcalls<-sapply(Lcalls,function(x) gsub(paste(i,"#",sep='')
+                                           ,paste(FileNames[i],
+                                                  '#',sep=''),
+                                           x),USE.NAMES=F)
 
          }
         
