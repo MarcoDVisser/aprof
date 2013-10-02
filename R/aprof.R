@@ -52,6 +52,8 @@ aprof <- function(src=NULL,output=NULL,
 
     class(aprofobject) <- c("aprof","list")
   }
+
+  return(aprofobject)
 }
 
 # readOutput
@@ -151,14 +153,62 @@ readLineDensity<-function(aprofobject=NULL,Silent=FALSE,Memprof=FALSE){
 	Total.Calls=sum(as.numeric(LineDensity))+1,
 	Total.Time=sum(Call.Density*interval+interval))
 	
-	if(Silent==FALSE){
+return(Finallist)
+}
+
+# Generic print method for aprof objects
+#
+# function makes a pretty table with
+# some basic information
+# @param aprofobject A aprof object return by the
+# function aprof
+print.aprof <- function(aprofobject){
+
+  
+  if(is.null(aprofobject$memcalls)){
+
+    interval <- aprofobject$interval
+    Finallist <- readLineDensity(aprofobject,Memprof=FALSE)
+
+	# Pretty table 
+	CallTable<-cbind(as.character(Finallist$Line.Numbers),
+					Finallist$Call.Density,
+					Finallist$Time.Density)
+	CallTable<-CallTable[order(CallTable[,2]),]
+        rownames(CallTable)<-NULL
+	dimnames(CallTable)<-list(NULL,
+                                  c("Line","Call Density",
+                                    "Time Density (s)"))
+
+					
+	  cat("\n Call Density and Execution time per line number:\n\n")
+	 print.default(format(CallTable,digits = 3),print.gap = 2L, 
+					quote = FALSE)
+	  
+	  		 cat(paste("\n Totals:\n",
+			 "Calls\t\t",Finallist$Total.Calls,"\n",
+			 "Time (s)\t",Finallist$Total.Time,
+                                   "\t(interval = \t",interval,"(s))\n"))
+	  
+    
+	} else {
+         memFinallist <- readLineDensity(aprofobject,Memprof=TRUE)
+         meminterval <- aprofobject$meminterval
+          if(!is.null(aprofobject$calls)){
+            # memory and time profiling
+
+                                        
+            
+        Finallist <- readLineDensity(aprofobject,Memprof=FALSE)
+
 	# Pretty table 
 	CallTable<-cbind(as.character(Finallist$Line.Numbers),
 					Finallist$Call.Density,
 					Finallist$Time.Density)
 	CallTable<-CallTable[order(CallTable[,2]),]
 	dimnames(CallTable)<-list(NULL,
-					c("Line","Call Density","Time Density (s)"))
+                                  c("Line","Call Density",
+                                    "Time Density (s)"))
 
 					
 	  cat("\n Call Density and Execution time per line number:\n\n")
@@ -171,8 +221,12 @@ readLineDensity<-function(aprofobject=NULL,Silent=FALSE,Memprof=FALSE){
 			 "Calls\t\t",Finallist$Total.Calls,"\n",
 			 "Time (s)\t",Finallist$Total.Time,"\n"))
 			
-	invisible(Finallist)
-	} else{return(Finallist)}
+
+          } else{
+            # only memory
+
+          }
+       }
 }
 
 
@@ -334,17 +388,15 @@ PlotSourceCode<-function(SourceFilename){
 PlotExcDens<-function(aprofobject){
 
    
-  AddMemProf<-exists(aprofobject$memcalls)
+  AddMemProf<-!is.null(aprofobject$memcalls)
 
   SourceFilename <- aprofobject$sourcefile
   if(is.null(SourceFilename)){
-    stop("aprof object requires a defined source code file for plotting")
+    stop("aprof object requires a defined source code file for plotting")}
 
 
   NCodeLines<-length(readLines(SourceFilename))
 
-  CallsInt<-readOutput(outputfilename)
-  
   LineDensity<-readLineDensity(aprofobject,Silent=T)
 
 # Line reversed to correspond to source code plot
@@ -375,9 +427,9 @@ PlotExcDens<-function(aprofobject){
 	abline(h=1:NCodeLines,col='white')
 	axis(3)
 	mtext("Density in execution time(s)",3,cex=1,padj=-3)
-	lines(DensityData$Time.Density,DensityData$Lines,lwd=2,type="h",col='grey40')
-	polygon(c(Spn$y,0),c(Spn$x,NCodeLines),
-	col=rgb(0,0,1,alpha=0.4))
+        segments(0,DensityData$Lines,
+                 DensityData$Time.Density,DensityData$Lines
+                 ,lwd=4,col=rgb(0,0,1,alpha=0.6))
 	points(DensityData$Time.Density,DensityData$Lines,
 	pch=20)
 	par(opar)
@@ -434,13 +486,11 @@ AmLaw<-function(P=1,S=2){
 #' @author Marco D. Visser
 #' 
 #' @export
-summary.aprof<-function(calls,interval,type="line"){
+summary.aprof<-function(aprofobject,type="line"){
 
-  if(is.null(calls)|length(calls)==0){
-    stop("calls appear empty, were enough samples made by the profiler?")}
-	if(type=="line"){
+  if(type=="line"){
 
-	LineProf<-readLineDensity(CallsInt$calls,CallsInt$interval,Silent=TRUE)
+	LineProf<-readLineDensity(aprofobject,Silent=TRUE)
 	PropLines<-LineProf$Time.Density/LineProf$Total.Time
 
 	Speedups<-2^c(0:4)
