@@ -1,13 +1,12 @@
 Package: aprof
 Type: Package
 Title: Amdahl's profiler, directed optimization made easy.
-Version: 1.0
+Version: 0.1
 Date: 2013-06-25
 Author: Marco D. Visser
-Maintainer: Who to complain to <marco.d.visser@gmail.com>
+Maintainer: Marco D. Visser to <marco.d.visser@gmail.com>
 Description: A R package meant to help evaluate whether and where to focus code
-    optimization using [Amdahl's
-    law](https://en.wikipedia.org/wiki/Amdahl%27s_law).
+    optimization using [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law).
 License: MIT
 Collate:
     'aprof.R'

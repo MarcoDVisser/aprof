@@ -1,43 +1,71 @@
-#  aprof.R
-#  
-#  Copyright 2013 Marco Visser <marco.d.visser@gmail.com>
-#  
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#  
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#  
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-#  MA 02110-1301, USA.
-#  
-#  
+##' Amdahl's profiler, directed optimization.
+##'
+##' Creates an "aprof" object from the R-profiler's output
+##' and a source file.
+##'
+##' .. content for \details{} ..
+##' @title 
+##' @param src The source code file name (and path if not in the working
+##' directory) of the program that as been profiled.
+##' @param output The file name (and path if not in the working
+##' directory) of a previously created profiling exercise.
+##' @param memprofile Optional. The file name (and path)
+##  of the memory profile of profiling exercise.
+##' @return
+##' @author Marco D. Visser
+aprof <- function(src=NULL,output=NULL,
+                  memoutput=NULL){
 
-# Reads the outfile return by Rprof and prepare for 
-# usage in the different programs below.
+  if(is.null(src)){
+    warning("src is empty, no source code file defined")}   
 
-#' readOutput
-#' 
-#' Reads and organises output files created by the R
-#' profiler for further analysis. This program will
-#' be updated to generate a "aprof class" for
-#' default plotting and printing. 
-#'
-#' @param outputfilename The file name (and path if not in the working
-#' directory) of a previously created profiling exercise.
-#' 
-#' @author Marco D. Visser
-#' 
-#' @export
-
-readOutput<-function(outputfilename="Rprof.out"){
   
+  if(!is.null(output)){
+    CallsInt <- readOutput(output)
+
+    if(is.null(CallsInt$calls)|length(CallsInt$calls)==0){
+      stop("Rprof outputs appears to be empty, were enough samples made by the profiler?")}
+  }
+
+
+  if(!is.null(memoutput)){ 
+    MemCallsInt<-readOutput(memoutput)
+
+    if(is.null(MemCallsInt$calls)|length(MemCallsInt$calls)==0){
+    stop("Rprofmem output file seems empty, were enough samples made by the profiler?")
+  }
+
+
+    aprofobject<-list(sourcefile=src,calls=CallsInt$calls,
+                      interval=CallsInt$interval, memcalls=MemCallsInt$calls,
+                      meminterval=MemCallsInt$interval)
+
+    class(aprofobject) <- c("aprof","list")
+    
+  } else {
+
+    if(is.null(output)&is.null(memoutput))
+       {stop("No profiling output files defined")}
+     
+    aprofobject<-list(sourcefile=src,calls=CallsInt$calls,
+                      interval=CallsInt$interval)
+
+    class(aprofobject) <- c("aprof","list")
+  }
+}
+
+# readOutput
+# 
+# Reads and organises output files created by the R
+# profiler, used to create an "aprof class"
+# for further analysis in the function aprof.
+#
+# @param outputfilename The file name (and path if not in the working
+# directory) of a previously created profiling exercise.
+# 
+# @author Marco D. Visser
+# 
+readOutput<-function(outputfilename="Rprof.out"){
   
         #Read and prepare output file
 	RprofSamples<-readLines(outputfilename)
@@ -68,15 +96,27 @@ readOutput<-function(outputfilename="Rprof.out"){
 #' 
 #' @export
 
-readLineDensity<-function(calls,interval,TargetFile=NULL,Silent=FALSE){
+readLineDensity<-function(aprofobject=NULL,Silent=FALSE,Memprof=FALSE){
 
-  if(is.null(calls)|length(calls)==0){
-    stop("calls appear empty, were enough samples made by the profiler?")}
+  if(!"aprof"%in%class(aprofobject)){
+      stop("no aprof object found, check function inputs")}
+  
+  
+  if(Memprof==TRUE){
 
-  if(is.null(TargetFile)){FileNumber<-"1:"}
-  else{FileNumber<-unlist(calls)[which(unlist(calls)==TargetFile)+1]}
+    calls <- aprofobject$memcalls
+    interval <- aprofobject$meminterval
+    TargetFile <- aprofobject$sourcefile
+                  }  else {
+    calls <- aprofobject$calls
+    interval <- aprofobject$interval
+    TargetFile <- aprofobject$sourcefile
+    }
+  
+    if(is.null(TargetFile)){FileNumber<-"1:"}
+    else{FileNumber<-unlist(calls)[which(unlist(calls)==TargetFile)+1]}
 
-  FileNumber <- substr(FileNumber,1,1)
+    FileNumber <- substr(FileNumber,1,1)
          
 	cleancalls<-sapply(calls, function(x) 
 	gsub("#File", NA, x))
@@ -134,6 +174,7 @@ readLineDensity<-function(calls,interval,TargetFile=NULL,Silent=FALSE){
 	invisible(Finallist)
 	} else{return(Finallist)}
 }
+
 
 # MakeBranchPlot
 #
@@ -290,14 +331,21 @@ PlotSourceCode<-function(SourceFilename){
 #' 
 #' @author Marco D. Visser
 #' @export
-PlotExcDens<-function(SourceFilename,outputfilename){
+PlotExcDens<-function(aprofobject){
 
-	NCodeLines<-length(readLines(SourceFilename))
+   
+  AddMemProf<-exists(aprofobject$memcalls)
 
-	CallsInt<-readOutput(outputfilename)
+  SourceFilename <- aprofobject$sourcefile
+  if(is.null(SourceFilename)){
+    stop("aprof object requires a defined source code file for plotting")
 
-	LineDensity<-readLineDensity(CallsInt$calls,
-			CallsInt$interval,Silent=T)
+
+  NCodeLines<-length(readLines(SourceFilename))
+
+  CallsInt<-readOutput(outputfilename)
+  
+  LineDensity<-readLineDensity(aprofobject,Silent=T)
 
 # Line reversed to correspond to source code plot
 	DensityData<-list(Lines=NCodeLines:1,
@@ -305,11 +353,7 @@ PlotExcDens<-function(SourceFilename,outputfilename){
 
 	DensityData$Time.Density[LineDensity$Line.Numbers]<-LineDensity$Time.Density
 
-	Spn<-spline(DensityData$Lines,DensityData$Time.Density,n=250)
-	Spn$y<-ifelse(Spn$y<0,0,Spn$y)
-
-
-	layoutmat<-matrix(c(
+		layoutmat<-matrix(c(
 			1,1,1,1,3,3,
 			rep(c(2,2,2,2,4,4),10)),
 			byrow=T,ncol=6)
@@ -331,7 +375,7 @@ PlotExcDens<-function(SourceFilename,outputfilename){
 	abline(h=1:NCodeLines,col='white')
 	axis(3)
 	mtext("Density in execution time(s)",3,cex=1,padj=-3)
-	lines(Spn$y,Spn$x,lwd=2,col='grey40')
+	lines(DensityData$Time.Density,DensityData$Lines,lwd=2,type="h",col='grey40')
 	polygon(c(Spn$y,0),c(Spn$x,NCodeLines),
 	col=rgb(0,0,1,alpha=0.4))
 	points(DensityData$Time.Density,DensityData$Lines,
@@ -357,10 +401,10 @@ AmLaw<-function(P=1,S=2){
 }
 
 
-# make a pretty Amdahl's profiler table
-#' aprof
+
+#' summary.aprof
 #'
-#' aprof or "Amdahl's profiler", returns a table with
+#' Summarizes an "aprof" object and returns a table with
 #' the theoretical maximal improvent in execution
 #' time for the entire profiled program when a given line
 #' of code is sped-up by a factor (called S in the
@@ -390,7 +434,7 @@ AmLaw<-function(P=1,S=2){
 #' @author Marco D. Visser
 #' 
 #' @export
-aprof<-function(calls,interval,type="line"){
+summary.aprof<-function(calls,interval,type="line"){
 
   if(is.null(calls)|length(calls)==0){
     stop("calls appear empty, were enough samples made by the profiler?")}
