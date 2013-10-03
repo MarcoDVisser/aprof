@@ -26,8 +26,8 @@ install_github("aprof", "MarcoDVisser")
 
 aprof is meant to be light and has no other dependancies other than the base R installation.
 
+## Example
 ```r
-## Examples
 # create function to profile
      foo <- function(N){
              preallocate<-numeric(N)
