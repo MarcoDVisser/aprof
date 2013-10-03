@@ -3,7 +3,9 @@
 ##' Creates an "aprof" object from the R-profiler's output
 ##' and a source file.
 ##'
-##' .. content for \details{} ..
+##' The objects created by "aprof" can inturn be used by the standard
+##' functions plot, summmary and print (more specifically:
+##' \code{plot.aprof}, \code{summary.aprof} and \code{print.aprof}.
 ##' @title Amdahl's profiler
 ##' @param src The source code file name (and path if not in the working
 ##' directory) of the program that as been profiled.
@@ -12,7 +14,8 @@
 ##' @param memprofile Optional. The file name (and path)
 ##  of the memory profile of profiling exercise.
 ##' @author Marco D. Visser
-##'
+##' @seealso \code{link{plot.aprof}}, \code{\link{summary.aprof}} and
+##' \code\{link{print.aprof}}.
 ##' @export
 aprof <- function(src=NULL,output=NULL,
                   memoutput=NULL){
@@ -531,7 +534,7 @@ AmLaw<-function(P=1,S=2){
 #' efforts. Such considerations are important when one
 #' wishes to balance development time vs execution time.
 #'  
-# @title Amdahl's profiler
+#' @title Amdahl's profiler
 #' @param calls Stack calls as returned by readOutput.
 #' Line profiling must be activated for this to work.
 #' @param interval the profiler sampling interval.

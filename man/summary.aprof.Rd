@@ -1,6 +1,6 @@
 \name{summary.aprof}
 \alias{summary.aprof}
-\title{summary.aprof}
+\title{Amdahl's profiler}
 \usage{
   summary.aprof(aprofobject, type = "line")
 }
@@ -14,6 +14,9 @@
   available in this version.}
 }
 \description{
+  summary.aprof
+}
+\details{
   Summarizes an "aprof" object and returns a table with the
   theoretical maximal improvent in execution time for the
   entire profiled program when a given line of code is
