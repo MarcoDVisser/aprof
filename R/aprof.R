@@ -445,7 +445,7 @@ plot.aprof<-function(aprofobject,zoom=NULL){
 
   NCodeLines<-length(readLines(SourceFilename))
 
-  LineDensity<-readLineDensity(aprofobject,Silent=T)
+  LineDensity<-readLineDensity(aprofobject)
 
 # Line reversed to correspond to source code plot
 	DensityData<-list(Lines=NCodeLines:1,
