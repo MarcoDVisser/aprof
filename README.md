@@ -28,6 +28,7 @@ aprof is meant to be light and has no other dependancies other than the base R i
 
 ## Example
 ```r
+require(aprof)
 # create function to profile
      foo <- function(N){
              preallocate<-numeric(N)
