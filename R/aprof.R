@@ -490,7 +490,7 @@ plot.aprof<-function(aprofobject,zoom=NULL){
 #' @param object Object to test
 #' @export
 is.aprof <- function(object) {
-  inherits(object, "lineprof")
+  inherits(object, "aprof")
 }
 
 # Amdahl's law
