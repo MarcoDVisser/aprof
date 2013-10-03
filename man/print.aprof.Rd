@@ -9,6 +9,7 @@
   \code{aprof}}
 }
 \description{
-  function makes a pretty table with some basic information
+  Function makes a pretty table, and returns some basic
+  information
 }
 

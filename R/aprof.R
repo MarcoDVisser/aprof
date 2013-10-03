@@ -22,7 +22,7 @@ aprof <- function(src=NULL,output=NULL,
       if(!file.exists(src)) {stop(paste("The specified source ",
                                         src, " does not appear to exist"))
                            }
-      if(is.na(file.info(a)$size)|file.info(a)$size<1){
+      if(is.na(file.info(src)$size)|file.info(src)$size<1){
         stop("specified source file appears to be empty")}
     }
   
