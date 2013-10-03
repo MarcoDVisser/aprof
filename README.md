@@ -26,7 +26,7 @@ install_github("aprof", "MarcoDVisser")
 
 aprof is meant to be light and has no other dependancies other than the base R installation.
 
-'''r
+```r
 ## Examples
 # create function to profile
      foo <- function(N){
@@ -53,6 +53,6 @@ aprof is meant to be light and has no other dependancies other than the base R i
      # Create a aprof object
      fooaprof<-aprof("foo.R",tmp)
      plot(fooaprof)
-'''
+```
 
 ![](https://raw.github.com/MarcoDVisser/DDMDD/master/images/DDMDD.png)
