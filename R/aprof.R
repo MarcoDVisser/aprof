@@ -18,8 +18,13 @@ aprof <- function(src=NULL,output=NULL,
                   memoutput=NULL){
 
   if(is.null(src)){
-    warning("src is empty, no source code file defined")}   
-
+    warning("src is empty, no source code file defined")} else {
+      if(!file.exists(src)) {stop(paste("The specified source ",
+                                        src, " does not appear to exist"))
+                           }
+      if(is.na(file.info(a)$size)|file.info(a)$size<1){
+        stop("specified source file appears to be empty")}
+    }
   
   if(!is.null(output)){
     CallsInt <- readOutput(output)
@@ -158,13 +163,15 @@ return(Finallist)
 
 #' Generic print method for aprof objects
 #'
-#' function makes a pretty table with
+#' Function makes a pretty table, and returns
 #' some basic information
 #' @param aprofobject An aprof object return by the
 #' function \code{aprof}
 #' @export
 print.aprof <- function(aprofobject){
 
+ if(!is.aprof(aprofobject)){
+   stop("Input does not appear to be of the class \"aprof\"")}
   
   if(is.null(aprofobject$memcalls)){
 
@@ -180,7 +187,12 @@ print.aprof <- function(aprofobject){
 	dimnames(CallTable)<-list(NULL,
                                   c("Line","Call Density",
                                     "Time Density (s)"))
+  
+  if(!is.null(aprofobject$src)){
+    cat(paste0("\nSource file:\n",aprofobject$src,"/n"))
+    cat(paste0("Source length: ", length(readLines(a))," lines"))
 
+  }
 					
 	  cat("\n Call Density and Execution time per line number:\n\n")
 	 print.default(format(CallTable,digits = 3),print.gap = 2L, 
@@ -337,7 +349,7 @@ MakeBranchPlot<-function(calls,interval){
 
 PlotSourceCode<-function(SourceFilename){
 
-	CodeLines<-readLines(SourceFilename)
+  	CodeLines<-readLines(SourceFilename)
 	NCodeLines<-length(CodeLines)
 	
 	CleanLines<-sapply(CodeLines,function(x) 
@@ -421,7 +433,9 @@ PlotSourceCode<-function(SourceFilename){
 #' @export
 plot.aprof<-function(aprofobject,zoom=NULL){
 
-   
+   if(!is.aprof(aprofobject)){
+   stop("Input does not appear to be of the class \"aprof\"")}
+ 
   AddMemProf<-!is.null(aprofobject$memcalls)
 
   SourceFilename <- aprofobject$sourcefile
