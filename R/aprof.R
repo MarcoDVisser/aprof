@@ -4,15 +4,16 @@
 ##' and a source file.
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title Amdahl's profiler
 ##' @param src The source code file name (and path if not in the working
 ##' directory) of the program that as been profiled.
 ##' @param output The file name (and path if not in the working
 ##' directory) of a previously created profiling exercise.
 ##' @param memprofile Optional. The file name (and path)
 ##  of the memory profile of profiling exercise.
-##' @return
 ##' @author Marco D. Visser
+##'
+##' @export
 aprof <- function(src=NULL,output=NULL,
                   memoutput=NULL){
 
@@ -60,7 +61,7 @@ aprof <- function(src=NULL,output=NULL,
 # 
 # Reads and organises output files created by the R
 # profiler, used to create an "aprof class"
-# for further analysis in the function aprof.
+# in the function \code{aprof}. 
 #
 # @param outputfilename The file name (and path if not in the working
 # directory) of a previously created profiling exercise.
@@ -83,22 +84,21 @@ readOutput<-function(outputfilename="Rprof.out"){
 
 #' readLineDensity
 #' 
-#' Reads and calculates the line density of an aprof object
-#' returned by the readOutput function. Returns summary
-#' information for the aprof object, when Silent = False.
+#' Reads and calculates the line density (in execution time or memory)
+#' of an aprof object returned by the \code{aprof} function. The function
+#' is used internally by many "aprof" functions.
 #'
-#' @param calls Stack calls as returned by readOutput
-#' @param interval the profiler sampling interval
-#' @param TargetFile a plain text file (e.g. txt, .R) including the
-#' source code of the previously profiled program.
-#' @param Silent Logical. Should the function return summary information?
-#' Otherwise the default is to return line call density and execution
-#' time counts. Based on the profiler output organized by readOutput.
+#' @param aprofobject an object returned by \code{aprof}, which
+#' contains the stack calls sampled by the R profiler.
+#' @param Memprof Logical. Should the function return information
+#' specific to memory profiling? As memory use per line and Mb counts?
+#' Otherwise the default is to return line call density and execution time
+#' counts. 
 #' @author Marco D. Visser
 #' 
 #' @export
 
-readLineDensity<-function(aprofobject=NULL,Silent=FALSE,Memprof=FALSE){
+readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
 
   if(!"aprof"%in%class(aprofobject)){
       stop("no aprof object found, check function inputs")}
@@ -156,12 +156,13 @@ readLineDensity<-function(aprofobject=NULL,Silent=FALSE,Memprof=FALSE){
 return(Finallist)
 }
 
-# Generic print method for aprof objects
-#
-# function makes a pretty table with
-# some basic information
-# @param aprofobject A aprof object return by the
-# function aprof
+#' Generic print method for aprof objects
+#'
+#' function makes a pretty table with
+#' some basic information
+#' @param aprofobject An aprof object return by the
+#' function \code{aprof}
+#' @export
 print.aprof <- function(aprofobject){
 
   
@@ -349,7 +350,7 @@ PlotSourceCode<-function(SourceFilename){
 	
 	par(mar=c(0,0,0,0))
 	plot(0,0,xlim=c(-strwidth("M"),max(Nchar)+strwidth("M")),
-	ylim=c(0,NCodeLines),
+	ylim=c(0,NCodeLines+0.5),
 	type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
 	abline(h=1:NCodeLines,col='white')
 	#Get best text size
@@ -371,21 +372,54 @@ PlotSourceCode<-function(SourceFilename){
 	cex=SizeText*0.90)
 }
 
-#' PlotExcDens
+#' plot.aprof
 #'
-#' Plot execution density per line of code from a given and previously
-#' profiled source file. It attempt to shows you visually where
-#' the bottlenecks in execution time are, right in the place where you
-#' where are most familiar with the code: your source file.
+#' Plot execution density per line of code from a previously
+#' profiled source file. The plot visually shows bottlenecks
+#' in program execution time, directly where most programmers
+#' are most familiar with their code: the source file.
 #'
-#' @param SourceFilename The file name (and path if not in
-#' the working directory) of source program.
-#' @param outputfilename The file name (and path if not in
-#' the working directory) of Rprof's output file.
+#' @param aprofobject An aprof object as returned by apof().
+#' If this object contains both memory and time profiling information
+#' both will be plotted (as proportions of total time and
+#' total memory allocations.
+#' @param zoom Zoom into a particular section of code.
+#' Can either be set to "TRUE" or line numbers can be given.
+#' If line numbers are given as c(min,max), then the
+#' function will attempt to zoom in between these,
+#' otherwise "TRUE" will result in a zoom centred around the
+#' lines with the greatest density in execution time (and/or
+#' memory).
 #' 
 #' @author Marco D. Visser
+#' @examples
+#' # create function to profile
+#' foo <- function(N){
+#'         preallocate<-numeric(N)
+#'         grow<-NULL  
+#'          for(i in 1:N){
+#'              preallocate[i]<-N/(i+1)
+#'              grow<-c(grow,N/(i+1))
+#'             }
+#' }
+#'
+#' #save function to a source file and reload
+#' dump("foo",file="foo.R")
+#' source("foo.R")
+#'
+#' # create file to save profiler output
+#' tmp<-tempfile()
+#'
+#' # Profile the function
+#' Rprof(tmp,line.profiling=TRUE)
+#' foo(1e4)
+#' Rprof(append=FALSE)
+#'
+#' # Create a aprof object
+#' fooaprof<-aprof("foo.R",tmp)
+#' plot(fooaprof)
 #' @export
-PlotExcDens<-function(aprofobject){
+plot.aprof<-function(aprofobject,zoom=NULL){
 
    
   AddMemProf<-!is.null(aprofobject$memcalls)
@@ -422,7 +456,7 @@ PlotExcDens<-function(aprofobject){
 	plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
 		
 	plot(DensityData$Time.Density,DensityData$Lines,
-	ylim=c(0,NCodeLines),
+	ylim=c(0,NCodeLines+0.5),
 	type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
 	abline(h=1:NCodeLines,col='white')
 	axis(3)
@@ -433,6 +467,16 @@ PlotExcDens<-function(aprofobject){
 	points(DensityData$Time.Density,DensityData$Lines,
 	pch=20)
 	par(opar)
+}
+
+#' is.aprof
+#'
+#' Generic function to test whether an object
+#' is an aprof object
+#' @param object Object to test
+#' @export
+is.aprof <- function(object) {
+  inherits(object, "lineprof")
 }
 
 # Amdahl's law
@@ -473,7 +517,7 @@ AmLaw<-function(P=1,S=2){
 #' efforts. Such considerations are important when one
 #' wishes to balance development time vs execution time.
 #'  
-#' @title Amdahl's profiler
+# @title Amdahl's profiler
 #' @param calls Stack calls as returned by readOutput.
 #' Line profiling must be activated for this to work.
 #' @param interval the profiler sampling interval.

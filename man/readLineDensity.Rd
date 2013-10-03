@@ -2,27 +2,23 @@
 \alias{readLineDensity}
 \title{readLineDensity}
 \usage{
-  readLineDensity(calls, interval, TargetFile = NULL,
-    Silent = FALSE)
+  readLineDensity(aprofobject = NULL, Memprof = FALSE)
 }
 \arguments{
-  \item{calls}{Stack calls as returned by readOutput}
+  \item{aprofobject}{an object returned by \code{aprof},
+  which contains the stack calls sampled by the R
+  profiler.}
 
-  \item{interval}{the profiler sampling interval}
-
-  \item{TargetFile}{a plain text file (e.g. txt, .R)
-  including the source code of the previously profiled
-  program.}
-
-  \item{Silent}{Logical. Should the function return summary
-  information? Otherwise the default is to return line call
-  density and execution time counts. Based on the profiler
-  output organized by readOutput.}
+  \item{Memprof}{Logical. Should the function return
+  information specific to memory profiling? As memory use
+  per line and Mb counts? Otherwise the default is to
+  return line call density and execution time counts.}
 }
 \description{
-  Reads and calculates the line density of an aprof object
-  returned by the readOutput function. Returns summary
-  information for the aprof object, when Silent = False.
+  Reads and calculates the line density (in execution time
+  or memory) of an aprof object returned by the
+  \code{aprof} function. The function is used internally by
+  many "aprof" functions.
 }
 \author{
   Marco D. Visser
