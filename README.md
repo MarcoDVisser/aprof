@@ -55,5 +55,9 @@ require(aprof)
      fooaprof<-aprof("foo.R",tmp)
      plot(fooaprof)
 ```
+## Examples of output
+The standard aprof plot.
+![](http://i.imgur.com/lb1UBCI.png)
 
-![](https://raw.github.com/MarcoDVisser/DDMDD/master/images/DDMDD.png)
+A profile plot, which can be used for large source files.
+![](http://i.imgur.com/uhuXuQj.png)

@@ -2,7 +2,7 @@
 \alias{summary.aprof}
 \title{Amdahl's profiler}
 \usage{
-  summary.aprof(aprofobject, type = "line")
+  summary.aprof(aprofobject)
 }
 \arguments{
   \item{calls}{Stack calls as returned by readOutput. Line

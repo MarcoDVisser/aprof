@@ -18,7 +18,9 @@
   Reads and calculates the line density (in execution time
   or memory) of an aprof object returned by the
   \code{aprof} function. The function is used internally by
-  many "aprof" functions.
+  many "aprof" functions. If a sourcefile was not specified
+  in the aprof object, then the first file within the
+  profiling information is assumed to be the source.
 }
 \author{
   Marco D. Visser

@@ -2,8 +2,8 @@
 \alias{targetedSummary}
 \title{targetedSummary}
 \usage{
-  targetedSummary(target = NULL, calls, interval = 0.02,
-    sourcefile = NULL, findParent = FALSE)
+  targetedSummary(target = NULL, aprofobject = NULL,
+    findParent = FALSE, mem = FALSE)
 }
 \arguments{
   \item{target}{the specific line of code to take a
