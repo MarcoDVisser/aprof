@@ -56,8 +56,9 @@ require(aprof)
      plot(fooaprof)
 ```
 ## Examples of output
-The standard aprof plot.
+The standard aprof plot. It shows the execution density for each
+line in a source code file.
 ![](http://i.imgur.com/lb1UBCI.png)
 
-A profile plot, which can be used for large source files.
+A profile plot, which can be used for large source files. It shows the largest bottlenecks in red.
 ![](http://i.imgur.com/uhuXuQj.png)
