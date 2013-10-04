@@ -1,6 +1,6 @@
 \name{summary.aprof}
 \alias{summary.aprof}
-\title{Amdahl's profiler}
+\title{Projected optimization gains using Amdahl's law.}
 \usage{
   summary.aprof(aprofobject)
 }

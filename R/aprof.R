@@ -52,8 +52,10 @@
 ##'      summary(fooaprof)
 ##'      plot(fooaprof)
 ##'      profileplot(fooaprof) 
-##' @seealso \code{\link{plot.aprof}}, \code{\link{summary.aprof}} and
-##' \code\{\link{print.aprof}}.
+##' @seealso \code{\link{plot.aprof}}, \code{\link{summary.aprof}},
+##' \code\{\link{print.aprof}}, \code\{\link{Rprof}} and
+##' \code\{\link{summaryRprof}}.
+##' 
 ##' @export
 aprof <- function(src=NULL,output=NULL,
                   memoutput=NULL){

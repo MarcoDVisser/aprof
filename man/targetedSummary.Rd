@@ -9,21 +9,19 @@
   \item{target}{the specific line of code to take a
   detailed look at.}
 
-  \item{calls}{Stack calls as returned by readOutput}
-
-  \item{interval}{the profiler sampling interval}
-
-  \item{sourcefile}{a plain text file (e.g. txt, .R)
-  including the source code of the previously profiled
-  program. If empty the function will attempt to extract
-  this information from the stack calls.}
+  \item{aprofobject}{object of class "aprof" returned by
+  the function \code{aprof}.}
 
   \item{findParent}{Logical, should an attempt be made to
   find the parent of a function call? E.g. lm would be a
   parent call of lm.fit or mean a parent call of
-  mean.default. Note that the option only returns the most
-  frequently accociated parent call when multiple unique
-  parents exist.}
+  mean.default. Note that currently, the option only
+  returns the most frequently accociated parent call when
+  multiple unique parents exist.}
+
+  \item{mem}{Logical, should statistics be adapted to a
+  memory profile? This is only posible if the output from
+  Rprofmem was included in the aprof-object.}
 }
 \description{
   Allows a detailed look into certain lines of code, which

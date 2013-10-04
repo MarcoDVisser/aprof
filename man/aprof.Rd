@@ -1,13 +1,20 @@
 \name{aprof}
 \alias{aprof}
-\title{Amdahl's profiler,  directed optimization.}
+\title{create aprof object for use in package aprof:
+"Amdahl's profiler,  directed optimization."}
 \usage{
   aprof(src = NULL, output = NULL, memoutput = NULL)
 }
 \arguments{
-  \item{src}{The source code file name (and path if not in
-  the working directory) of the program that as been
-  profiled.}
+  \item{src}{The name (and path if not in the working
+  directory) of the source code file. The source code file
+  is a plain text file (e.g. txt, .R) containing the code
+  of the previously profiled program. In some cases this
+  may be left empty, as some "aprof" functions will attempt
+  to extract this information from the stack calls (the
+  success of this will vary). Other function require a
+  defined source file, these will fail if this is not
+  defined.}
 
   \item{output}{The file name (and path if not in the
   working directory) of a previously created profiling
@@ -62,7 +69,8 @@
   Marco D. Visser
 }
 \seealso{
-  \code{\link{plot.aprof}}, \code{\link{summary.aprof}} and
-  \code\{\link{print.aprof}}.
+  \code{\link{plot.aprof}}, \code{\link{summary.aprof}},
+  \code\{\link{print.aprof}}, \code\{\link{Rprof}} and
+  \code\{\link{summaryRprof}}.
 }
 
