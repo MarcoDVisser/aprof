@@ -1,0 +1,65 @@
+\name{profileplot}
+\alias{profileplot}
+\title{Line progression plot}
+\usage{
+  profileplot(aprofobject)
+}
+\arguments{
+  \item{aprofobject}{An aprof object returned by the
+  function \code{aprof}}
+}
+\description{
+  A profile describing the progression through each code
+  line during the execution of the program.
+}
+\details{
+  Given that a source code file was specified in the aprof
+  object this function will estimate when each lines was
+  executed. The function identifies the largest bottlenecks
+  and these lines of code are indicated on the plot with
+  red markings (y-axis). R uses a statistical profiler
+  which, using system interrupts, temporarily stops
+  execution of a program at fixed intervals. This is a
+  profiling technique that results in samples of "the call
+  stack" ##' every time the system was stopped. The
+  function \code{profileplot} uses these samples to
+  reconstruct the progression through the program. Note
+  that best results are obtained when a decent amount of
+  samples have been taken (relative to the length of the
+  source code). Use \code{print.aprof} to see how many
+  samples (termed "Calls") of the call stack were taken.
+}
+\examples{
+# create function to profile
+     foo <- function(N){
+             preallocate<-numeric(N)
+             grow<-NULL
+              for(i in 1:N){
+                  preallocate[i]<-N/(i+1)
+                  grow<-c(grow,N/(i+1))
+                 }
+     }
+
+     #save function to a source file and reload
+     dump("foo",file="foo.R")
+     source("foo.R")
+
+     # create file to save profiler output
+     tmp<-tempfile()
+
+     # Profile the function
+     Rprof(tmp,line.profiling=TRUE)
+     foo(1e4)
+     Rprof(append=FALSE)
+
+     # Create a aprof object
+     fooaprof<-aprof("foo.R",tmp)
+     profileplot(fooaprof)
+}
+\author{
+  Marco D. Visser
+}
+\seealso{
+  \code{\link{plot.aprof}}
+}
+
