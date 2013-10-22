@@ -171,7 +171,8 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
       FileNumber<-"1:"
       warning("sourcefile is null, assuming first file in call stack is the source")
     } else{
-      FileNumber<-unlist(calls)[which(unlist(calls)==TargetFile)+1]}
+      unlistedCalls <- unlist(calls)
+     FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]}
 
     FileNumber <- substr(FileNumber,1,1)
          
