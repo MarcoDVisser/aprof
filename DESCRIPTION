@@ -9,5 +9,6 @@ Description: An R package to assist the evaluation of whether and
     where to focus code optimization, using [Amdahl's
     law](https://en.wikipedia.org/wiki/Amdahl%27s_law).
 License: MIT
-Collate: 'aprof.R'
+Collate:
+    'aprof.R'
 Built: R 3.0.0; ; 2013-10-04 18:41:06 UTC; windows

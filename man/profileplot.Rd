@@ -13,7 +13,7 @@
   line during the execution of the program.
 }
 \details{
-  Given that a source code file was specified in the aprof
+  Given that a source code file was specified in an "aprof"
   object this function will estimate when each lines was
   executed. The function identifies the largest bottlenecks
   and these lines of code are indicated on the plot with
@@ -21,13 +21,13 @@
   which, using system interrupts, temporarily stops
   execution of a program at fixed intervals. This is a
   profiling technique that results in samples of "the call
-  stack" ##' every time the system was stopped. The
-  function \code{profileplot} uses these samples to
-  reconstruct the progression through the program. Note
-  that best results are obtained when a decent amount of
-  samples have been taken (relative to the length of the
-  source code). Use \code{print.aprof} to see how many
-  samples (termed "Calls") of the call stack were taken.
+  stack" every time the system was stopped. The function
+  \code{profileplot} uses these samples to reconstruct the
+  progression through the program. Note that the best
+  results are obtained when a decent amount of samples have
+  been taken (relative to the length of the source code).
+  Use \code{print.aprof} to see how many samples (termed
+  "Calls") of the call stack were taken.
 }
 \examples{
 # create function to profile

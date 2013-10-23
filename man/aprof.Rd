@@ -1,7 +1,6 @@
 \name{aprof}
 \alias{aprof}
-\title{create aprof object for use in package aprof:
-"Amdahl's profiler,  directed optimization."}
+\title{Create an 'aprof' objects for usage in the package 'aprof'}
 \usage{
   aprof(src = NULL, output = NULL, memoutput = NULL)
 }
@@ -10,26 +9,27 @@
   directory) of the source code file. The source code file
   is a plain text file (e.g. txt, .R) containing the code
   of the previously profiled program. In some cases this
-  may be left empty, as some "aprof" functions will attempt
-  to extract this information from the stack calls (the
-  success of this will vary). Other function require a
-  defined source file, these will fail if this is not
-  defined.}
+  may be left empty, as some functions in the "aprof"
+  package will attempt to extract this information from the
+  stack calls (the success of this will vary). Other
+  functions require a defined source file: these will fail
+  if the source file is not defined.}
 
   \item{output}{The file name (and path if not in the
   working directory) of a previously created profiling
   exercise.}
 
-  \item{memprofile}{Optional. The file name (and path)}
+  \item{memprofile}{Optional. The file name (and path) of
+  the memory profile from a previous profiling exercise.}
 }
 \description{
-  Create "aprof" objects for use with Amdahl's profiler
-  functions.
+  Create an 'aprof' objects for usage with function in the
+  package 'aprof'
 }
 \details{
   Creates an "aprof" object from the R-profiler's output
   and a source file. The objects created through "aprof"
-  can be used by the standard functions plot, summmary and
+  can be used by the standard functions plot, summary and
   print (more specifically: \code{plot.aprof},
   \code{summary.aprof} and \code{print.aprof}). See the
   exampe below for more details.

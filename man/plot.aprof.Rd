@@ -15,14 +15,15 @@
   line numbers are given as c(min,max), then the function
   will attempt to zoom in between these, otherwise "TRUE"
   will result in a zoom centred around the lines with the
-  greatest density in execution time (and/or memory).}
+  greatest execution time (and/or memory). Use the function
+  profileplot as an alternative visual tool to find
+  bottlenecks in files with numerous lines of code.}
 }
 \description{
-  Plot execution density per line of code from a previously
+  Plot execution time per line of code from a previously
   profiled source file. The plot visually shows bottlenecks
-  in program execution time, directly where most
-  programmers are most familiar with their code: the source
-  file.
+  in a program's execution time, shown directly next to the
+  code of the source file.
 }
 \examples{
 # create function to profile

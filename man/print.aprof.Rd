@@ -5,11 +5,11 @@
   print.aprof(aprofobject)
 }
 \arguments{
-  \item{aprofobject}{An aprof object return by the function
-  \code{aprof}}
+  \item{aprofobject}{An aprof object returned by the
+  function \code{aprof}}
 }
 \description{
-  Function makes a pretty table, and returns some basic
+  Function that makes a pretty, and returns some basic
   information
 }
 

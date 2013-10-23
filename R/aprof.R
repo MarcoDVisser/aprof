@@ -1,11 +1,11 @@
-##' Create an ‘aprof’ objects for usage with function in the package ‘aprof’
+##' Create an 'aprof' objects for usage with function in the package 'aprof'
 ##'
 ##' Creates an "aprof" object from the R-profiler's output and a source file.
 ##' The objects created through "aprof" can be used by the standard functions
 ##' plot, summary and print (more specifically:
 ##' \code{plot.aprof}, \code{summary.aprof} and \code{print.aprof}).
 ##' See the exampe below for more details.
-##' @title Create an "aprof" objects for usage in the package ‘aprof’
+##' @title Create an 'aprof' objects for usage in the package 'aprof'
 ##' @param src The name (and path if not in the working
 ##' directory) of the source code file. The source code file is
 ##' a plain text file (e.g. txt, .R) containing the code of the

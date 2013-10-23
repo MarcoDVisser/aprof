@@ -5,7 +5,7 @@
   readLineDensity(aprofobject = NULL, Memprof = FALSE)
 }
 \arguments{
-  \item{aprofobject}{an object returned by \code{aprof},
+  \item{An}{object an object returned by \code{aprof},
   which contains the stack calls sampled by the R
   profiler.}
 
@@ -17,8 +17,7 @@
 \description{
   Reads and calculates the line density (in execution time
   or memory) of an aprof object returned by the
-  \code{aprof} function. The function is used internally by
-  many "aprof" functions. If a sourcefile was not specified
+  \code{aprof} function. If a sourcefile was not specified
   in the aprof object, then the first file within the
   profiling information is assumed to be the source.
 }
