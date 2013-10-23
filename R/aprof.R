@@ -1,26 +1,25 @@
-##' Create "aprof" objects for use with Amdahl's profiler functions.
+##' Create an ‘aprof’ objects for usage with function in the package ‘aprof’
 ##'
-##' Creates an "aprof" object from the R-profiler's output
-##' and a source file. The objects created through "aprof" can
-##' be used by the standard
-##' functions plot, summmary and print (more specifically:
+##' Creates an "aprof" object from the R-profiler's output and a source file.
+##' The objects created through "aprof" can be used by the standard functions
+##' plot, summary and print (more specifically:
 ##' \code{plot.aprof}, \code{summary.aprof} and \code{print.aprof}).
 ##' See the exampe below for more details.
-##' @title create aprof object for use in package aprof:
-##' "Amdahl's profiler,  directed optimization."
+##' @title Create an "aprof" objects for usage in the package ‘aprof’
 ##' @param src The name (and path if not in the working
 ##' directory) of the source code file. The source code file is
 ##' a plain text file (e.g. txt, .R) containing the code of the
 ##' previously profiled program. In some cases this may be left empty,
-##' as some "aprof" functions will attempt to extract this information from
+##' as some functions in the "aprof" package
+##' will attempt to extract this information from
 ##' the stack calls (the success of this will vary).
-##' Other function require a defined source file, these will fail if
-##' this is not defined.
+##' Other functions require a defined source file: these will fail if
+##' the source file is not defined.
 ##' 
 ##' @param output The file name (and path if not in the working
 ##' directory) of a previously created profiling exercise.
-##' @param memprofile Optional. The file name (and path)
-##  of the memory profile of profiling exercise.
+##' @param memprofile Optional. The file name (and path) of the memory profile
+##' from a previous profiling exercise.
 ##' @author Marco D. Visser
 ##' @examples
 ##'    # create function to profile
@@ -135,12 +134,11 @@ readOutput<-function(outputfilename="Rprof.out"){
 #' readLineDensity
 #' 
 #' Reads and calculates the line density (in execution time or memory)
-#' of an aprof object returned by the \code{aprof} function. The function
-#' is used internally by many "aprof" functions. If a sourcefile was not
-#' specified in the aprof object, then the first file within the
-#' profiling information is assumed to be the source.
+#' of an aprof object returned by the \code{aprof} function.
+#' If a sourcefile was not specified in the aprof object, then the first file
+#' within the profiling information is assumed to be the source.
 #'
-#' @param aprofobject an object returned by \code{aprof}, which
+#' @param An object an object returned by \code{aprof}, which
 #' contains the stack calls sampled by the R profiler.
 #' @param Memprof Logical. Should the function return information
 #' specific to memory profiling? As memory use per line and Mb counts?
@@ -214,9 +212,9 @@ return(Finallist)
 
 #' Generic print method for aprof objects
 #'
-#' Function makes a pretty table, and returns
+#' Function that makes a pretty, and returns
 #' some basic information
-#' @param aprofobject An aprof object return by the
+#' @param aprofobject An aprof object returned by the
 #' function \code{aprof}
 #' @export
 print.aprof <- function(aprofobject){
@@ -432,10 +430,10 @@ PlotSourceCode<-function(SourceFilename){
 
 #' plot.aprof
 #'
-#' Plot execution density per line of code from a previously
+#' Plot execution time per line of code from a previously
 #' profiled source file. The plot visually shows bottlenecks
-#' in program execution time, directly where most programmers
-#' are most familiar with their code: the source file.
+#' in a program's execution time, shown directly next to the code
+#' of the source file.
 #'
 #' @param aprofobject An aprof object as returned by apof().
 #' If this object contains both memory and time profiling information
@@ -446,8 +444,10 @@ PlotSourceCode<-function(SourceFilename){
 #' If line numbers are given as c(min,max), then the
 #' function will attempt to zoom in between these,
 #' otherwise "TRUE" will result in a zoom centred around the
-#' lines with the greatest density in execution time (and/or
-#' memory).
+#' lines with the greatest execution time (and/or
+#' memory). Use the function profileplot as an alternative
+#' visual tool to find bottlenecks in files with numerous lines
+#' of code.
 #' 
 #' @author Marco D. Visser
 #' @examples
@@ -533,15 +533,16 @@ plot.aprof<-function(aprofobject,zoom=NULL){
 ##' A profile describing the progression through each code
 ##' line during the execution of the program.
 ##'
-##' Given that a source code file was specified in the aprof object
+##' Given that a source code file was specified in an "aprof" object
 ##' this function will estimate when each lines was executed. The function
 ##' identifies the largest bottlenecks and these lines of code are indicated
 ##' on the plot with red markings (y-axis).
 ##' R uses a statistical profiler which, using system interrupts,
 ##' temporarily stops execution of a program at fixed intervals.
-##' This is a profiling technique that results in samples of "the call stack" ##' every time the system was stopped. The function \code{profileplot} uses
+##' This is a profiling technique that results in samples of "the call stack"
+##' every time the system was stopped. The function \code{profileplot} uses
 ##' these samples to reconstruct the progression through the
-##' program. Note that best results are obtained when a decent amount of
+##' program. Note that the best results are obtained when a decent amount of
 ##' samples have been taken (relative to the length of the source code).
 ##' Use \code{print.aprof} to see how many samples (termed "Calls") of
 ##' the call stack were taken.
@@ -668,31 +669,29 @@ AmLaw<-function(P=1,S=2){
 
 
 
-#' summary.aprof
+#' summary.aprof, projections of code optimization gains.
 #'
 #' Summarizes an "aprof" object and returns a table with
-#' the theoretical maximal improvent in execution
+#' the theoretical maximal improvement in execution
 #' time for the entire profiled program when a given line
 #' of code is sped-up by a factor (called S in the
-#' output). Calculations are done using using R's profiler
+#' output). Calculations are done using R's profiler
 #' output, and requires line profiling to be switched on.
 #' Expected improvements are estimated for the entire
 #' program using Amdahl's law (Amdahl 1967). Calculations
 #' are subject to the scaling of the problem at profiling.
-#' The table output aims to anwser whether it is
+#' The table output aims to answer whether it is
 #' worthwhile to spend hours of time optimizing bits of
-#' code (e.i. refactoring in C) and where these efforts
+#' code (e.g. refactoring in C) and where these efforts
 #' should be focussed. Using aprof one can get estimates
 #' of the maximum possible gain for any optimization
 #' efforts. Such considerations are important when one
 #' wishes to balance development time vs execution time.
-#'  
+#' Predictions are subject to the scaling of the
+#' problem.
+#'
+#' @param aprofobject An object returned by the function \code{aprof}.
 #' @title Projected optimization gains using Amdahl's law.
-#' @param calls Stack calls as returned by readOutput.
-#' Line profiling must be activated for this to work.
-#' @param interval the profiler sampling interval.
-#' @param type currently ignored. Only line profiling is
-#' available in this version.
 #' @references Amdahl, Gene (1967). Validity of the Single Processor
 #' Approach to Achieving Large-Scale Computing Capabilities. AFIPS
 #' Conference Proceedings (30): 483-485.
@@ -760,19 +759,19 @@ summary.aprof<-function(aprofobject){
 #' 
 #' Allows a detailed look into certain lines of code,
 #' which have previously been identified as bottlenecks
-#' by PlotExcDens or aprof in combination with a source file.
+#' in combination with a source file.
 #' 
-#' @param target the specific line of code to take a detailed look
+#' @param target The specific line of code to take a detailed look
 #' at.
 #' @param aprofobject object of class "aprof" returned by
 #' the function \code{aprof}.
 #' @param findParent Logical, should an attempt be made to find
 #' the parent of a function call? E.g. lm would be a parent call of
 #' lm.fit or mean a parent call of mean.default. Note that currently, the
-#' option only returns the most frequently accociated parent call
+#' option only returns the most frequently associated parent call
 #' when multiple unique parents exist.
 #' @param mem Logical, should statistics be adapted to a memory
-#' profile? This is only posible if the output from Rprofmem
+#' profile? This is only possible if the output from Rprofmem
 #' was included in the aprof-object.
 #' @author Marco D. Visser
 #' 
