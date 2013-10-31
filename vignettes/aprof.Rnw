@@ -4,58 +4,47 @@
 \begin{document}
 %\SweaveOpts{concordance=TRUE}
 
-\title{aprof: Title: Amdahl's profiler, directed optimization made easy}
+\title{aprof: Amdahl's profiler, directed optimization made easy}
 \date{\today}
 \author{Marco D. Visser}
 \maketitle
 
 \section{Introduction}
 
-A R package meant to help evaluate whether and where to focus 
-code optimization using Amdahl's law.
+Amdahl's profiler, directed optimization.
 
-<<example>>=
-library(aprof)
+An R package meant to help to evaluate whether and where to focus code optimization using Amdahl's law and visual aids based on line profiling. The package aprof is an addition to R's standard profiling tools and is not a wrapper for them. Amdahl's profiler organises profiling output files (including memory profiling) in a visually appealing way and helps to identify the most promising sections of code to optimize. It is meant to help to balance development vs. execution time. 
 
-filestring<-
-"
-naivefunction=function(T){
 
-pop=data.frame(SP1=1,SP2=1,time=1)
+Here is an example of some basic aprof operations: 
 
-# Naive way of buidling file
-for(i in 2:T){
-	SP1=pop$SP1[i-1]*rnorm(1)*(1-(pop$SP1[i-1]+
-	(rnorm(1)*pop$SP2[i-1])))
-	SP2=pop$SP2[i-1]*rnorm(1)*
-	(1-(pop$SP2[i-1]+(rnorm(1)*pop$SP1[i-1])))
-	pop=rbind(pop,c(SP1,SP2,i))
-}
-#useless piece of code
-for(i in 2:T){
-t(pop)
-}
+<<example, eval=FALSE>>=
+require(aprof)
+# create function to profile
+     foo <- function(N){
+             preallocate<-numeric(N)
+             grow<-NULL
+              for(i in 1:N){
+                  preallocate[i]<-N/(i+1)
+                  grow<-c(grow,N/(i+1))
+                 }
+            }
 
-return(pop)
-}
-"
+     #save function to a source file and reload
+     dump("foo",file="foo.R")
+     source("foo.R")
 
-source(textConnection(filestring))
+     # create file to save profiler output
+     tmp<-tempfile()
 
-write(filestring,"naivesource.r")
+     # Profile the function
+     Rprof(tmp,line.profiling=TRUE)
+     foo(5e4)
+     Rprof(append=FALSE)
 
-N<-3e3
-Rprof(file="naiveoutput.out",interval = 0.0002,line.profiling =TRUE)
-
-result<-naivefunction(N)
-
-Rprof(append=F)
-
-CallsInt<-readOutput("./naiveoutput.out")
-
-readLineDensity(CallsInt$calls,CallsInt$interval)
-
-#PlotExcDens(tmpsource,tmpout)
-
+     # Create a aprof object
+     fooaprof<-aprof("foo.R",tmp)
+     plot(fooaprof)
 @
+
 \end{document}

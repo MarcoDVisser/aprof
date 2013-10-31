@@ -2,11 +2,13 @@
 \alias{summary.aprof}
 \title{Projected optimization gains using Amdahl's law.}
 \usage{
-  summary.aprof(aprofobject)
+  summary.aprof(object, ...)
 }
 \arguments{
-  \item{aprofobject}{An object returned by the function
+  \item{object}{An object returned by the function
   \code{aprof}.}
+
+  \item{...}{Additional printing arguments}
 }
 \description{
   summary.aprof, projections of code optimization gains.

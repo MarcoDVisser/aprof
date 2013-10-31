@@ -19,8 +19,9 @@
   working directory) of a previously created profiling
   exercise.}
 
-  \item{memprofile}{Optional. The file name (and path) of
-  the memory profile from a previous profiling exercise.}
+  \item{memoutput}{Optional. The file name (and path) of
+  the memory profile from a previous profiling exercise.
+  Not available in this version.}
 }
 \description{
   Create an 'aprof' objects for usage with function in the
@@ -35,7 +36,8 @@
   exampe below for more details.
 }
 \examples{
-# create function to profile
+\dontrun{
+   # create function to profile
      foo <- function(N){
              preallocate<-numeric(N)
              grow<-NULL
@@ -64,13 +66,14 @@
      summary(fooaprof)
      plot(fooaprof)
      profileplot(fooaprof)
+	}
 }
 \author{
   Marco D. Visser
 }
 \seealso{
   \code{\link{plot.aprof}}, \code{\link{summary.aprof}},
-  \code\{\link{print.aprof}}, \code\{\link{Rprof}} and
-  \code\{\link{summaryRprof}}.
+  \code{\link{print.aprof}}, \code{\link{Rprof}} and
+  \code{\link{summaryRprof}}.
 }
 

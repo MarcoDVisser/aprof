@@ -30,6 +30,7 @@
   "Calls") of the call stack were taken.
 }
 \examples{
+\dontrun{
 # create function to profile
      foo <- function(N){
              preallocate<-numeric(N)
@@ -55,6 +56,7 @@
      # Create a aprof object
      fooaprof<-aprof("foo.R",tmp)
      profileplot(fooaprof)
+}
 }
 \author{
   Marco D. Visser

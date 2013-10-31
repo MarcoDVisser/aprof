@@ -18,10 +18,11 @@
 ##' 
 ##' @param output The file name (and path if not in the working
 ##' directory) of a previously created profiling exercise.
-##' @param memprofile Optional. The file name (and path) of the memory profile
-##' from a previous profiling exercise.
+##' @param memoutput Optional. The file name (and path) of the memory profile
+##' from a previous profiling exercise. Not available in this version.
 ##' @author Marco D. Visser
 ##' @examples
+##' \dontrun{
 ##'    # create function to profile
 ##'      foo <- function(N){
 ##'              preallocate<-numeric(N)
@@ -51,9 +52,10 @@
 ##'      summary(fooaprof)
 ##'      plot(fooaprof)
 ##'      profileplot(fooaprof) 
+##'	}
 ##' @seealso \code{\link{plot.aprof}}, \code{\link{summary.aprof}},
-##' \code\{\link{print.aprof}}, \code\{\link{Rprof}} and
-##' \code\{\link{summaryRprof}}.
+##' \code{\link{print.aprof}}, \code{\link{Rprof}} and
+##' \code{\link{summaryRprof}}.
 ##' 
 ##' @export
 aprof <- function(src=NULL,output=NULL,
@@ -138,12 +140,12 @@ readOutput<-function(outputfilename="Rprof.out"){
 #' If a sourcefile was not specified in the aprof object, then the first file
 #' within the profiling information is assumed to be the source.
 #'
-#' @param An object an object returned by \code{aprof}, which
+#' @param aprofobject An object an object returned by \code{aprof}, which
 #' contains the stack calls sampled by the R profiler.
 #' @param Memprof Logical. Should the function return information
 #' specific to memory profiling? As memory use per line and Mb counts?
 #' Otherwise the default is to return line call density and execution time
-#' counts. 
+#' counts. This feature is unavailable in the current version.
 #' @author Marco D. Visser
 #' 
 #' @export
@@ -170,9 +172,10 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
       warning("sourcefile is null, assuming first file in call stack is the source")
     } else{
       unlistedCalls <- unlist(calls)
-     FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]}
 
-    FileNumber <- substr(FileNumber,1,1)
+     TargetFile <- basename("TargetFile")
+     FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]}
+     FileNumber <- substr(FileNumber,1,1)
          
 	cleancalls<-sapply(calls, function(x) 
 	gsub("#File", NA, x))
@@ -214,11 +217,12 @@ return(Finallist)
 #'
 #' Function that makes a pretty, and returns
 #' some basic information
-#' @param aprofobject An aprof object returned by the
+#' @param x An aprof object returned by the
 #' function \code{aprof}
+#' @param ... Additional printing arguments
 #' @export
-print.aprof <- function(aprofobject){
-
+print.aprof <- function(x,...){
+aprofobject<-x
  if(!is.aprof(aprofobject)){
    stop("Input does not appear to be of the class \"aprof\"")}
 
@@ -435,11 +439,12 @@ PlotSourceCode<-function(SourceFilename){
 #' in a program's execution time, shown directly next to the code
 #' of the source file.
 #'
-#' @param aprofobject An aprof object as returned by apof().
+#' @param x An aprof object as returned by apof().
 #' If this object contains both memory and time profiling information
 #' both will be plotted (as proportions of total time and
 #' total memory allocations.
-#' @param zoom Zoom into a particular section of code.
+#' @param ... Additional parameters. Example "zoom" can be set.
+#' Zoom into a particular section of code.
 #' Can either be set to "TRUE" or line numbers can be given.
 #' If line numbers are given as c(min,max), then the
 #' function will attempt to zoom in between these,
@@ -451,6 +456,7 @@ PlotSourceCode<-function(SourceFilename){
 #' 
 #' @author Marco D. Visser
 #' @examples
+#' \dontrun{
 #' # create function to profile
 #' foo <- function(N){
 #'         preallocate<-numeric(N)
@@ -476,9 +482,10 @@ PlotSourceCode<-function(SourceFilename){
 #' # Create a aprof object
 #' fooaprof<-aprof("foo.R",tmp)
 #' plot(fooaprof)
+#' }
 #' @export
-plot.aprof<-function(aprofobject,zoom=NULL){
-
+plot.aprof<-function(x,...){
+aprofobject<-x
    if(!is.aprof(aprofobject)){
    stop("Input does not appear to be of the class \"aprof\"")}
  
@@ -550,6 +557,7 @@ plot.aprof<-function(aprofobject,zoom=NULL){
 ##' \code{aprof}
 ##' @author Marco D. Visser
 ##' @examples
+##' \dontrun{
 ##' # create function to profile
 ##'      foo <- function(N){
 ##'              preallocate<-numeric(N)
@@ -575,6 +583,7 @@ plot.aprof<-function(aprofobject,zoom=NULL){
 ##'      # Create a aprof object
 ##'      fooaprof<-aprof("foo.R",tmp)
 ##'      profileplot(fooaprof)
+##' }
 ##' @seealso \code{\link{plot.aprof}}
 ##' @export
 
@@ -690,7 +699,8 @@ AmLaw<-function(P=1,S=2){
 #' Predictions are subject to the scaling of the
 #' problem.
 #'
-#' @param aprofobject An object returned by the function \code{aprof}.
+#' @param object An object returned by the function \code{aprof}.
+#' @param ... Additional printing arguments
 #' @title Projected optimization gains using Amdahl's law.
 #' @references Amdahl, Gene (1967). Validity of the Single Processor
 #' Approach to Achieving Large-Scale Computing Capabilities. AFIPS
@@ -699,7 +709,9 @@ AmLaw<-function(P=1,S=2){
 #' @author Marco D. Visser
 #' 
 #' @export
-summary.aprof<-function(aprofobject){
+summary.aprof<-function(object,...){
+
+aprofobject<-object
 
   if(!is.null(aprofobject$memcalls)){
     if(is.null(aprofobject$calls)){

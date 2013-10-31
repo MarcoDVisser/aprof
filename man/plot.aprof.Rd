@@ -2,19 +2,20 @@
 \alias{plot.aprof}
 \title{plot.aprof}
 \usage{
-  plot.aprof(aprofobject, zoom = NULL)
+  plot.aprof(x, ...)
 }
 \arguments{
-  \item{aprofobject}{An aprof object as returned by apof().
-  If this object contains both memory and time profiling
+  \item{x}{An aprof object as returned by apof(). If this
+  object contains both memory and time profiling
   information both will be plotted (as proportions of total
   time and total memory allocations.}
 
-  \item{zoom}{Zoom into a particular section of code. Can
-  either be set to "TRUE" or line numbers can be given. If
-  line numbers are given as c(min,max), then the function
-  will attempt to zoom in between these, otherwise "TRUE"
-  will result in a zoom centred around the lines with the
+  \item{...}{Additional parameters. Example "zoom" can be
+  set. Zoom into a particular section of code. Can either
+  be set to "TRUE" or line numbers can be given. If line
+  numbers are given as c(min,max), then the function will
+  attempt to zoom in between these, otherwise "TRUE" will
+  result in a zoom centred around the lines with the
   greatest execution time (and/or memory). Use the function
   profileplot as an alternative visual tool to find
   bottlenecks in files with numerous lines of code.}
@@ -26,6 +27,7 @@
   code of the source file.
 }
 \examples{
+\dontrun{
 # create function to profile
 foo <- function(N){
         preallocate<-numeric(N)
@@ -51,6 +53,7 @@ Rprof(append=FALSE)
 # Create a aprof object
 fooaprof<-aprof("foo.R",tmp)
 plot(fooaprof)
+}
 }
 \author{
   Marco D. Visser
