@@ -173,9 +173,10 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
     } else{
       unlistedCalls <- unlist(calls)
 
-     TargetFile <- basename("TargetFile")
+     TargetFile <- basename(TargetFile)
      FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]}
-     FileNumber <- substr(FileNumber,1,1)
+
+  FileNumber <- substr(FileNumber,1,1)
          
 	cleancalls<-sapply(calls, function(x) 
 	gsub("#File", NA, x))
