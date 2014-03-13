@@ -64,4 +64,7 @@
 \seealso{
   \code{\link{plot.aprof}}
 }
+\concept{
+  Line profiling
+}
 

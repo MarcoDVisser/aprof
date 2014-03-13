@@ -1,6 +1,7 @@
 %\VignetteIndexEntry{choosecolor}
 \documentclass{article}
 
+\usepackage{Sweave}
 \begin{document}
 %\SweaveOpts{concordance=TRUE}
 
@@ -16,38 +17,50 @@ Amdahl's profiler or \textit{aprof} is a R package meant to help to evaluate whe
 
 Here is an example of some basic \textit{aprof} operations, showing the difference in system resources usage between pre-allocating objects in the memory of growing them
 
-<<example, eval=TRUE>>=
-require(aprof)
-# create function to profile
-     foo <- function(N){
-             preallocate<-numeric(N)
-             grow<-NULL
-              for(i in 1:N){
-                  preallocate[i]<-N/(i+1)
-                  grow<-c(grow,N/(i+1))
-                 }
-            }
+\begin{Schunk}
+\begin{Sinput}
+> require(aprof)
+> # create function to profile
+>      foo <- function(N){
++              preallocate<-numeric(N)
++              grow<-NULL
++               for(i in 1:N){
++                   preallocate[i]<-N/(i+1)
++                   grow<-c(grow,N/(i+1))
++                  }
++             }
+>      #save function to a source file and reload
+>      dump("foo",file="foo.R")
+>      source("foo.R")
+>      # Profile the function
+>      Rprof("foo.out",line.profiling=TRUE)
+>      foo(5e4)
+>      Rprof(append=FALSE)
+>      # Create a aprof object
+>      fooaprof<-aprof("foo.R","foo.out")
+>      fooaprof
+\end{Sinput}
+\begin{Soutput}
+Source file:
+foo.R (9 lines).
 
-     #save function to a source file and reload
-     dump("foo",file="foo.R")
-     source("foo.R")
+ Call Density and Execution time per line number:
 
-     
-     # Profile the function
-     Rprof("foo.out",line.profiling=TRUE)
-     foo(5e4)
-     Rprof(append=FALSE)
+      Line  Call Density  Time Density (s)
 
-     # Create a aprof object
-     fooaprof<-aprof("foo.R","foo.out")
-     fooaprof
-@    
+ Totals:
+ Calls		 1 
+ Time (s)	 0 	(interval = 	 0.02 (s))
+\end{Soutput}
+\end{Schunk}
 
 The table above gives some basic output, and shows the lines that were sampled by the profiler, and the amount of time spent in each line. In this simple example it's clear that line 7, takes the most time and should be the target of optimization. This is also shown in the next figure:
 
-<<plotexample, eval=TRUE>>=
-plot(fooaprof)
-@  
+\begin{Schunk}
+\begin{Sinput}
+> plot(fooaprof)
+\end{Sinput}
+\end{Schunk}
 \end{document}
 
 

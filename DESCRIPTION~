@@ -6,8 +6,9 @@ Date: 2013-06-25
 Author: Marco D. Visser
 Maintainer: Marco D. Visser <marco.d.visser@gmail.com>
 Description: An R package to assist the evaluation of whether and
-    where to focus code optimization, using Amdahl's
-    law and visual aids based on line profiling. The package aprof is
+    where to focus code optimization, using [Amdahl's
+    law](https://en.wikipedia.org/wiki/Amdahl%27s_law)
+    and visual aids based on line profiling. The package aprof is
     an addition to R's standard profiling tools and is not a
     wrapper for them. Amdahl's profiler organises profiling output
     files (will will include memory profiling) in a visually appealing
@@ -16,5 +17,6 @@ Description: An R package to assist the evaluation of whether and
 License: GPL-2
 URL: http://github.com/MarcoDVisser/aprof
 BugReports: http://github.com/MarcoDVisser/aprof/issues
+VignetteBuilder: knitr
 Collate:
     'aprof.R'

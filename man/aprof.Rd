@@ -23,6 +23,9 @@
   the memory profile from a previous profiling exercise.
   Not available in this version.}
 }
+\value{
+  An aprof object
+}
 \description{
   Create an 'aprof' objects for usage with function in the
   package 'aprof'
@@ -75,5 +78,8 @@
   \code{\link{plot.aprof}}, \code{\link{summary.aprof}},
   \code{\link{print.aprof}}, \code{\link{Rprof}} and
   \code{\link{summaryRprof}}.
+}
+\concept{
+  Line profiling
 }
 
