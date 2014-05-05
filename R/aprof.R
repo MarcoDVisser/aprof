@@ -1,4 +1,4 @@
-##' Create an 'aprof' objects for usage with function in the package 'aprof'
+##' Create an 'aprof' objects for usage with functions in the package 'aprof'
 ##'
 ##' Creates an "aprof" object from the R-profiler's output and a source file.
 ##' The objects created through "aprof" can be used by the standard functions
