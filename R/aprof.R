@@ -832,10 +832,14 @@ targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
 
          }
         
-        #Subset to target line
-        TargetCalls<-Lcalls[sapply(Lcalls,function(X)
-                                   paste("L",target,sep='')%in%X)]
+                                        #Subset to target line
+  tlines <- sapply(Lcalls,function(X) paste("L",target,sep='')%in%X)
+  TargetCalls<-Lcalls[tlines]
 
+  if(sum(tlines)==0){stop("Target line not found in profiler output.\n
+  Confirm target line and run again") }
+
+  
         # Remove all functions calls before target line
         trimmedTargetCalls<-lapply(TargetCalls,function(X)
                                    X[1+max(grep(paste("L",target,sep=''),
