@@ -10,13 +10,13 @@ profileplot(aprofobject)
 \code{aprof}}
 }
 \description{
-A profile describing the progression through each code
+A profile plot describing the progression through each code
 line during the execution of the program.
 }
 \details{
 Given that a source code file was specified in an "aprof" object
-this function will estimate when each lines was executed. The function
-identifies the largest bottlenecks and these lines of code are indicated
+this function will estimate when each lines was executed. It
+identifies the largest bottleneck and indicates this
 on the plot with red markings (y-axis).
 R uses a statistical profiler which, using system interrupts,
 temporarily stops execution of a program at fixed intervals.

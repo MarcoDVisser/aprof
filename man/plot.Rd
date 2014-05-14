@@ -9,9 +9,10 @@
 \item{x}{An aprof object as returned by apof().
 If this object contains both memory and time profiling information
 both will be plotted (as proportions of total time and
-total memory allocations.}
+total memory allocations [Note: memory profiling ignored until the next
+release].}
 
-\item{y}{Unused at current.}
+\item{y}{Unused and ignored at current.}
 
 \item{\dots}{Additional printing arguments. Unused at current.}
 }

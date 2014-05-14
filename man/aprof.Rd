@@ -6,27 +6,28 @@
 aprof(src = NULL, output = NULL, memoutput = NULL)
 }
 \arguments{
-\item{src}{The name (and path if not in the working
-directory) of the source code file. The source code file is
-a plain text file (e.g. txt, .R) containing the code of the
-previously profiled program. In some cases this may be left empty,
-as some functions in the "aprof" package
-will attempt to extract this information from
-the stack calls (the success of this will vary).
-Other functions require a defined source file: these will fail if
-the source file is not defined.}
+\item{src}{The name of the source code file (and path if not in the working
+directory). The source code file is expected to be a
+a plain text file (e.g. txt, .R), containing the code of the
+previously profiled program. If left empty, some "aprof" functions
+(e.g. \code{readLineDensity}) will attempt to extract this information from
+the call stack but this is not recommended (as the success of
+file name detection operations vary). Note that
+functions that require a defined source file will fail if
+the source file is not defined or detected in the call stack.}
 
 \item{output}{The file name (and path if not in the working
 directory) of a previously created profiling exercise.}
 
-\item{memoutput}{Optional. The file name (and path) of the memory profile
-from a previous profiling exercise. Not available in this version.}
+\item{memoutput}{Optional, the file name (and path)
+of the memory profile from a previous profiling exercise
+[NOTE: not available in this version].}
 }
 \value{
 An aprof object
 }
 \description{
-Create an 'aprof' objects for usage with functions in the package 'aprof'
+Create an 'aprof' objects for usage with 'aprof' functions
 }
 \details{
 Creates an "aprof" object from the R-profiler's output and a source file.

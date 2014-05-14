@@ -9,7 +9,7 @@ is.aprof(object)
 \item{object}{Object to test}
 }
 \description{
-Generic function to test whether an object
-is an aprof object
+Generic lower-level function to test whether an object
+is an aprof object.
 }
 
