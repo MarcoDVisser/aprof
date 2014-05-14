@@ -16,5 +16,3 @@ Description: Assists the evaluation of whether and
 License: GPL-2
 URL: http://github.com/MarcoDVisser/aprof
 BugReports: http://github.com/MarcoDVisser/aprof/issues
-Collate:
-    'aprof.R'

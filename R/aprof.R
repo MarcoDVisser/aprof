@@ -624,14 +624,19 @@ profileplot <- function(aprofobject){
 	
  opar<-par("mar","bg")
  maxtimesteps <- max(timesteps)
+
+ layoutmat<-matrix(c(rep(c(1,1,1,1,2,2),10)),
+                   byrow=T,ncol=6)
+ 
+ layout(layoutmat)
+ 
  par(mar=c(4,4,0.1,0.1),bg='grey90')
  plot(0,0,xlim=c(0,maxtimesteps),ylim=c(1,NCodeLines),
       type='n',xaxt='s',yaxt='s', xlab='',ylab='')
-		
  abline(h=1:NCodeLines,col='white')
   
- mtext("Run time(s)",1,cex=1,padj=3.5)
- mtext("Line",2,cex=1,padj=-3.5)
+ mtext("Run time(s)",1,cex=.9,padj=3.4)
+ mtext("Line",2,cex=.9,padj=-3.4)
 
  lines(c(timesteps,maxtimesteps), c(callhistory,NCodeLines),
        lwd=2,col=rgb(0,0,1,alpha=0.6))
@@ -640,11 +645,27 @@ profileplot <- function(aprofobject){
  text(maxtimesteps,NCodeLines,"End",col='darkgreen',cex=1.2)
  #largest bottlenecks
  callcounts<-table(callhistory)
+
  maxcalls<-as.numeric(names(which(callcounts==max(callcounts))))
+
  axis(2,at=maxcalls,labels=maxcalls,col.axis='red',
       lwd=1.2,col.ticks='red')
- par(opar)
+ 
+ plot(0,0,ylim=c(0,NCodeLines),
+      xlim = c(0,max(LineDensity$Call.Density/LineDensity$Total.Calls)*1.1),
+      type='n',xaxt='s',yaxt='s', xlab='',ylab='')
+ 
+ abline(h = 1:NCodeLines, col = "white")
+ PerLineDensity <- numeric(NCodeLines+1)
+ PerLineDensity[LineDensity$Line.Numbers]<-LineDensity$Call.Density/LineDensity$Total.Calls
+ lines(y=0:NCodeLines,x=PerLineDensity,
+       type = "s", xaxt = "n", yaxt = "n", 
+        bty = "n", xlab = "", ylab = "")
 
+ axis(4)
+ mtext("Line Density", 1, cex = .9, padj = 2.7)
+ par(opar)
+ layout(1)
  }
 
 
