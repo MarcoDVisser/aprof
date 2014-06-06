@@ -68,6 +68,6 @@ A profile plot, which can be used for large source files. It shows the largest b
 ![](http://i.imgur.com/yFy3fLY.png)
 
 ## Thanks
-Special thanks to Dason Tyler Rinker, Dason Kurkiewicz and Diego Mayer-Cantu for comments, commits and additions to this package.
-
+Special thanks to Tyler Rinker, Dason Kurkiewicz and Diego Mayer-Cantu for comments, commits and additions to this package.
+Sean M. McMahon, Cory Merow, Philip Dixon, Sydne Record and Eelke Jongejans thanks for all the suggestions, comments and testing while I was developing this package.
 
