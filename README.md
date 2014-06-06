@@ -65,4 +65,4 @@ line in a source code file.
 ``` 
 
 A profile plot, which can be used for large source files. It shows the largest bottlenecks in red.
-![](http://i.imgur.com/uhuXuQj.png)
+![](http://i.imgur.com/yFy3fLY.png)
