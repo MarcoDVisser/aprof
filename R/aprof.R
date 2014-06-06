@@ -1,4 +1,4 @@
-##' Create an 'aprof' objects for usage with 'aprof' functions 
+##' Create 'aprof' objects for usage with 'aprof' functions 
 ##'
 ##' Creates an "aprof" object from the R-profiler's output and a source file.
 ##' The objects created through "aprof" can be used by the standard functions
@@ -653,21 +653,20 @@ profileplot <- function(aprofobject){
  axis(2,at=maxcalls,labels=maxcalls,col.axis='red',
       lwd=1.2,col.ticks='red')
  
- plot(0,0,ylim=c(0,NCodeLines),
+ plot(0,0,ylim=c(1,NCodeLines),
       xlim = c(0,max(LineDensity$Call.Density/LineDensity$Total.Calls)*1.1),
       type='n',xaxt='s',yaxt='s', xlab='',ylab='')
  
  abline(h = 1:NCodeLines, col = "white")
- PerLineDensity <- numeric(NCodeLines+1)
+ PerLineDensity <- numeric(NCodeLines)
  PerLineDensity[LineDensity$Line.Numbers]<-LineDensity$Call.Density/LineDensity$Total.Calls
- lines(y=0:NCodeLines,x=PerLineDensity,
-       type = "s", xaxt = "n", yaxt = "n", 
-        bty = "n", xlab = "", ylab = "")
-
+ connectedlines <- c(1:NCodeLines)-c(0,rep(.5,NCodeLines-2),0)
+ lines(y=connectedlines,x=PerLineDensity,type = "S",lwd=1.3)
+ abline(v=0,col='grey30',lty=3)
  axis(4)
  mtext("Line Density", 1, cex = .9, padj = 2.7)
  par(opar)
- layout(1)
+ layout(1) 
  }
 
 
