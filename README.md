@@ -69,7 +69,7 @@ A profile plot, which can be used for large source files. It uses the profiler s
 ![](http://i.imgur.com/yFy3fLY.png)
 
 
-Printing a aprof file will give basic information:
+Printing any aprof object will return basic information:
 ```r
 fooaprof
 ```
@@ -89,7 +89,7 @@ foo.R (9 lines).
  Time (s)	 5.76 	(interval = 	 0.02 (s))
 ```
 
-Using the summary function will give projections of potential code optimization gains in a table with the theoretical maximal improvement in execution time for the entire profiled program when a given line of code is sped-up. See ?summary.aprof for details.
+Using "summary" gives projections of potential code optimization gains. A table is returned with the theoretical maximal improvement in execution time for the entire profiled program when a given line of code is sped-up. See ?summary.aprof for more details.
 
 ```r
 summary(fooaprof)
