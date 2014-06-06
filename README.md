@@ -64,8 +64,58 @@ line in a source code file.
     profileplot(fooaprof)
 ``` 
 
-A profile plot, which can be used for large source files. It shows the largest bottlenecks in red.
+A profile plot, which can be used for large source files. It uses the profiler samples to attempt to reconstruct the progression through the program lines. The left panel shows the progression through time, while the largest bottleneck is indicated in red. The right panel gives the density of the line calls.
+
 ![](http://i.imgur.com/yFy3fLY.png)
+
+
+Printing a aprof file will give basic information:
+```r
+fooaprof
+```
+
+Source file:
+foo.R (9 lines).
+
+ Call Density and Execution time per line number:
+
+      Line  Call Density  Time Density (s)
+[1,]  7     282           5.64            
+[2,]  6     4             0.08            
+
+ Totals:
+ Calls		 287 
+ Time (s)	 5.76 	(interval = 	 0.02 (s))
+
+Using the summary function will give projections of potential code optimization gains in a table with the theoretical maximal improvement in execution time for the entire profiled program when a given line of code is sped-up. See ?summary.aprof for details.
+
+```r
+summary(fooaprof)
+```
+
+Largest attainable speed-up factor for the entire program
+
+        when 1 line is sped-up with factor (S): 
+
+	 Speed up factor (S) of a line 
+            1      2      4      8      16     S -> Inf**
+Line*: 7 :   1.00   1.96   3.76   6.98  12.19  48.00     
+Line*: 6 :   1.00   1.01   1.01   1.01   1.01   1.01     
+
+Lowest attainable execution time for the entire program when
+
+             lines are sped-up with factor (S):
+
+	 Speed up factor (S) of a line  
+            1      2      4      8      16   
+All lines   5.760  2.880  1.440  0.720  0.360
+Line*: 7 :  5.760  2.940  1.530  0.825  0.472
+Line*: 6 :  5.760  5.720  5.700  5.690  5.685
+
+    Total sampling time:  5.76  seconds
+ *  Expected improvement at current scaling
+ ** Asymtotic max. improvement at current scaling
+
 
 ## Thanks
 Special thanks to Tyler Rinker, Dason Kurkiewicz and Diego Mayer-Cantu for comments, commits and additions to this package.
