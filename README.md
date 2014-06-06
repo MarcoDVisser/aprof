@@ -66,3 +66,8 @@ line in a source code file.
 
 A profile plot, which can be used for large source files. It shows the largest bottlenecks in red.
 ![](http://i.imgur.com/yFy3fLY.png)
+
+## Installation
+Special thanks to Dason Tyler Rinker, Dason Kurkiewicz and Diego Mayer-Cantu for comments, commits and additions to this package.
+
+
