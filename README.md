@@ -74,6 +74,7 @@ Printing a aprof file will give basic information:
 fooaprof
 ```
 
+```
 Source file:
 foo.R (9 lines).
 
@@ -86,11 +87,13 @@ foo.R (9 lines).
  Totals:
  Calls		 287 
  Time (s)	 5.76 	(interval = 	 0.02 (s))
+```
 
 Using the summary function will give projections of potential code optimization gains in a table with the theoretical maximal improvement in execution time for the entire profiled program when a given line of code is sped-up. See ?summary.aprof for details.
 
 ```r
 summary(fooaprof)
+```
 ```
 
 Largest attainable speed-up factor for the entire program
@@ -115,6 +118,7 @@ Line*: 6 :  5.760  5.720  5.700  5.690  5.685
     Total sampling time:  5.76  seconds
  *  Expected improvement at current scaling
  ** Asymtotic max. improvement at current scaling
+```
 
 
 ## Thanks
