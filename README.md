@@ -119,7 +119,7 @@ Line*: 6 :  5.760  5.720  5.700  5.690  5.685
  *  Expected improvement at current scaling
  ** Asymtotic max. improvement at current scaling
 ```
-One useful feature is the "targetedSummary" function. This will give a detailed summary of the time taken by each function in a given line. In the example, a call to "c" in line 7, takes most time. Using the option "findParent=TRUE" aprof will attempt to detect any parent functions (function nested within a function call) and report the parent and child functions. In this case the function c is only nested within the code in L7 (line 7), and has no further parent calls.   
+One useful feature is the "targetedSummary" function. This will give a detailed summary of the time taken by each function in a given line. In the example, a call to "c" in line 7, takes most time. When the option "findParent" is set to "TRUE", aprof will attempt to detect any parent functions (functions nested within other functions) and report the parent and child functions. In this case the function c is only nested within the code in L7 (line 7), and has no further parent calls.   
 
 ```r
 targetedSummary(fooaprof,target=7,findParent=TRUE)
