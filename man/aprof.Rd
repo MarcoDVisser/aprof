@@ -27,7 +27,7 @@ of the memory profile from a previous profiling exercise
 An aprof object
 }
 \description{
-Create an 'aprof' objects for usage with 'aprof' functions
+Create 'aprof' objects for usage with 'aprof' functions
 }
 \details{
 Creates an "aprof" object from the R-profiler's output and a source file.
