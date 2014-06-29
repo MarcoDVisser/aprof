@@ -14,7 +14,7 @@ To install decompress these and run R CMD INSTALL on the contents of the archive
 
 
 ```r
-## package devtools is required
+## the package devtools is required
 require(devtools)
 install_github("aprof", "MarcoDVisser")
 ```
