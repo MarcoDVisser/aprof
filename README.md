@@ -1,4 +1,4 @@
-aprof (0.21)
+aprof (0.2.1)
 =====
 
 Amdahl's profiler, directed optimization.
