@@ -8,8 +8,8 @@ Assists the evaluation of whether and where to focus code optimization, using [A
 ## Installation
 
 There is a release on [CRAN](http://cran.r-project.org/web/packages/aprof/index.html),
-but to install a more recent developmental version from github you can download the most recent version as [zip](https://github.com/MarcoDVisser/choosecolor/zipball/master) 
-or [tar ball](https://github.com/MarcoDVisser/choosecolor/tarball/master).
+but to install a more recent developmental version from github you can download the most recent version as [zip](https://github.com/MarcoDVisser/aprof/zipball/master) 
+or [tar ball](https://github.com/MarcoDVisser/aprof/tarball/master).
 To install decompress these and run R CMD INSTALL on the contents of the archives, or use the **devtools** package to install the current development version from R.
 
 
