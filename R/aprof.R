@@ -124,7 +124,7 @@ readOutput<-function(outputfilename="Rprof.out"){
         #Read and prepare output file
 	RprofSamples<-readLines(outputfilename)
         if(length(grep("line profiling",RprofSamples[1]))==0){
-        stop("Line profiling is required. /nPlease run the profiler with line profiling enabled")}
+        stop("Line profiling is required. \nPlease run the profiler with line profiling enabled")}
 	splitCalls<- sapply(RprofSamples[-1],
 	function(X) strsplit(X, split = " "),USE.NAMES=FALSE)
 	#seperated function calls
@@ -155,7 +155,7 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
 
   if(!"aprof"%in%class(aprofobject)){
       stop("no aprof object found, check function inputs")}
-  
+
   
   if(Memprof==TRUE){
 
@@ -168,14 +168,29 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
     TargetFile <- aprofobject$sourcefile
     }
   
-    if(is.null(TargetFile)){
-      FileNumber<-"1:"
-      warning("sourcefile is null, assuming first file in call stack is the source")
-    } else{
-      unlistedCalls <- unlist(calls)
+  if(is.null(TargetFile)){
+    FileNumber<-"1:"
+    warning("sourcefile is null, assuming first file in call stack is the source")
+  } else{
+    unlistedCalls <- unlist(calls)
+    
+    TargetFile <- basename(TargetFile)
+    FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]
+    FileCheck<-unlistedCalls[which(unlistedCalls==TargetFile)+1]
+    ## Confirm that call stack corresponds to user supplied source file
+    if(length(FileCheck)==0){
+      warning(paste("Some aprof functions may fail -->",
+                    " user supplied source file ",TargetFile,
+                      " does not seem to correspond to any",
+                      " file in the profiler output.\n",
+                      " Possible causes: \n" ,
+                      "1) Source file was not profiled?\n",
+                      "2) Spelling?\n",sep=""))
 
-     TargetFile <- basename(TargetFile)
-     FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]}
+      
+    } 
+    
+  }
 
   FileNumber <- substr(FileNumber,1,1)
          
@@ -627,8 +642,7 @@ profileplot <- function(aprofobject){
  opar<-par("mar","bg")
  maxtimesteps <- max(timesteps)
 
- layoutmat<-matrix(c(rep(c(1,1,1,1,2,2),10)),
-                   byrow=T,ncol=6)
+ layoutmat<-matrix(c(rep(c(1,1,1,1,2,2),10)), byrow=T,ncol=6)
  
  layout(layoutmat)
  
