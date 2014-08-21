@@ -135,5 +135,5 @@ c   	   L7   168 3.36
 ```
 
 ## Thanks
-Special thanks to Tyler Rinker, Dason Kurkiewicz and Diego Mayer-Cantu for comments, commits and additions to this package. Sean M. McMahon, Cory Merow, Philip Dixon, Sydne Record and Eelke Jongejans thanks for all the suggestions, comments and testing while I was developing this package.
+Special thanks to Tyler Rinker, Dason Kurkiewicz, Caspar Hallmann and Diego Mayer-Cantu for comments, bugreports, commits and additions to this package. Sean M. McMahon, Cory Merow, Philip Dixon, Sydne Record and Eelke Jongejans thanks for all the suggestions, comments and testing while I was developing this package.
 
