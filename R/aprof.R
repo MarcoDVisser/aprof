@@ -178,7 +178,7 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
     warning(paste("sourcefile is null",
                   " assuming first file in call stack is the source: ",
                   CallFiles[1],sep=""))
-
+    
     if(!exists(CallFiles[1])){stop("source file was not defined and does not seem to exist in the working directory.")}
     
   } else{
@@ -191,19 +191,19 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
     if(length(FileCheck)==0){
       warning(paste("Some aprof functions may fail -->",
                     " user supplied source file ",TargetFile,
-                      " does not seem to correspond to any",
-                      " file in the profiler output.\n",
-                      " Possible causes: \n" ,
-                      "1) Source file was not profiled?\n",
-                      "2) Spelling?\n",sep=""))
-
+                    " does not seem to correspond to any",
+                    " file in the profiler output.\n",
+                    " Possible causes: \n" ,
+                    "1) Source file was not profiled?\n",
+                    "2) Spelling?\n",sep=""))
+      
       
     } 
     
   }
-
+  
   FileNumber <- substr(FileNumber,1,1)
-
+  
   ## remove all file references  
   cleancalls<-sapply(calls[!idfiles], function(x) 
                      gsub("#File", NA, x))
@@ -216,12 +216,10 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
 
   ## limit only those containing information
   Pathways<-Pathways[grep("#",Pathways)]
-  
-  FirstRow<-sapply(Pathways,function(X) 
-                   strsplit(X, split = "-")[[1]][1],USE.NAMES=FALSE)
-  
+
+  filehash <-  paste(FileNumber,"#",sep="")
   LineDensity<-table(unlist(sapply(LineCalls,unique)))  
-   names(LineDensity)<-gsub("1#","",names(LineDensity))
+   names(LineDensity)<-gsub(filehash,"",names(LineDensity))
   Line.Numbers<-as.numeric(names(LineDensity))
   Call.Density<-as.numeric(LineDensity)
   Time.Density<-Call.Density*interval
