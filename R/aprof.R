@@ -167,16 +167,26 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
     interval <- aprofobject$interval
     TargetFile <- aprofobject$sourcefile
     }
+  ## find all files in the call stack
+  idfiles<-sapply(calls,function(X) length(grep("#File", X))>=1)
+  ## extract files
+  CallFiles <- sapply(calls[idfiles],function(X) X[1])
   
   if(is.null(TargetFile)){
     FileNumber<-"1:"
-    warning("sourcefile is null, assuming first file in call stack is the source")
+
+    warning(paste("sourcefile is null",
+                  " assuming first file in call stack is the source: ",
+                  CallFiles[1],sep=""))
+
+    if(!exists(CallFiles[1])){stop("source file was not defined and does not seem to exist in the working directory.")}
+    
   } else{
     unlistedCalls <- unlist(calls)
     
     TargetFile <- basename(TargetFile)
     FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]
-    FileCheck<-unlistedCalls[which(unlistedCalls==TargetFile)+1]
+    FileCheck<-unlistedCalls[which(unlistedCalls==TargetFile)]
     ## Confirm that call stack corresponds to user supplied source file
     if(length(FileCheck)==0){
       warning(paste("Some aprof functions may fail -->",
@@ -193,41 +203,37 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
   }
 
   FileNumber <- substr(FileNumber,1,1)
-         
-	cleancalls<-sapply(calls, function(x) 
-	gsub("#File", NA, x))
 
-	LineCalls<- sapply(cleancalls,
-		function(X) X[grep(paste(FileNumber,"#",sep=''),X)],
-                           USE.NAMES=FALSE)
-		
-	Pathways<-unique(sapply(LineCalls, paste,collapse="-"))
-	# limit only those containing information
-	Pathways<-Pathways[grep("#",Pathways)]
+  ## remove all file references  
+  cleancalls<-sapply(calls[!idfiles], function(x) 
+                     gsub("#File", NA, x))
+  
+  LineCalls<- sapply(cleancalls,
+                     function(X) X[grep(paste(FileNumber,"#",sep=''),X)],
+                     USE.NAMES=FALSE)
+  
+  Pathways<-unique(sapply(LineCalls, paste,collapse="-"))
 
-	FirstRow<-sapply(Pathways,function(X) 
-	strsplit(X, split = "-")[[1]][1],USE.NAMES=FALSE)
-
-	if(length(unique(FirstRow))==1){
-	# remove fist row from calls
-	SimpleCalls<-sapply(LineCalls,
-		function(X) X[-grep(unique(FirstRow),X)])
-	LineDensity<-table(unlist(sapply(SimpleCalls,unique)))    
-	} else {
-	LineDensity<-table(unlist(sapply(LineCalls,unique)))  
-	}
-	names(LineDensity)<-gsub("1#","",names(LineDensity))
-	Line.Numbers<-as.numeric(names(LineDensity))
-	Call.Density<-as.numeric(LineDensity)
-	Time.Density<-Call.Density*interval
-
-	Finallist<-list(Line.Numbers=as.numeric(names(LineDensity)),
-	Call.Density=as.numeric(LineDensity),
-	Time.Density=Call.Density*interval,
-	Total.Calls=sum(as.numeric(LineDensity))+1,
-	Total.Time=sum(Call.Density*interval+interval))
-	
-return(Finallist)
+  ## limit only those containing information
+  Pathways<-Pathways[grep("#",Pathways)]
+  
+  FirstRow<-sapply(Pathways,function(X) 
+                   strsplit(X, split = "-")[[1]][1],USE.NAMES=FALSE)
+  
+  LineDensity<-table(unlist(sapply(LineCalls,unique)))  
+   names(LineDensity)<-gsub("1#","",names(LineDensity))
+  Line.Numbers<-as.numeric(names(LineDensity))
+  Call.Density<-as.numeric(LineDensity)
+  Time.Density<-Call.Density*interval
+  
+  Finallist<-list(Line.Numbers=as.numeric(names(LineDensity)),
+                  Call.Density=as.numeric(LineDensity),
+                  Time.Density=Call.Density*interval,
+                  Total.Calls=sum(as.numeric(LineDensity))+1,
+                  Total.Time=sum(Call.Density*interval+interval),
+                  Files=CallFiles)
+  
+  return(Finallist)
 }
 
 #' Generic print method for aprof objects
@@ -258,10 +264,12 @@ aprofobject<-x
     Finallist <- readLineDensity(aprofobject,Memprof=FALSE)
 
 	# Pretty table 
-	CallTable<-cbind(as.character(Finallist$Line.Numbers),
+    CallTable<-cbind(as.character(Finallist$Line.Numbers),
 					Finallist$Call.Density,
 					Finallist$Time.Density)
-	CallTable<-CallTable[order(CallTable[,2]),]
+
+    if(nrow(CallTable)>1) {CallTable<-CallTable[order(CallTable[,2]),]}
+    
         rownames(CallTable)<-NULL
 	dimnames(CallTable)<-list(NULL, c("Line","Call Density",
                                     "Time Density (s)"))
@@ -275,7 +283,10 @@ aprofobject<-x
 			 "Calls\t\t",Finallist$Total.Calls,"\n",
 			 "Time (s)\t",Finallist$Total.Time,
                                    "\t(interval = \t",interval,"(s))\n"))
-	  
+    if(length(Finallist$Files)>1) {
+	  cat("\n Note: multiple files in the profiler output: \n")
+	 print.default(Finallist$Files,print.gap = 2L,quote = FALSE)
+    }
     
 	} else {
          memFinallist <- readLineDensity(aprofobject,Memprof=TRUE)
@@ -766,6 +777,7 @@ aprofobject<-object
 	Speedups<-2^c(0:4)
 	SpeedTable<-sapply(Speedups,function(X) AmLaw(P=PropLines,S=X))
 
+        if(is.null(nrow(SpeedTable))) SpeedTable <- matrix(SpeedTable,nrow=1)
 	#Time improvement table 
 	ExecTimeTable<-LineProf$Total.Time/SpeedTable
 	ExecTimeTable<-rbind(ExecTimeTable,LineProf$Total.Time/Speedups)
@@ -901,7 +913,7 @@ targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
                     
           }
           
-        # Sort decending and save as data.frame
+          ## Sort decending and save as data.frame
         CallOrder <- order(CallCounts,decreasing=TRUE)
         CallCounts <- CallCounts[CallOrder]
         parentCalls <- parentCalls[CallOrder]
@@ -923,3 +935,4 @@ targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
                              
 
 }
+ 
