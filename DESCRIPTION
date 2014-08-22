@@ -1,8 +1,8 @@
 Package: aprof
 Type: Package
 Title: Amdahl's profiler, directed optimization made easy.
-Version: 0.2.1
-Date: 2014-07-02
+Version: 0.2.3
+Date: 2014-08-20
 Author: Marco D. Visser
 Maintainer: Marco D. Visser <marco.d.visser@gmail.com>
 Description: Assists the evaluation of whether and
