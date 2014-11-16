@@ -183,10 +183,16 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
     
   } else{
     unlistedCalls <- unlist(calls)
-    
+
+    ## add path or only stick to basename?
+    if(sum(unlistedCalls==TargetFile)==0){
     TargetFile <- basename(TargetFile)
+    } 
+    
     FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]
     FileCheck<-unlistedCalls[which(unlistedCalls==TargetFile)]
+    
+
     ## Confirm that call stack corresponds to user supplied source file
     if(length(FileCheck)==0){
       warning(paste("Some aprof functions may fail -->",
