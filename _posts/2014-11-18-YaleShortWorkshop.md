@@ -15,7 +15,7 @@ Participants may choose between the following short tutorials:
 
 Please note that the full tutorial should be available at PLOS Computational Biology very soon. Keep an eye out at PLOS, or check here for the link to the paper and tutorial which will appear once it is online!
 
-The latest version of aprof (0.2.4) is recommended, find it [here](https://github.com/MarcoDVisser/aprof) or on [CRAN](http://cran.r-project.org/web/packages/aprof/index.html) (version 0.2.1).
+The latest version of aprof (0.2.4) can be downloaded [here](https://github.com/MarcoDVisser/aprof) (recommended, see installation instructions) or download a previous version from [CRAN](http://cran.r-project.org/web/packages/aprof/index.html) (version 0.2.1) in R.
 
 
 
