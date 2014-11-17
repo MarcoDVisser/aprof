@@ -4,7 +4,7 @@
  <title>aprof</title>
  <link href="http://marcodvisser.github.io/aprof/atom.xml" rel="self"/>
  <link href="http://marcodvisser.github.io/aprof/"/>
- <updated>2014-11-17T10:07:33-05:00</updated>
+ <updated>2014-11-17T16:08:40-05:00</updated>
  <id>http://marcodvisser.github.io/aprof</id>
  <author>
    <name>Marco D. Visser</name>
@@ -22,10 +22,14 @@
 &lt;p&gt;Participants may choose between the following short tutorials:&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Profiling in R, with a bootstrap example (recommended focus).  &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;Download&lt;/a&gt;!&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Parallel computing, extending the bootstrap example (for those interested). &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;Download&lt;/a&gt;!&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Getting ready to call C in R (recommended for advanced R users only). &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;Download&lt;/a&gt;!&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Profiling in R, with a bootstrap example (recommended focus). &lt;a href=&quot;https://github.com/MarcoDVisser/aprof/blob/gh-pages/pdfs/IntroProfiling&amp;amp;Optimization.pdf?raw=true&quot;&gt;Download&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Parallel computing, extending the bootstrap example (for those interested). &lt;a href=&quot;https://github.com/MarcoDVisser/aprof/blob/gh-pages/pdfs/IntroParallelComputingR.pdf?raw=true&quot;&gt;Download&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Getting ready to call C in R (recommended for advanced R users only). &lt;a href=&quot;https://github.com/MarcoDVisser/aprof/blob/gh-pages/pdfs/IntroExtendingRwithC.pdf?raw=true&quot;&gt;Download&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;Please note that the full tutorial should be available at PLOS Computational Biology very soon. Keep an eye out at PLOS, or check here for the link to the paper and tutorial which will appear once it is online!&lt;/p&gt;
+
+&lt;p&gt;The latest version of aprof (0.2.4) can be downloaded &lt;a href=&quot;https://github.com/MarcoDVisser/aprof&quot;&gt;here&lt;/a&gt; (recommended, see installation instructions) or download a previous version from &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;CRAN&lt;/a&gt; (version 0.2.1) in R.&lt;/p&gt;
 </content>
  </entry>
  
