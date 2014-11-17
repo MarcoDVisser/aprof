@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>aprof</title>
+ <link href="http://marcodvisser.github.io/aprof/atom.xml" rel="self"/>
+ <link href="http://marcodvisser.github.io/aprof/"/>
+ <updated>2014-11-17T10:07:33-05:00</updated>
+ <id>http://marcodvisser.github.io/aprof</id>
+ <author>
+   <name>Marco D. Visser</name>
+   <email></email>
+ </author>
+
+ 
+ <entry>
+   <title>Yale short workshop on code efficiency</title>
+   <link href="http://marcodvisser.github.io/aprof/aprof"/>
+   <updated>2014-11-18T00:00:00-05:00</updated>
+   <id>http://marcodvisser.github.io/aprof/YaleShortWorkshop</id>
+   <content type="html">&lt;p&gt;Happy to give a short workshop on code efficiency in R.&lt;/p&gt;
+
+&lt;p&gt;Participants may choose between the following short tutorials:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Profiling in R, with a bootstrap example (recommended focus).  &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;Download&lt;/a&gt;!&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Parallel computing, extending the bootstrap example (for those interested). &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;Download&lt;/a&gt;!&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Getting ready to call C in R (recommended for advanced R users only). &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;Download&lt;/a&gt;!&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>aprof minor release 0.2.4</title>
+   <link href="http://marcodvisser.github.io/aprof/aprof"/>
+   <updated>2014-11-17T00:00:00-05:00</updated>
+   <id>http://marcodvisser.github.io/aprof/aprofv0.2.4</id>
+   <content type="html">&lt;p&gt;Changes in the minor release&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;bugfix: aprof allows for more variable user input in file locations, and hence comes closer to full usage within markdown and (knitr) pdfs.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;See the release on &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;CRAN&lt;/a&gt;!&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>aprof minor release 0.2.3</title>
+   <link href="http://marcodvisser.github.io/aprof/aprof"/>
+   <updated>2014-08-20T00:00:00-05:00</updated>
+   <id>http://marcodvisser.github.io/aprof/aprofv0.2.3</id>
+   <content type="html">&lt;p&gt;Changes in the minor release&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;feature: aprof now expects and handles multiple files in the call stack correctly. This happens when you e.g. source files or use the clipboard - in these cases your source file is not the only file in the call stack. This adaptation is the first step forward toward aprof integration with .Rnw and Rmd files. &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;See the release on &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;CRAN&lt;/a&gt;!&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>aprof minor release 0.2.2</title>
+   <link href="http://marcodvisser.github.io/aprof/aprof"/>
+   <updated>2014-08-17T00:00:00-05:00</updated>
+   <id>http://marcodvisser.github.io/aprof/aprofv0.2.2</id>
+   <content type="html">&lt;p&gt;Changes in the minor release&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;bugfix: Reported by Caspar Hallmann, when user defined source file does not correspond to file in the recorded call stack, this results in NA related errors. Solution: added warnings.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;See the aprof github page. &lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>aprof minor release 0.2.1</title>
+   <link href="http://marcodvisser.github.io/aprof/aprof"/>
+   <updated>2014-07-12T00:00:00-05:00</updated>
+   <id>http://marcodvisser.github.io/aprof/aprofv0.2.1</id>
+   <content type="html">&lt;p&gt;Changes in the minor release&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;bugfix: density in the profileplot function now corresponds to the correct lines in the source code.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;bugfix: targetedSummary confused when very few sample were taken. Now improved handling of these cases.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;See the release on &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;CRAN&lt;/a&gt;!&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>aprof version 0.2 released</title>
+   <link href="http://marcodvisser.github.io/aprof/aprof"/>
+   <updated>2014-05-14T00:00:00-05:00</updated>
+   <id>http://marcodvisser.github.io/aprof/aprofv0.2</id>
+   <content type="html">&lt;p&gt;Aprof version 0.2 now released.&lt;/p&gt;
+
+&lt;p&gt;This version contains:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;bugfix: files not in the working directory cound not be found in some functins&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the standard aprof plot function &amp;quot;plot.aprof&amp;quot; now functions smoother and shows the correct line-density&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;some other minor improvements throughout the code, mostly improved S3 methods. &lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;See the release on &lt;a href=&quot;http://cran.r-project.org/web/packages/aprof/index.html&quot;&gt;CRAN&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h2&gt;Thanks&lt;/h2&gt;
+
+&lt;p&gt;Special thanks to Diego Mayer-Cantu for comments!&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>aprof on CRAN!</title>
+   <link href="http://marcodvisser.github.io/aprof/aprof"/>
+   <updated>2013-10-31T00:00:00-05:00</updated>
+   <id>http://marcodvisser.github.io/aprof/AprofOnline</id>
+   <content type="html">&lt;h1&gt;aprof (0.1)&lt;/h1&gt;
+
+&lt;p&gt;Amdahl&amp;#39;s profiler, directed optimization.&lt;/p&gt;
+
+&lt;p&gt;Assists the evaluation of whether and where to focus code optimization, using &lt;a href=&quot;https://en.wikipedia.org/wiki/Amdahl%27s_law&quot;&gt;Amdahl&amp;#39;s law&lt;/a&gt; and visual aids based on line profiling. Amdahl&amp;#39;s profiler organises profiling output files (will soon include memory profiling) in a visually appealing way. It is meant to help to balance development vs. execution time by helping to identify the most promising sections of code to optimize and projecting potential gains. The package is an addition to R&amp;#39;s standard profiling tools and is not a wrapper for them.&lt;/p&gt;
+
+&lt;h2&gt;Thanks&lt;/h2&gt;
+
+&lt;p&gt;Special thanks to Tyler Rinker and Dason Kurkiewicz for comments. Sean M. McMahon, Cory Merow, Philip Dixon, Sydne Record and Eelke Jongejans thanks for all the suggestions, comments and testing while I was developing this package.&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>

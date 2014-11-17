@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      aprof &middot; Amdahl's profiler, directed optimization made easy.
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/aprof/public/css/poole.css">    
+  <link rel="stylesheet" href="/aprof/public/css/syntax.css">
+  <link rel="stylesheet" href="/aprof/public/css/hyde.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/aprof/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/aprof/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body class="layout-reverse">
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/aprof">
+          aprof
+        </a>
+      </h1>
+      <p class="lead">This page provides tutorials on how to use <a href="http://github.com/MarcoDVisser/aprof" target="_blank">"aprof"</a> to effectively optimize R code.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/aprof">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+            
+            <a class="sidebar-nav-item" href=" /aprof/Quickstart.html">Quickstart</a>
+          
+        
+      
+        
+            
+            <a class="sidebar-nav-item" href=" /aprof/Tutorial.html">Tutorial - High performance computing for Biologists</a>
+          
+        
+      
+        
+            
+            <a class="sidebar-nav-item" href=" /aprof/about.html">About</a>
+          
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+
+      <a class="sidebar-nav-item" href="http://github.com/MarcoDVisser/aprof">GitHub project</a>
+      <span class="sidebar-nav-item">Currently v0.2.2</span>
+    </nav>
+
+    <p>&copy; 2014. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/aprof">
+        Yale short workshop on code efficiency
+      </a>
+    </h1>
+
+    <span class="post-date">18 Nov 2014</span>
+
+    <p>Happy to give a short workshop on code efficiency in R.</p>
+
+<p>Participants may choose between the following short tutorials:</p>
+
+<ol>
+<li><p>Profiling in R, with a bootstrap example (recommended focus).  <a href="http://cran.r-project.org/web/packages/aprof/index.html">Download</a>!</p></li>
+<li><p>Parallel computing, extending the bootstrap example (for those interested). <a href="http://cran.r-project.org/web/packages/aprof/index.html">Download</a>!</p></li>
+<li><p>Getting ready to call C in R (recommended for advanced R users only). <a href="http://cran.r-project.org/web/packages/aprof/index.html">Download</a>!</p></li>
+</ol>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/aprof">
+        aprof minor release 0.2.4
+      </a>
+    </h1>
+
+    <span class="post-date">17 Nov 2014</span>
+
+    <p>Changes in the minor release</p>
+
+<ol>
+<li>bugfix: aprof allows for more variable user input in file locations, and hence comes closer to full usage within markdown and (knitr) pdfs.</li>
+</ol>
+
+<h2>Installation</h2>
+
+<p>See the release on <a href="http://cran.r-project.org/web/packages/aprof/index.html">CRAN</a>!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/aprof">
+        aprof minor release 0.2.3
+      </a>
+    </h1>
+
+    <span class="post-date">20 Aug 2014</span>
+
+    <p>Changes in the minor release</p>
+
+<ol>
+<li>feature: aprof now expects and handles multiple files in the call stack correctly. This happens when you e.g. source files or use the clipboard - in these cases your source file is not the only file in the call stack. This adaptation is the first step forward toward aprof integration with .Rnw and Rmd files. </li>
+</ol>
+
+<h2>Installation</h2>
+
+<p>See the release on <a href="http://cran.r-project.org/web/packages/aprof/index.html">CRAN</a>!</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/aprof">
+        aprof minor release 0.2.2
+      </a>
+    </h1>
+
+    <span class="post-date">17 Aug 2014</span>
+
+    <p>Changes in the minor release</p>
+
+<ol>
+<li>bugfix: Reported by Caspar Hallmann, when user defined source file does not correspond to file in the recorded call stack, this results in NA related errors. Solution: added warnings.</li>
+</ol>
+
+<h2>Installation</h2>
+
+<p>See the aprof github page. </p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/aprof">
+        aprof minor release 0.2.1
+      </a>
+    </h1>
+
+    <span class="post-date">12 Jul 2014</span>
+
+    <p>Changes in the minor release</p>
+
+<ol>
+<li><p>bugfix: density in the profileplot function now corresponds to the correct lines in the source code.</p></li>
+<li><p>bugfix: targetedSummary confused when very few sample were taken. Now improved handling of these cases.</p></li>
+</ol>
+
+<h2>Installation</h2>
+
+<p>See the release on <a href="http://cran.r-project.org/web/packages/aprof/index.html">CRAN</a>!</p>
+
+  </div>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="/aprofpage2">Older</a>
+  
+  
+    <span class="pagination-item newer">Newer</span>
+  
+</div>
+    </div>
+
+  </body>
+</html>

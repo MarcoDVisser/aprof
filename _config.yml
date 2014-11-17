@@ -1,0 +1,26 @@
+# Dependencies
+markdown:         redcarpet
+pygments:         true
+
+# Permalinks
+permalink:        /aprof
+
+# Setup
+title:            aprof 
+tagline:          Amdahl's profiler, directed optimization made easy.
+description:      This page provides tutorials on how to use <a href="http://github.com/MarcoDVisser/aprof" target="_blank">"aprof"</a> to effectively optimize R code. 
+
+url:              http://marcodvisser.github.io/aprof
+baseurl:          /aprof
+
+author:
+  name:           'Marco D. Visser'
+  url:            http://www.ru.nl/plantecology/people/marco_visser/
+
+paginate:         5
+
+# Custom vars
+version:          0.2.2
+
+github:
+  repo:            http://github.com/MarcoDVisser/aprof
