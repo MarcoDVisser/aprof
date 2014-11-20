@@ -186,7 +186,13 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
 
     ## add path or only stick to basename?
     if(sum(unlistedCalls==TargetFile)==0){
-    TargetFile <- basename(TargetFile)
+      if(sum(unlistedCalls==basename(TargetFile))>0){
+      TargetFile <- basename(TargetFile)
+    } else {
+       warning(paste("specified source file ", TargetFile,
+                  " is not in the list of files in the profiler output: \n ",
+                  CallFiles,sep=""))
+     }
     } 
     
     FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]
