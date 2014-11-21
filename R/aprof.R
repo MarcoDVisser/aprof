@@ -5,7 +5,7 @@
 ##' plot, summary and print (more specifically:
 ##' \code{plot.aprof}, \code{summary.aprof} and \code{print.aprof}).
 ##' See the exampe below for more details.
-##' @title Create an 'aprof' objects for usage in the package 'aprof'
+##' @title Create an 'aprof' object for usage in the package 'aprof'
 ##' @param src The name of the source code file (and path if not in the working
 ##' directory). The source code file is expected to be a 
 ##' a plain text file (e.g. txt, .R), containing the code of the
