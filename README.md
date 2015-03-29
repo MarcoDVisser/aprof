@@ -4,6 +4,15 @@ aprof (0.2.4) [Release notes](http://marcodvisser.github.io/aprof/).
 Amdahl's profiler, directed optimization.
 Assists the evaluation of whether and where to focus code optimization, using [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law) and visual aids based on line profiling. Amdahl's profiler organises profiling output files (will soon include memory profiling) in a visually appealing way. It is meant to help to balance development vs. execution time by helping to identify the most promising sections of code to optimize and projecting potential gains. The package is an addition to R's standard profiling tools and is not a wrapper for them.
 
+## Dependencies
+
+aprof is meant to be light and has no other dependencies other than the base R installation.
+
+## Quick start and tutorials
+
+A "10 minute" quickstart guide is supplied on the aprof github-pages site [here](http://marcodvisser.github.io/aprof/). Detailed tutorials on aprof usage are supplied in this [PLOS Computational Biology paper on efficient programming in R](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004140). Text S1 supplies a step-by step guide for R users of any level.
+
+
 ## Installation
 
 There is a release on [CRAN](http://cran.r-project.org/web/packages/aprof/index.html),
@@ -17,14 +26,6 @@ To install decompress these and run R CMD INSTALL on the contents of the archive
 require(devtools)
 install_github("aprof", "MarcoDVisser")
 ```
-
-## Dependencies
-
-aprof is meant to be light and has no other dependencies other than the base R installation.
-
-## Quick start and tutorials
-
-A quickstart guide and detailed tutorials can be found on the aprof github-pages site [here](http://marcodvisser.github.io/aprof/).
 
 ## Examples
 
