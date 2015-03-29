@@ -24,7 +24,7 @@ but to install a more recent developmental version from github go [here](https:/
 
 This guide has one objective: quickly showcase the major features of aprof. Running through the examples here should take you
 no longer than 10 minutes. For a much more in depth tutorial on optimized programming in R, including detailed explanations and code examples for
-profiling, parallel computing and re-factoring code in lower-level languages as C, see the tutorial on high performance computing (will be released soon ETA 01-2015).
+profiling, parallel computing and re-factoring code in lower-level languages as C, see the tutorial on high performance computing [here](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004140).
 
 Lets start with a very simple example, where the benefits of optimization are obvious, pre-allocation of space v.s. "growing objects".
 
