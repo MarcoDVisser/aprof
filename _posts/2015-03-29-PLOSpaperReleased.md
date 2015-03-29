@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Yale short workshop on code efficiency
+title: Speeding Up R; Essentials of High Performance Computing for Biologists
 ---
 
 Excited to see our paper on code efficiency in the biological sciences released. The paper contains:
