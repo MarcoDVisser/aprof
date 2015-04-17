@@ -15,6 +15,14 @@
 ##' file name detection operations vary). Note that
 ##' functions that require a defined source file will fail if
 ##' the source file is not defined or detected in the call stack.
+##'
+##' Using aprof with knitr and within .Rmd or .Rnw documents
+##' is not yet supported. Setting the chuck option: engine="Rscript",
+##' disables line-profiling and will make aprof fail as well.
+##' In these cases users are advised to use the standard
+##' Rprof functions or "profr" (while setting engine="Rscript") and
+##' not to rely on line-profiling based packages (for the time
+##' being). 
 ##' 
 ##' @param output The file name (and path if not in the working
 ##' directory) of a previously created profiling exercise.
@@ -468,7 +476,8 @@ PlotSourceCode<-function(SourceFilename){
 	text(1+strwidth("M"),ypos,labels=CleanLines,adj=c(0,0),
 	cex=SizeText)
 	
-	text(0+0.5*strwidth("M"),ypos,labels=1:length(CleanLines),adj=c(1,0),
+	text(0+0.5*strwidth("M"),ypos,labels=1:length(CleanLines),
+             adj=c(1,0),
 	cex=SizeText*0.90)
 }
 
@@ -500,19 +509,19 @@ PlotSourceCode<-function(SourceFilename){
 #'             }
 #' }
 #'
-#' #save function to a source file and reload
+#' ## save function to a source file and reload
 #' dump("foo",file="foo.R")
 #' source("foo.R")
 #'
-#' # create file to save profiler output
+#' ## create file to save profiler output
 #' tmp<-tempfile()
 #'
-#' # Profile the function
+#' ## Profile the function
 #' Rprof(tmp,line.profiling=TRUE)
 #' foo(1e4)
 #' Rprof(append=FALSE)
 #'
-#' # Create a aprof object
+#' ## Create a aprof object
 #' fooaprof<-aprof("foo.R",tmp)
 #' plot(fooaprof)
 #' }
@@ -521,10 +530,10 @@ PlotSourceCode<-function(SourceFilename){
 #' @method plot aprof 
 #' @export
 plot.aprof<-function(x,y,...){
-aprofobject<-x
-   if(!is.aprof(aprofobject)){
-   stop("Input does not appear to be of the class \"aprof\"")}
- 
+  aprofobject<-x
+  if(!is.aprof(aprofobject)){
+    stop("Input does not appear to be of the class \"aprof\"")}
+  
   AddMemProf<-!is.null(aprofobject$memcalls)
 
   SourceFilename <- aprofobject$sourcefile
@@ -536,39 +545,40 @@ aprofobject<-x
 
   LineDensity<-readLineDensity(aprofobject)
 
-# Line reversed to correspond to source code plot
-	DensityData<-list(Lines=NCodeLines:1,
-	Time.Density=rep(0,NCodeLines))
+  ## Line reversed to correspond to source code plot
+  
+  DensityData<-list(Lines=NCodeLines:1,
+                    Time.Density=rep(0,NCodeLines))
 
-	DensityData$Time.Density[LineDensity$Line.Numbers]<-LineDensity$Time.Density
+  DensityData$Time.Density[LineDensity$Line.Numbers]<-LineDensity$Time.Density
 
-		layoutmat<-matrix(c(
-			1,1,1,1,3,3, rep(c(2,2,2,2,4,4),10)),
-			byrow=T,ncol=6)
-						
-	layout(layoutmat)
-	opar<-par("mar","bg")
-	par(mar=c(0,0,0,0),bg='grey90')
-	plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
-	text(0,0.55,SourceFilename,cex=2)
-	segments(-.75,0,.75,0,lwd=1.2)
-	segments(c(-.75,.75),c(0,0),c(-.75,.75),c(-0.1,-0.1),lwd=1.2)
-	
-	PlotSourceCode(SourceFilename)
-	plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
-		
-	plot(DensityData$Time.Density,DensityData$Lines,
-	ylim=c(0,NCodeLines+0.5),
-	type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
-	abline(h=1:NCodeLines,col='white')
-	axis(3)
-	mtext("Density in execution time(s)",3,cex=1,padj=-3)
-        segments(0,DensityData$Lines,
-                 DensityData$Time.Density,DensityData$Lines
-                 ,lwd=4,col=rgb(0,0,1,alpha=0.6))
-	points(DensityData$Time.Density,DensityData$Lines, pch=20)
-   par(opar)
-   layout(1)
+  layoutmat<-matrix(c(
+                      1,1,1,1,3,3, rep(c(2,2,2,2,4,4),10)),
+                    byrow=T,ncol=6)
+  
+  layout(layoutmat)
+  opar<-par("mar","bg")
+  par(mar=c(0,0,0,0),bg='grey90')
+  plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
+  text(0,0.55,SourceFilename,cex=2)
+  segments(-.75,0,.75,0,lwd=1.2)
+  segments(c(-.75,.75),c(0,0),c(-.75,.75),c(-0.1,-0.1),lwd=1.2)
+  
+  PlotSourceCode(SourceFilename)
+  plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
+  
+  plot(DensityData$Time.Density,DensityData$Lines,
+       ylim=c(0,NCodeLines+0.5),
+       type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
+  abline(h=1:NCodeLines,col='white')
+  axis(3)
+  mtext("Density in execution time(s)",3,cex=1,padj=-3)
+  segments(0,DensityData$Lines,
+           DensityData$Time.Density,DensityData$Lines
+           ,lwd=4,col=rgb(0,0,1,alpha=0.6))
+  points(DensityData$Time.Density,DensityData$Lines, pch=20)
+  par(opar)
+  layout(1)
 }
 
 ##' Line progression plot
@@ -626,83 +636,83 @@ aprofobject<-x
 
 profileplot <- function(aprofobject){
   
- if(!is.aprof(aprofobject)){
-   stop("Input does not appear to be of the class \"aprof\"")}
+  if(!is.aprof(aprofobject)){
+    stop("Input does not appear to be of the class \"aprof\"")}
 
- SourceFilename <- aprofobject$sourcefile
+  SourceFilename <- aprofobject$sourcefile
 
- if(!is.null(aprofobject$memcalls)){
-   if(is.null(aprofobject$calls)){stop("profileplot does not work on memory profiles")}}
+  if(!is.null(aprofobject$memcalls)){
+    if(is.null(aprofobject$calls)){stop("profileplot does not work on memory profiles")}}
 
- if(is.null(SourceFilename)){
+  if(is.null(SourceFilename)){
     stop("aprof object requires a defined source code file for plotting")
-       }
- TargetFile <- aprofobject$sourcefile
- calls<-aprofobject$calls
- interval <- aprofobject$interval
- 
- FileNumber<-unlist(calls)[which(unlist(calls)==TargetFile)+1]
+  }
+  TargetFile <- aprofobject$sourcefile
+  calls<-aprofobject$calls
+  interval <- aprofobject$interval
+  
+  FileNumber<-unlist(calls)[which(unlist(calls)==TargetFile)+1]
 
- FileNumber <- substr(FileNumber,1,1)
+  FileNumber <- substr(FileNumber,1,1)
 
- NCodeLines<-length(readLines(SourceFilename)) 
+  NCodeLines<-length(readLines(SourceFilename)) 
 
- cleancalls<-sapply(calls, function(x) 
-                    gsub("#File", NA, x))
+  cleancalls<-sapply(calls, function(x) 
+                     gsub("#File", NA, x))
 
- LineCalls<- unlist(sapply(cleancalls,
-                    function(X) X[grep(paste(FileNumber,"#",sep=''),X)]
-                    ,USE.NAMES=FALSE))
- nLineCalls<-as.numeric(sapply(LineCalls,function(X)
-                    strsplit(X,"1#")[[1]][2],USE.NAMES=FALSE))
+  LineCalls<- unlist(sapply(cleancalls,
+                            function(X) X[grep(paste(FileNumber,"#",sep=''),X)]
+                            ,USE.NAMES=FALSE))
+  nLineCalls<-as.numeric(sapply(LineCalls,function(X)
+                                strsplit(X,"1#")[[1]][2],USE.NAMES=FALSE))
   timesteps<-seq(0,length(nLineCalls)*interval,interval)
   callhistory <- c(1,nLineCalls)
   LineDensity<-readLineDensity(aprofobject)
-						
-	
- opar<-par("mar","bg")
- maxtimesteps <- max(timesteps)
-
- layoutmat<-matrix(c(rep(c(1,1,1,1,2,2),10)), byrow=T,ncol=6)
- 
- layout(layoutmat)
- 
- par(mar=c(4,4,0.1,0.1),bg='grey90')
- plot(0,0,xlim=c(0,maxtimesteps),ylim=c(1,NCodeLines),
-      type='n',xaxt='s',yaxt='s', xlab='',ylab='')
- abline(h=1:NCodeLines,col='white')
   
- mtext("Run time(s)",1,cex=.9,padj=3.4)
- mtext("Line",2,cex=.9,padj=-3.4)
+  
+  opar<-par("mar","bg")
+  maxtimesteps <- max(timesteps)
 
- lines(c(timesteps,maxtimesteps), c(callhistory,NCodeLines),
-       lwd=2,col=rgb(0,0,1,alpha=0.6))
+  layoutmat<-matrix(c(rep(c(1,1,1,1,2,2),10)), byrow=T,ncol=6)
+  
+  layout(layoutmat)
+  
+  par(mar=c(4,4,0.1,0.1),bg='grey90')
+  plot(0,0,xlim=c(0,maxtimesteps),ylim=c(1,NCodeLines),
+       type='n',xaxt='s',yaxt='s', xlab='',ylab='')
+  abline(h=1:NCodeLines,col='white')
+  
+  mtext("Run time(s)",1,cex=.9,padj=3.4)
+  mtext("Line",2,cex=.9,padj=-3.4)
 
- text(0,1,"Start",col='red',adj=0,cex=1.2)
- text(maxtimesteps,NCodeLines,"End",col='darkgreen',cex=1.2)
- #largest bottlenecks
- callcounts<-table(callhistory)
+  lines(c(timesteps,maxtimesteps), c(callhistory,NCodeLines),
+        lwd=2,col=rgb(0,0,1,alpha=0.6))
 
- maxcalls<-as.numeric(names(which(callcounts==max(callcounts))))
+  text(0,1,"Start",col='red',adj=0,cex=1.2)
+  text(maxtimesteps,NCodeLines,"End",col='darkgreen',cex=1.2)
+                                        #largest bottlenecks
+  callcounts<-table(callhistory)
 
- axis(2,at=maxcalls,labels=maxcalls,col.axis='red',
-      lwd=1.2,col.ticks='red')
- 
- plot(0,0,ylim=c(1,NCodeLines),
-      xlim = c(0,max(LineDensity$Call.Density/LineDensity$Total.Calls)*1.1),
-      type='n',xaxt='s',yaxt='s', xlab='',ylab='')
- 
- abline(h = 1:NCodeLines, col = "white")
- PerLineDensity <- numeric(NCodeLines)
- PerLineDensity[LineDensity$Line.Numbers]<-LineDensity$Call.Density/LineDensity$Total.Calls
- connectedlines <- c(1:NCodeLines)-c(0,rep(.5,NCodeLines-2),0)
- lines(y=connectedlines,x=PerLineDensity,type = "S",lwd=1.3)
- abline(v=0,col='grey30',lty=3)
- axis(4)
- mtext("Line Density", 1, cex = .9, padj = 2.7)
- par(opar)
- layout(1) 
- }
+  maxcalls<-as.numeric(names(which(callcounts==max(callcounts))))
+
+  axis(2,at=maxcalls,labels=maxcalls,col.axis='red',
+       lwd=1.2,col.ticks='red')
+  
+  plot(0,0,ylim=c(1,NCodeLines),
+       xlim = c(0,max(LineDensity$Call.Density/LineDensity$Total.Calls)*1.1),
+       type='n',xaxt='s',yaxt='s', xlab='',ylab='')
+  
+  abline(h = 1:NCodeLines, col = "white")
+  PerLineDensity <- numeric(NCodeLines)
+  PerLineDensity[LineDensity$Line.Numbers]<-LineDensity$Call.Density/LineDensity$Total.Calls
+  connectedlines <- c(1:NCodeLines)-c(0,rep(.5,NCodeLines-2),0)
+  lines(y=connectedlines,x=PerLineDensity,type = "S",lwd=1.3)
+  abline(v=0,col='grey30',lty=3)
+  axis(4)
+  mtext("Line Density", 1, cex = .9, padj = 2.7)
+  par(opar)
+  layout(1) 
+}
 
 
 #' is.aprof
@@ -716,21 +726,21 @@ is.aprof <- function(object) {
   inherits(object, "aprof")
 }
 
-# Amdahl's law
-#
-# function calculates the theoretical maximum
-# speed up - at current scaling - of the profiled
-# program using Amdahl's law.
-#
-# @param P proportion of the program under study
-# @param S factor with which P can be sped-up
-#
-# @author Marco D. Visser
-# 
-#
+## Amdahl's law
+##
+## function calculates the theoretical maximum
+## speed up - at current scaling - of the profiled
+## program using Amdahl's law.
+##
+## @param P proportion of the program under study
+## @param S factor with which P can be sped-up
+##
+## @author Marco D. Visser
+## 
+##
 
 AmLaw<-function(P=1,S=2){
-	1/((1-P)+P/S)
+  1/((1-P)+P/S)
 }
 
 
@@ -769,58 +779,58 @@ AmLaw<-function(P=1,S=2){
 #' @export
 summary.aprof<-function(object,...){
 
-aprofobject<-object
+  aprofobject<-object
 
   if(!is.null(aprofobject$memcalls)){
     if(is.null(aprofobject$calls)){
       stop("Projected time gains cannot be summerized for memory profiling")
     }}
-   
+  
   if(!is.null(aprofobject$calls)){
     if(!is.null(aprofobject$memcalls)){
-    warning("memory profile not used in summary.aprof")}
+      warning("memory profile not used in summary.aprof")}
     
-  
-	LineProf<-readLineDensity(aprofobject)
-	PropLines<-LineProf$Time.Density/LineProf$Total.Time
+    
+    LineProf<-readLineDensity(aprofobject)
+    PropLines<-LineProf$Time.Density/LineProf$Total.Time
 
-	Speedups<-2^c(0:4)
-	SpeedTable<-sapply(Speedups,function(X) AmLaw(P=PropLines,S=X))
+    Speedups<-2^c(0:4)
+    SpeedTable<-sapply(Speedups,function(X) AmLaw(P=PropLines,S=X))
 
-        if(is.null(nrow(SpeedTable))) SpeedTable <- matrix(SpeedTable,nrow=1)
-	#Time improvement table 
-	ExecTimeTable<-LineProf$Total.Time/SpeedTable
-	ExecTimeTable<-rbind(ExecTimeTable,LineProf$Total.Time/Speedups)
+    if(is.null(nrow(SpeedTable))) SpeedTable <- matrix(SpeedTable,nrow=1)
+                                        #Time improvement table 
+    ExecTimeTable<-LineProf$Total.Time/SpeedTable
+    ExecTimeTable<-rbind(ExecTimeTable,LineProf$Total.Time/Speedups)
 
-	# limits of Amdahl's law as S goes to inf
-	SpeedTable<-cbind(SpeedTable,1/(1-PropLines))
-	dimnames(SpeedTable)<-list(paste("Line*:", 
-	LineProf$Line.Numbers,":"),c(Speedups,"S -> Inf**"))
-	SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
+                                        # limits of Amdahl's law as S goes to inf
+    SpeedTable<-cbind(SpeedTable,1/(1-PropLines))
+    dimnames(SpeedTable)<-list(paste("Line*:", 
+                                     LineProf$Line.Numbers,":"),c(Speedups,"S -> Inf**"))
+    SpeedTable<-SpeedTable[order(PropLines,decreasing=TRUE),]
 
-	dimnames(ExecTimeTable)<-list(c(paste("Line*:", 
-	LineProf$Line.Numbers,":"),"All lines"),Speedups)
-	ExecTimeTable<-ExecTimeTable[order(
-	c(PropLines,sum(PropLines)),decreasing=TRUE),]
+    dimnames(ExecTimeTable)<-list(c(paste("Line*:", 
+                                          LineProf$Line.Numbers,":"),"All lines"),Speedups)
+    ExecTimeTable<-ExecTimeTable[order(
+                                   c(PropLines,sum(PropLines)),decreasing=TRUE),]
 
-        cat("Largest attainable speed-up factor for the entire program\n
+    cat("Largest attainable speed-up factor for the entire program\n
         when 1 line is sped-up with factor (S): \n\n")
 
-        cat("\t Speed up factor (S) of a line \n")
-        print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
-						quote = FALSE)
-        cat("\nLowest attainable execution time for the entire program when\n
+    cat("\t Speed up factor (S) of a line \n")
+    print.default(format(SpeedTable,digits = 3),print.gap = 2L, 
+                  quote = FALSE)
+    cat("\nLowest attainable execution time for the entire program when\n
              lines are sped-up with factor (S):\n\n")
-        
-        cat("\t Speed up factor (S) of a line  \n")
-        print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
-						quote = FALSE)
-        cat("\n    Total sampling time: ",round(LineProf$Total.Time,2) ,
-            " seconds")
-        cat("\n *  Expected improvement at current scaling")
-        cat("\n ** Asymtotic max. improvement at current scaling\n\n")
-        
-		invisible(SpeedTable)
+    
+    cat("\t Speed up factor (S) of a line  \n")
+    print.default(format(ExecTimeTable,digits = 3),print.gap = 2L, 
+                  quote = FALSE)
+    cat("\n    Total sampling time: ",round(LineProf$Total.Time,2) ,
+        " seconds")
+    cat("\n *  Expected improvement at current scaling")
+    cat("\n ** Asymtotic max. improvement at current scaling\n\n")
+    
+    invisible(SpeedTable)
   }
   
 }
@@ -860,11 +870,11 @@ targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
     calls <- aprofobject$memcalls
     interval <- aprofobject$meminterval
   } else {
-  if(is.null(aprofobject$calls)){
-    stop("calls apear empty (and mem is set to FALSE)")}
+    if(is.null(aprofobject$calls)){
+      stop("calls apear empty (and mem is set to FALSE)")}
     calls <- aprofobject$calls
     interval <- aprofobject$interval
-     }
+  }
   
   if(is.null(aprofobject$sourcefile)) {
     TargetFile<-"1#"
@@ -875,14 +885,14 @@ targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
     TargetFile <- paste(substr(FileNumber,1,1),"#",sep="")
   }
 
-  # identify all unique file names
+                                        # identify all unique file names
   FileNames<-unlist(calls)[which(unlist(calls)=="#File")-2]
-           
-        # What was the total execution time?
+  
+                                        # What was the total execution time?
   TotalTime<-length(calls)*interval
-        # Identify lines of interest
+                                        # Identify lines of interest
   Lcalls<-sapply(calls,function(x) gsub(TargetFile,"L",x),USE.NAMES=FALSE)
-        #Replace all file references with Actual file names
+                                        #Replace all file references with Actual file names
 
   for(i in 1:length(FileNames)){
     Lcalls<-sapply(Lcalls,function(x) gsub(paste(i,"#",sep='')
@@ -890,8 +900,8 @@ targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
                                                   '#',sep=''),
                                            x),USE.NAMES=FALSE)
 
-         }
-        
+  }
+  
                                         #Subset to target line
   tlines <- sapply(Lcalls,function(X) paste("L",target,sep='')%in%X)
   TargetCalls<-Lcalls[tlines]
@@ -900,49 +910,49 @@ targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
   Confirm target line and run again") }
 
   
-        # Remove all functions calls before target line
-        trimmedTargetCalls<-lapply(TargetCalls,function(X)
-                                   X[1+max(grep(paste("L",target,sep=''),
-                                                X)):length(X)])
+                                        # Remove all functions calls before target line
+  trimmedTargetCalls<-lapply(TargetCalls,function(X)
+                             X[1+max(grep(paste("L",target,sep=''),
+                                          X)):length(X)])
 
-        # Count function calls
-        CallCounts<-table(na.omit(unlist(trimmedTargetCalls)))
+                                        # Count function calls
+  CallCounts<-table(na.omit(unlist(trimmedTargetCalls)))
 
-        # Find parent call before target call?
-        if(findParent==TRUE) {
-        # Find unique parent calls for each unique call
-          parentCalls <- vector(mode="character", length=
-                                length(CallCounts))
-          
-       for(i in 1:length(CallCounts)){
-            parentCalls[i]<-names(sort(table(unlist(
-              lapply(TargetCalls,function(X)
-                     X[which(names(CallCounts)[i]==X)[1]-1]
-                     ))),decreasing=TRUE)[1])
-                     
-                    
-          }
-          
-          ## Sort decending and save as data.frame
-        CallOrder <- order(CallCounts,decreasing=TRUE)
-        CallCounts <- CallCounts[CallOrder]
-        parentCalls <- parentCalls[CallOrder]
+                                        # Find parent call before target call?
+  if(findParent==TRUE) {
+                                        # Find unique parent calls for each unique call
+    parentCalls <- vector(mode="character", length=
+                          length(CallCounts))
+    
+    for(i in 1:length(CallCounts)){
+      parentCalls[i]<-names(sort(table(unlist(
+                                         lapply(TargetCalls,function(X)
+                                                X[which(names(CallCounts)[i]==X)[1]-1]
+                                                ))),decreasing=TRUE)[1])
+      
+      
+    }
+    
+    ## Sort decending and save as data.frame
+    CallOrder <- order(CallCounts,decreasing=TRUE)
+    CallCounts <- CallCounts[CallOrder]
+    parentCalls <- parentCalls[CallOrder]
 
-        FinalTable<-data.frame(Function=names(CallCounts),
-                               Parent=parentCalls, Calls=CallCounts,
-                               Time=CallCounts*interval)
-        } else {
+    FinalTable<-data.frame(Function=names(CallCounts),
+                           Parent=parentCalls, Calls=CallCounts,
+                           Time=CallCounts*interval)
+  } else {
 
-          CallCounts <- sort(CallCounts,decreasing=TRUE)
-          
-          FinalTable <- data.frame(Function=names(CallCounts),
-                                 Calls=CallCounts,
-                                 Time=CallCounts*interval)
-        }
-        
-        row.names(FinalTable) <- NULL
-        return(FinalTable)
-                             
+    CallCounts <- sort(CallCounts,decreasing=TRUE)
+    
+    FinalTable <- data.frame(Function=names(CallCounts),
+                             Calls=CallCounts,
+                             Time=CallCounts*interval)
+  }
+  
+  row.names(FinalTable) <- NULL
+  return(FinalTable)
+  
 
 }
- 
+
