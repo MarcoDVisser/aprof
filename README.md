@@ -1,4 +1,4 @@
-aprof (0.2.4) [Release notes](http://marcodvisser.github.io/aprof/).
+aprof (0.2.5) [Release notes](http://marcodvisser.github.io/aprof/).
 =====
 
 Amdahl's profiler, directed optimization.
