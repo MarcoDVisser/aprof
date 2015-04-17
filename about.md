@@ -4,7 +4,7 @@ title: About
 ---
 
 
-aprof (0.2.1)
+aprof (0.2.5)
 =====
 
 Amdahl's profiler, directed optimization.
