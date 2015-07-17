@@ -1,0 +1,15 @@
+bibentry(bibtype = "Article",
+         title = "Speeding up ecological and evolutionary computations in R; Essentials of high performance computing for biologists",
+         author = c(person("Marco", "Visser"),
+                    person("Sean M", "McMahon"),
+                    person("Cory", "Merow"),
+                    person("Philip M", "Dixon"),
+		    person("Sydne", "Record"),
+		    person("Eelke", "Jongejans")),
+         journal="PLoS computational biology",
+  volume=11,
+  number=3,
+  pages="e1004140--e1004140",
+  year=2015,
+  publisher="Public Library of Science")
+  
