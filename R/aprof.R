@@ -917,7 +917,7 @@ targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
                                           X)):length(X)])
 
                                         # Count function calls
-  CallCounts<-table(stats:na.omit(unlist(trimmedTargetCalls)))
+  CallCounts<-table(stats::na.omit(unlist(trimmedTargetCalls)))
 
                                         # Find parent call before target call?
   if(findParent==TRUE) {
