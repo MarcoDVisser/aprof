@@ -686,7 +686,7 @@ profileplot <- function(aprofobject){
   graphics::mtext("Run time(s)",1,cex=.9,padj=3.4)
   graphics::mtext("Line",2,cex=.9,padj=-3.4)
 
-  lines(c(timesteps,maxtimesteps), c(callhistory,NCodeLines),
+  graphics::lines(c(timesteps,maxtimesteps), c(callhistory,NCodeLines),
         lwd=2,col=grDevices::rgb(0,0,1,alpha=0.6))
 
   graphics::text(0,1,"Start",col='red',adj=0,cex=1.2)
@@ -707,7 +707,7 @@ profileplot <- function(aprofobject){
   PerLineDensity <- numeric(NCodeLines)
   PerLineDensity[LineDensity$Line.Numbers]<-LineDensity$Call.Density/LineDensity$Total.Calls
   connectedlines <- c(1:NCodeLines)-c(0,rep(.5,NCodeLines-2),0)
-  lines(y=connectedlines,x=PerLineDensity,type = "S",lwd=1.3)
+  graphics::lines(y=connectedlines,x=PerLineDensity,type = "S",lwd=1.3)
   graphics::abline(v=0,col='grey30',lty=3)
   graphics::axis(4)
   graphics::mtext("Line Density", 1, cex = .9, padj = 2.7)
