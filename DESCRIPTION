@@ -13,8 +13,8 @@ Description: Assists the evaluation of whether and
     vs. execution time by helping to identify the most promising sections
     of code to optimize and projecting potential gains. The package is
     an addition to R's standard profiling tools and is not a wrapper for them.
-License: GPL-2
+License: GPL (>= 2)
 URL: http://github.com/MarcoDVisser/aprof
 BugReports: http://github.com/MarcoDVisser/aprof/issues
 Imports: graphics, grDevices, stats
-
+Repository: CRAN
