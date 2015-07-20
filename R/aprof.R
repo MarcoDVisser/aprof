@@ -527,7 +527,8 @@ PlotSourceCode<-function(SourceFilename){
 #' }
 #' @concept Line profiling 
 #' @rdname plot
-#' @method plot aprof 
+#' @method plot aprof
+#' @import grDevices, graphics, stats
 #' @export
 plot.aprof<-function(x,y,...){
   aprofobject<-x
