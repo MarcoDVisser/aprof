@@ -397,12 +397,12 @@ MakeBranchPlot<-function(calls,interval){
 	)
 	
 
-	par(mar=c(0,0,0,0))
-	plot(0,0,type='n')
+	graphics::par(mar=c(0,0,0,0))
+	graphics::plot(0,0,type='n')
 
 	for(i in 1:maxlev){
 
-		text(xpos[[i]],ypos[[i]], names(branches[[i]]),
+		graphics::text(xpos[[i]],ypos[[i]], names(branches[[i]]),
 		cex=branchSize[[i]])
 
 	}
@@ -456,27 +456,28 @@ PlotSourceCode<-function(SourceFilename){
 	Nchar<-sapply(Nchar,function(x) 
 	length(x),USE.NAMES=FALSE)
 	
-	par(mar=c(0,0,0,0))
-	plot(0,0,xlim=c(-strwidth("M"),max(Nchar)+strwidth("M")),
+	graphics::par(mar=c(0,0,0,0))
+	graphics::plot(0,0,xlim=c(-graphics::strwidth("M"),
+                             max(Nchar)+graphics::strwidth("M")),
 	ylim=c(0,NCodeLines+0.5),
 	type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
-	abline(h=1:NCodeLines,col='white')
+	graphics::abline(h=1:NCodeLines,col='white')
 	#Get best text size
-	Codewidth<-sapply(CleanLines,strwidth,USE.NAMES=FALSE)
-	Codeheight<-sapply(CleanLines,strheight,USE.NAMES=FALSE)
+	Codewidth<-sapply(CleanLines,graphics::strwidth,USE.NAMES=FALSE)
+	Codeheight<-sapply(CleanLines,graphics::strheight,USE.NAMES=FALSE)
 	
 	
 	SizeText<-0.98*min(c(
-	diff(par("usr")[3:4])/(sum(Codeheight)*1.5),
-	diff(par("usr")[1:2])/(max(Codewidth)*1.1))
+	diff(graphics::par("usr")[3:4])/(sum(Codeheight)*1.5),
+	diff(graphics::par("usr")[1:2])/(max(Codewidth)*1.1))
 	)
 
 
 	ypos<-length(CodeLines):1
-	text(1+strwidth("M"),ypos,labels=CleanLines,adj=c(0,0),
+	graphics::text(1+graphics::strwidth("M"),ypos,labels=CleanLines,adj=c(0,0),
 	cex=SizeText)
 	
-	text(0+0.5*strwidth("M"),ypos,labels=1:length(CleanLines),
+	graphics::text(0+0.5*graphics::strwidth("M"),ypos,labels=1:length(CleanLines),
              adj=c(1,0),
 	cex=SizeText*0.90)
 }
@@ -556,29 +557,29 @@ plot.aprof<-function(x,y,...){
                       1,1,1,1,3,3, rep(c(2,2,2,2,4,4),10)),
                     byrow=T,ncol=6)
   
-  layout(layoutmat)
-  opar<-par("mar","bg")
-  par(mar=c(0,0,0,0),bg='grey90')
-  plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
-  text(0,0.55,SourceFilename,cex=2)
-  segments(-.75,0,.75,0,lwd=1.2)
-  segments(c(-.75,.75),c(0,0),c(-.75,.75),c(-0.1,-0.1),lwd=1.2)
+  graphics::layout(layoutmat)
+  opar<-graphics::par("mar","bg")
+  graphics::par(mar=c(0,0,0,0),bg='grey90')
+  graphics::plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
+  graphics::text(0,0.55,SourceFilename,cex=2)
+  graphics::segments(-.75,0,.75,0,lwd=1.2)
+  graphics::segments(c(-.75,.75),c(0,0),c(-.75,.75),c(-0.1,-0.1),lwd=1.2)
   
   PlotSourceCode(SourceFilename)
-  plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
+  graphics::plot(0,0,type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
   
-  plot(DensityData$Time.Density,DensityData$Lines,
+  graphics::plot(DensityData$Time.Density,DensityData$Lines,
        ylim=c(0,NCodeLines+0.5),
        type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
-  abline(h=1:NCodeLines,col='white')
-  axis(3)
-  mtext("Density in execution time(s)",3,cex=1,padj=-3)
-  segments(0,DensityData$Lines,
+  graphics::abline(h=1:NCodeLines,col='white')
+  graphics::axis(3)
+  graphics::mtext("Density in execution time(s)",3,cex=1,padj=-3)
+  graphics::segments(0,DensityData$Lines,
            DensityData$Time.Density,DensityData$Lines
-           ,lwd=4,col=rgb(0,0,1,alpha=0.6))
-  points(DensityData$Time.Density,DensityData$Lines, pch=20)
-  par(opar)
-  layout(1)
+           ,lwd=4,col=grDevices::rgb(0,0,1,alpha=0.6))
+  graphics::points(DensityData$Time.Density,DensityData$Lines, pch=20)
+  graphics::par(opar)
+  graphics::layout(1)
 }
 
 ##' Line progression plot
@@ -670,48 +671,48 @@ profileplot <- function(aprofobject){
   LineDensity<-readLineDensity(aprofobject)
   
   
-  opar<-par("mar","bg")
+  opar<-graphics::par("mar","bg")
   maxtimesteps <- max(timesteps)
 
   layoutmat<-matrix(c(rep(c(1,1,1,1,2,2),10)), byrow=T,ncol=6)
   
-  layout(layoutmat)
+  graphics::layout(layoutmat)
   
-  par(mar=c(4,4,0.1,0.1),bg='grey90')
-  plot(0,0,xlim=c(0,maxtimesteps),ylim=c(1,NCodeLines),
+  graphics::par(mar=c(4,4,0.1,0.1),bg='grey90')
+  graphics::plot(0,0,xlim=c(0,maxtimesteps),ylim=c(1,NCodeLines),
        type='n',xaxt='s',yaxt='s', xlab='',ylab='')
-  abline(h=1:NCodeLines,col='white')
+  graphics::abline(h=1:NCodeLines,col='white')
   
-  mtext("Run time(s)",1,cex=.9,padj=3.4)
-  mtext("Line",2,cex=.9,padj=-3.4)
+  graphics::mtext("Run time(s)",1,cex=.9,padj=3.4)
+  graphics::mtext("Line",2,cex=.9,padj=-3.4)
 
   lines(c(timesteps,maxtimesteps), c(callhistory,NCodeLines),
-        lwd=2,col=rgb(0,0,1,alpha=0.6))
+        lwd=2,col=grDevices::rgb(0,0,1,alpha=0.6))
 
-  text(0,1,"Start",col='red',adj=0,cex=1.2)
-  text(maxtimesteps,NCodeLines,"End",col='darkgreen',cex=1.2)
+  graphics::text(0,1,"Start",col='red',adj=0,cex=1.2)
+  graphics::text(maxtimesteps,NCodeLines,"End",col='darkgreen',cex=1.2)
                                         #largest bottlenecks
   callcounts<-table(callhistory)
 
   maxcalls<-as.numeric(names(which(callcounts==max(callcounts))))
 
-  axis(2,at=maxcalls,labels=maxcalls,col.axis='red',
+  graphics::axis(2,at=maxcalls,labels=maxcalls,col.axis='red',
        lwd=1.2,col.ticks='red')
   
-  plot(0,0,ylim=c(1,NCodeLines),
+  graphics::plot(0,0,ylim=c(1,NCodeLines),
        xlim = c(0,max(LineDensity$Call.Density/LineDensity$Total.Calls)*1.1),
        type='n',xaxt='s',yaxt='s', xlab='',ylab='')
   
-  abline(h = 1:NCodeLines, col = "white")
+  graphics::abline(h = 1:NCodeLines, col = "white")
   PerLineDensity <- numeric(NCodeLines)
   PerLineDensity[LineDensity$Line.Numbers]<-LineDensity$Call.Density/LineDensity$Total.Calls
   connectedlines <- c(1:NCodeLines)-c(0,rep(.5,NCodeLines-2),0)
   lines(y=connectedlines,x=PerLineDensity,type = "S",lwd=1.3)
-  abline(v=0,col='grey30',lty=3)
-  axis(4)
-  mtext("Line Density", 1, cex = .9, padj = 2.7)
-  par(opar)
-  layout(1) 
+  graphics::abline(v=0,col='grey30',lty=3)
+  graphics::axis(4)
+  graphics::mtext("Line Density", 1, cex = .9, padj = 2.7)
+  graphics::par(opar)
+  graphics::layout(1) 
 }
 
 
@@ -916,7 +917,7 @@ targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
                                           X)):length(X)])
 
                                         # Count function calls
-  CallCounts<-table(na.omit(unlist(trimmedTargetCalls)))
+  CallCounts<-table(stats:na.omit(unlist(trimmedTargetCalls)))
 
                                         # Find parent call before target call?
   if(findParent==TRUE) {
