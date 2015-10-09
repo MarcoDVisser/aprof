@@ -10,9 +10,16 @@ aprof (0.3.1) [Release notes](http://marcodvisser.github.io/aprof/).
 Amdahl's profiler, directed optimization.
 Assists the evaluation of whether and where to focus code optimization, using [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law) and visual aids based on line profiling. Amdahl's profiler organises profiling output files, including memory profiling, in a visually appealing way. It is meant to help to balance development vs. execution time by helping to identify the most promising sections of code to optimize and projecting potential gains. The package is an addition to R's standard profiling tools and is not a wrapper for them.
 
-## Dependencies
+### Quicklinks
 
-aprof is meant to be light and has no other dependencies other than the base R installation.
+-   [Quick start and tutorials](#quick-start-and-tutorials)
+-   [Installation](#the-online-code-files-from-s1-text)
+	-   [Dependencies](#dependencies)
+-   [Examples](#examples)
+    -   [Examples of output](#examples-of-output)
+    -   [Memory statisics](#memory-statisics)
+-   [Thanks](#thanks)
+  
 
 ## Quick start and tutorials
 
@@ -32,6 +39,9 @@ To install decompress these and run R CMD INSTALL on the contents of the archive
 require(devtools)
 install_github("MarcoDVisser/aprof")
 ```
+### Dependencies
+
+aprof is meant to be light and has no other dependencies other than the base R installation.
 
 ## Examples
 
@@ -63,7 +73,7 @@ require(aprof)
      fooaprof<-aprof("foo.R",tmp)
      plot(fooaprof)
 ```
-## Examples of output
+### Examples of output
 The standard aprof plot. It shows the execution density for each
 line in a source code file.
 ![](http://i.imgur.com/lb1UBCI.png)
@@ -141,7 +151,7 @@ Function Parent Calls Time
 c   	   L7   168 3.36
 ```
 
-## Memory statisics
+### Memory statisics
 Using the previous function foo (made above), we can set "memory.profiling=TRUE",
 and obtain some basic memory profiling statistics. Statistics are summarized in
 Megabytes and included all operations (allocations and releases). 
