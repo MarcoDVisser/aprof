@@ -5,6 +5,15 @@
 ##' plot, summary and print (more specifically:
 ##' \code{plot.aprof}, \code{summary.aprof} and \code{print.aprof}).
 ##' See the exampe below for more details.
+##'
+##' Using aprof with knitr and within .Rmd or .Rnw documents
+##' is not yet supported by the R profiler. Note that setting the
+##' chuck option: engine="Rscript", disables line-profiling.
+##' Line profiling only works in a interactive session (Oct 2015). 
+##' In these cases users are advised to use the standard
+##' Rprof functions or "profr" (while setting engine="Rscript") and
+##' not to rely on line-profiling based packages (for the time
+##' being). 
 ##' @title Create an 'aprof' object for usage in the package 'aprof'
 ##' @param src The name of the source code file (and path if not in the working
 ##' directory). The source code file is expected to be a 
@@ -16,23 +25,13 @@
 ##' functions that require a defined source file will fail if
 ##' the source file is not defined or detected in the call stack.
 ##'
-##' Using aprof with knitr and within .Rmd or .Rnw documents
-##' is not yet supported. Setting the chuck option: engine="Rscript",
-##' disables line-profiling and will make aprof fail as well.
-##' In these cases users are advised to use the standard
-##' Rprof functions or "profr" (while setting engine="Rscript") and
-##' not to rely on line-profiling based packages (for the time
-##' being). 
 ##' 
 ##' @param output The file name (and path if not in the working
 ##' directory) of a previously created profiling exercise.
-##' @param memoutput  Optional, the file name (and path)
-##' of the memory profile from a previous profiling exercise
-##' [NOTE: not available in this version]. 
 ##' @author Marco D. Visser
 ##' @examples
 ##' \dontrun{
-##'    # create function to profile
+##'    ## create function to profile
 ##'      foo <- function(N){
 ##'              preallocate<-numeric(N)
 ##'              grow<-NULL
@@ -42,25 +41,38 @@
 ##'                  }
 ##'      }
 ##' 
-##'      #save function to a source file and reload
+##'      ## save function to a source file and reload
 ##'      dump("foo",file="foo.R")
 ##'      source("foo.R")
 ##' 
-##'      # create file to save profiler output
+##'      ## create file to save profiler output
 ##'      tmp<-tempfile()
 ##' 
-##'      # Profile the function
+##'      ## Profile the function
 ##'      Rprof(tmp,line.profiling=TRUE)
 ##'      foo(1e4)
 ##'      Rprof(append=FALSE)
 ##' 
-##'      # Create a aprof object
+##'      ## Create a aprof object
 ##'      fooaprof<-aprof("foo.R",tmp)
-##'      #display basic information, summarize and plot the object
+##'      ## display basic information, summarize and plot the object
 ##'      fooaprof
 ##'      summary(fooaprof)
 ##'      plot(fooaprof)
-##'      profileplot(fooaprof) 
+##'      profileplot(fooaprof)
+##'
+##'      ## To continue with memory profiling:
+##'      ## enable memory.profiling=TRUE
+##'      Rprof(tmp,line.profiling=TRUE,memory.profiling=TRUE)
+##'      foo(1e4)
+##'      Rprof(append=FALSE)
+##'      ## Create a aprof object
+##'      fooaprof<-aprof("foo.R",tmp)
+##'      ## display basic information, and plot memory usage
+##'      fooaprof
+##'      
+##'      plot(fooaprof)
+##'    
 ##'	}
 ##' @seealso \code{\link{plot.aprof}}, \code{\link{summary.aprof}},
 ##' \code{\link{print.aprof}}, \code{\link{Rprof}} and
@@ -68,8 +80,7 @@
 ##' @return An aprof object
 ##' @concept Line profiling
 ##' @export
-aprof <- function(src=NULL,output=NULL,
-                  memoutput=NULL){
+aprof <- function(src=NULL,output=NULL){
 
   if(is.null(src)){
     warning("src is empty, no source code file defined")} else {
@@ -82,37 +93,26 @@ aprof <- function(src=NULL,output=NULL,
   
   if(!is.null(output)){
     CallsInt <- readOutput(output)
-    
     if(is.null(CallsInt$calls)|length(CallsInt$calls)==0){
       stop("Rprof outputs appears to be empty, were enough samples made by the profiler?")}
-  }
+  } else { stop("No profiling output files defined")}
 
-
-  if(!is.null(memoutput)){ 
-    MemCallsInt<-readOutput(memoutput)
-
-    if(is.null(MemCallsInt$calls)|length(MemCallsInt$calls)==0){
-    stop("Rprofmem output file seems empty, were enough samples made by the profiler?")
-  }
-
-
-    aprofobject<-list(sourcefile=src,calls=CallsInt$calls,
-                      interval=CallsInt$interval, memcalls=MemCallsInt$calls,
-                      meminterval=MemCallsInt$interval)
-
-    class(aprofobject) <- c("aprof","list")
+  if(!is.null(CallsInt$mem))  {
+    aprofobject<-list(sourcefile=src,
+                      calls=CallsInt$calls,
+                      mem=CallsInt$mem,
+                      interval=CallsInt$interval)
     
-  } else {
-
-    if(is.null(output)&is.null(memoutput))
-       {stop("No profiling output files defined")}
-     
+    class(aprofobject) <- c("aprof","mem.aprof","list")
+    
+  }  else {
+    
     aprofobject<-list(sourcefile=src,calls=CallsInt$calls,
                       interval=CallsInt$interval)
-
+    
     class(aprofobject) <- c("aprof","list")
   }
-
+  
   return(aprofobject)
 }
 
@@ -130,17 +130,42 @@ aprof <- function(src=NULL,output=NULL,
 readOutput<-function(outputfilename="Rprof.out"){
   
         #Read and prepare output file
-	RprofSamples<-readLines(outputfilename)
-        if(length(grep("line profiling",RprofSamples[1]))==0){
-        stop("Line profiling is required. \nPlease run the profiler with line profiling enabled")}
-	splitCalls<- sapply(RprofSamples[-1],
-	function(X) strsplit(X, split = " "),USE.NAMES=FALSE)
-	#seperated function calls
-	calls<-sapply(splitCalls, function(x) rev(gsub("\"", "", x)))
-	#sample.interval (sample rate/micro second)
-	Samp.Int<-as.numeric(strsplit(RprofSamples[1],"=")[[1]][2])
-	#return function calls and interval
-	return(list(calls=calls,interval=Samp.Int*1e-6))
+RprofSamples<-readLines(outputfilename)
+if(length(grep("line profiling",RprofSamples[1]))==0){
+  stop("Line profiling is required. \nPlease run the profiler with line profiling enabled")}
+
+Mem <- grepl("memory profiling",RprofSamples[1])
+
+if(Mem){
+  tosplit <- grepl("#", RprofSamples[-1])
+  splPos<-regexpr(pattern = ":[[:digit:]]:", text =RprofSamples[-1][tosplit])
+  meminfo <- !splPos==-1
+  mem <- substr(RprofSamples[-1][tosplit][meminfo],1,splPos[meminfo])
+  mem <- t(sapply(strsplit(mem,":"),function(X) as.numeric(X[-1])))
+  mem <- as.data.frame(mem)
+  colnames(mem) <- c("sm_v_heap","lrg_v_heap","mem_in_node")
+  mem$mb<-rowSums(mem)/1024^2
+  splPosReg <- regexpr(pattern = "\\\"|:.#|#F",
+                       text =RprofSamples[-1][tosplit])
+  regular <- substring(RprofSamples[-1][tosplit],splPosReg)
+  regular <- gsub(":","",regular)
+  RprofSamples <- c(RprofSamples[1],regular)
+  mem$calllines <- 2:length(regular)
+}
+
+splitCalls<- sapply(RprofSamples[-1],
+                    function(X) strsplit(X, split = " "),USE.NAMES=FALSE)
+
+##seperated function calls
+calls<-sapply(splitCalls, function(x) rev(gsub("\"", "", x)))
+##sample.interval (sample rate/micro second)
+Samp.Int<-as.numeric(strsplit(RprofSamples[1],"=")[[1]][2])
+##return function calls and interval
+if(Mem){
+  return(list(calls=calls,mem=mem,interval=Samp.Int*1e-6))
+} else {
+  return(list(calls=calls,interval=Samp.Int*1e-6))
+}
 }
 
 #' readLineDensity
@@ -153,111 +178,131 @@ readOutput<-function(outputfilename="Rprof.out"){
 #' @param aprofobject An object returned by \code{aprof}, which
 #' contains the stack calls sampled by the R profiler.
 #' @param Memprof Logical. Should the function return information
-#' specific to memory profiling with memory use per line in Mb?
+#' specific to memory profiling with memory use per line in MB?
 #' Otherwise, the default is to return line call density and execution time
-#' per line [NOTE: This feature is unavailable in the current version].
+#' per line.
 #' @author Marco D. Visser
 #' @export
-
 readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
 
-  if(!"aprof"%in%class(aprofobject)){
-      stop("no aprof object found, check function inputs")}
+  if(!"aprof"%in%class(aprofobject)){ stop("no aprof object found,
+      check function inputs")}
 
-  
-  if(Memprof==TRUE){
 
-    calls <- aprofobject$memcalls
-    interval <- aprofobject$meminterval
-    TargetFile <- aprofobject$sourcefile
-                  }  else {
-    calls <- aprofobject$calls
-    interval <- aprofobject$interval
-    TargetFile <- aprofobject$sourcefile
-    }
+  calls <- aprofobject$calls
+  interval <- aprofobject$interval
+  TargetFile <- aprofobject$sourcefile
+
   ## find all files in the call stack
   idfiles<-sapply(calls,function(X) length(grep("#File", X))>=1)
-  ## extract files
+  ##  extract files
   CallFiles <- sapply(calls[idfiles],function(X) X[1])
+    
+  if(is.null(TargetFile))
+    {
+      FileNumber<-"1:"
+      
+      warning(paste("sourcefile is null", " assuming first file in
+                    call stack is the source: ", CallFiles[1],sep=""))
+      
+      if(!exists(CallFiles[1])){stop("source file was not defined and
+      does not seem to exist in the working directory.")}
+      
+    } else{
+
+      unlistedCalls <- unlist(calls)
+      
+        ## add path or only stick to basename?
+      if(sum(unlistedCalls==TargetFile)==0){
+        if(sum(unlistedCalls==basename(TargetFile))>0){
+          TargetFile <- basename(TargetFile) } else {
+
+            warning(paste("specified source
+      file ", TargetFile, " is not in the list of files in the
+      profiler output: \n ", CallFiles,sep=""))
+            
+          }
+      }
+      
+      FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]
+      FileCheck<-unlistedCalls[which(unlistedCalls==TargetFile)]
+      
+
+      ## Confirm that call stack corresponds to user supplied sourcefile
+      if(length(FileCheck)==0){
+        
+        warning(paste("Some aprof functions may fail -->",
+                      " user supplied source file",
+                      TargetFile,
+                      " does not seem to correspond to any",
+                      " file in the profiler output.\n",
+                      " Possible causes: \n" ,
+                      "1) Source file was not profiled?\n",
+                      "2) Spelling?\n",sep=""))
+        
+      }
+      
+    }
+     
+    FileNumber <- substr(FileNumber,1,1)
+    
+  ## remove all file references
   
-  if(is.null(TargetFile)){
-    FileNumber<-"1:"
+  cleancalls<-sapply(calls[!idfiles],
+    function(x) gsub("#File", NA, x))
+    
+    LineCalls<- unlist(sapply(cleancalls, function(X)
+                       X[grep(paste(FileNumber,"#",sep=''),X)],
+                       USE.NAMES=FALSE))
+    
+    Pathways<-unique(sapply(LineCalls, paste,collapse="-"))
 
-    warning(paste("sourcefile is null",
-                  " assuming first file in call stack is the source: ",
-                  CallFiles[1],sep=""))
-    
-    if(!exists(CallFiles[1])){stop("source file was not defined and does not seem to exist in the working directory.")}
-    
-  } else{
-    unlistedCalls <- unlist(calls)
+    ## limit only those containing information
+    Pathways<-Pathways[grep("#",Pathways)]
 
-    ## add path or only stick to basename?
-    if(sum(unlistedCalls==TargetFile)==0){
-      if(sum(unlistedCalls==basename(TargetFile))>0){
-      TargetFile <- basename(TargetFile)
-    } else {
-       warning(paste("specified source file ", TargetFile,
-                  " is not in the list of files in the profiler output: \n ",
-                  CallFiles,sep=""))
-     }
-    } 
-    
-    FileNumber<-unlistedCalls[which(unlistedCalls==TargetFile)+1]
-    FileCheck<-unlistedCalls[which(unlistedCalls==TargetFile)]
-    
+    filehash <- paste(FileNumber,"#",sep="")
+    LineDensity<-table(unlist(sapply(LineCalls,unique)))
+    names(LineDensity)<-gsub(filehash,"", names(LineDensity))
+    Line.Numbers<-as.numeric(names(LineDensity))
+    Call.Density<-as.numeric(LineDensity)
+    Time.Density<-Call.Density*interval
 
-    ## Confirm that call stack corresponds to user supplied source file
-    if(length(FileCheck)==0){
-      warning(paste("Some aprof functions may fail -->",
-                    " user supplied source file ",TargetFile,
-                    " does not seem to correspond to any",
-                    " file in the profiler output.\n",
-                    " Possible causes: \n" ,
-                    "1) Source file was not profiled?\n",
-                    "2) Spelling?\n",sep=""))
-      
-      
-    } 
+  if(Memprof) {
+    MemLines <- as.integer(gsub(filehash,"", LineCalls))
+    
+    TotalMem <- tapply(c(0,diff(aprofobject$mem$mb)),
+    MemLines,function(X) sum(abs(X)))
+    
+    
+    Finallist <-list(Line.Numbers=as.numeric(names(LineDensity)),
+                     Call.Density=as.numeric(LineDensity),
+                     Time.Density=Call.Density*interval,
+                     Total.Calls=sum(as.numeric(LineDensity))+1,
+                     Total.Time=sum(Call.Density*interval+interval),
+                     Files=CallFiles,Total.Mem=TotalMem)
+  
+
+  } else {
+
+  
+    Finallist <-list(Line.Numbers=as.numeric(names(LineDensity)),
+                     Call.Density=as.numeric(LineDensity),
+                     Time.Density=Call.Density*interval,
+                     Total.Calls=sum(as.numeric(LineDensity))+1,
+                     Total.Time=sum(Call.Density*interval+interval),
+                     Files=CallFiles)
     
   }
   
-  FileNumber <- substr(FileNumber,1,1)
-  
-  ## remove all file references  
-  cleancalls<-sapply(calls[!idfiles], function(x) 
-                     gsub("#File", NA, x))
-  
-  LineCalls<- sapply(cleancalls,
-                     function(X) X[grep(paste(FileNumber,"#",sep=''),X)],
-                     USE.NAMES=FALSE)
-  
-  Pathways<-unique(sapply(LineCalls, paste,collapse="-"))
-
-  ## limit only those containing information
-  Pathways<-Pathways[grep("#",Pathways)]
-
-  filehash <-  paste(FileNumber,"#",sep="")
-  LineDensity<-table(unlist(sapply(LineCalls,unique)))  
-   names(LineDensity)<-gsub(filehash,"",names(LineDensity))
-  Line.Numbers<-as.numeric(names(LineDensity))
-  Call.Density<-as.numeric(LineDensity)
-  Time.Density<-Call.Density*interval
-  
-  Finallist<-list(Line.Numbers=as.numeric(names(LineDensity)),
-                  Call.Density=as.numeric(LineDensity),
-                  Time.Density=Call.Density*interval,
-                  Total.Calls=sum(as.numeric(LineDensity))+1,
-                  Total.Time=sum(Call.Density*interval+interval),
-                  Files=CallFiles)
   
   return(Finallist)
+
 }
 
 #' Generic print method for aprof objects
 #'
 #' Function that makes a pretty table, and returns
-#' some basic information
+#' some basic information.
 #' @param x An aprof object returned by the
 #' function \code{aprof}.
 #' @param \dots Additional printing arguments. Unused.
@@ -275,9 +320,7 @@ aprofobject<-x
                ," lines).\n"))
   }
 
- 
-  if(is.null(aprofobject$memcalls)){
-
+if(!is.null(aprofobject$calls)){ 
     interval <- aprofobject$interval
     Finallist <- readLineDensity(aprofobject,Memprof=FALSE)
 
@@ -305,42 +348,23 @@ aprofobject<-x
 	  cat("\n Note: multiple files in the profiler output: \n")
 	 print.default(Finallist$Files,print.gap = 2L,quote = FALSE)
     }
-    
-	} else {
-         memFinallist <- readLineDensity(aprofobject,Memprof=TRUE)
-         meminterval <- aprofobject$meminterval
-          if(!is.null(aprofobject$calls)){
-            # memory and time profiling
 
-                                        
-            
-        Finallist <- readLineDensity(aprofobject,Memprof=FALSE)
-
-	# Pretty table 
-	CallTable<-cbind(as.character(Finallist$Line.Numbers),
-					Finallist$Call.Density,
-					Finallist$Time.Density)
-	CallTable<-CallTable[order(CallTable[,2]),]
-	dimnames(CallTable)<-list(NULL, c("Line","Call Density",
-                                    "Time Density (s)"))
-
-					
-	  cat("\n Call Density and Execution time per line number:\n\n")
-	 print.default(format(CallTable,digits = 3),print.gap = 2L, 
+      
+        if(!is.null(aprofobject$mem)){
+          cat("\n Memory statistics time per line number:\n\n")
+          memtable <- readLineDensity(aprofobject,Memprof=TRUE)$Total.Mem
+          prettymem <- cbind(Line=names(memtable),
+                             MB=round(as.double(memtable),3))
+          print.default(format(prettymem),print.gap = 2L, 
 					quote = FALSE)
-	  
-	  cat("\nInterval (s)\t",interval,"\n\n")
-	  
-			 cat(paste("\n Totals:\n\n",
-			 "Calls\t\t",Finallist$Total.Calls,"\n",
-			 "Time (s)\t",Finallist$Total.Time,"\n"))
-			
-
-          } else{
-            # only memory
-
-          }
-       }
+          
+          cat(paste("\n Total MBs (allocated and released).\n\n"))          
+        }
+    
+  } else {
+    error("No profiler sampling information (removed?). Recreate aprof object.")
+  } 
+       
 }
 
 
@@ -484,12 +508,12 @@ PlotSourceCode<-function(SourceFilename){
 
 #' plot.aprof
 #'
-#' Plot execution time per line of code from a previously
-#' profiled source file. The plot visually shows bottlenecks
-#' in a program's execution time, shown directly next to the code
-#' of the source file.
+#' Plot execution time, or total MB usage when memory profiling,
+#' per line of code from a previously profiled source file.
+#' The plot visually shows bottlenecks in a program's execution time,
+#' shown directly next to the code of the source file.
 #'
-#' @param x An aprof object as returned by apof().
+#' @param x An aprof object as returned by aprof().
 #' If this object contains both memory and time profiling information
 #' both will be plotted (as proportions of total time and
 #' total memory allocations [Note: memory profiling ignored until the next
@@ -535,7 +559,7 @@ plot.aprof<-function(x,y,...){
   if(!is.aprof(aprofobject)){
     stop("Input does not appear to be of the class \"aprof\"")}
   
-  AddMemProf<-!is.null(aprofobject$memcalls)
+  AddMemProf<-!is.null(aprofobject$mem)
 
   SourceFilename <- aprofobject$sourcefile
   if(is.null(SourceFilename)){
@@ -544,7 +568,7 @@ plot.aprof<-function(x,y,...){
 
   NCodeLines<-length(readLines(SourceFilename))
 
-  LineDensity<-readLineDensity(aprofobject)
+  LineDensity<-readLineDensity(aprofobject,Memprof=AddMemProf)
 
   ## Line reversed to correspond to source code plot
   
@@ -573,11 +597,37 @@ plot.aprof<-function(x,y,...){
        type='n',xaxt='n',yaxt='n',bty='n',xlab='',ylab='')
   graphics::abline(h=1:NCodeLines,col='white')
   graphics::axis(3)
-  graphics::mtext("Density in execution time(s)",3,cex=1,padj=-3)
-  graphics::segments(0,DensityData$Lines,
-           DensityData$Time.Density,DensityData$Lines
-           ,lwd=4,col=grDevices::rgb(0,0,1,alpha=0.6))
+  graphics::mtext("Density in execution time(s)",3,cex=.85,padj=-2.5)
+  graphics::segments(0, DensityData$Lines,
+                     DensityData$Time.Density,DensityData$Lines
+                     ,lwd=4,col=grDevices::rgb(0,0,1,alpha=1))
   graphics::points(DensityData$Time.Density,DensityData$Lines, pch=20)
+  
+  if(AddMemProf){
+    graphics::axis(3,col="blue",lwd=2)
+    DensityData$MemStats <- rep(0,NCodeLines)
+    MemLines <- as.integer(names(LineDensity$Total.Mem))
+    DensityData$MemStats[MemLines]<-LineDensity$Total.Mem
+    DensityData$PlotStats <- DensityData$MemStats/max(DensityData$MemStats)
+    DensityData$PlotStats <- DensityData$PlotStats*max(DensityData$Time.Density)
+   
+    graphics::segments(0,DensityData$Lines+0.1,
+                       DensityData$PlotStats,DensityData$Lines+0.1
+                       ,lwd=4,col=grDevices::rgb(1,0,0,alpha=1))
+    graphics::par(xaxt="s")
+    xloc <- range(DensityData$Time.Density)
+
+    graphics::axis(1,
+                   at=c(xloc[1],xloc[2]/2,xloc[2]),
+                   labels=round(c(0,max(DensityData$MemStats)/2,
+                     max(DensityData$MemStats)),1),
+                   line=-3.5,col='red',lwd=2,cex.lab=0.9)
+    
+     graphics::mtext("Total memory usage (MB)",1,cex=.8,padj=-1.5)
+    graphics::points(DensityData$PlotStats,DensityData$Lines+.1, pch=20)
+  }
+  
+
   graphics::par(opar)
   graphics::layout(1)
 }

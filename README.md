@@ -1,4 +1,4 @@
-aprof (0.2.5) [Release notes](http://marcodvisser.github.io/aprof/).
+aprof (0.3.1) [Release notes](http://marcodvisser.github.io/aprof/).
 =====
 
 [![cran version](http://www.r-pkg.org/badges/version/aprof)](http://cran.rstudio.com/web/packages/aprof)
@@ -8,7 +8,7 @@ aprof (0.2.5) [Release notes](http://marcodvisser.github.io/aprof/).
 
 
 Amdahl's profiler, directed optimization.
-Assists the evaluation of whether and where to focus code optimization, using [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law) and visual aids based on line profiling. Amdahl's profiler organises profiling output files (will soon include memory profiling) in a visually appealing way. It is meant to help to balance development vs. execution time by helping to identify the most promising sections of code to optimize and projecting potential gains. The package is an addition to R's standard profiling tools and is not a wrapper for them.
+Assists the evaluation of whether and where to focus code optimization, using [Amdahl's law](https://en.wikipedia.org/wiki/Amdahl%27s_law) and visual aids based on line profiling. Amdahl's profiler organises profiling output files, including memory profiling, in a visually appealing way. It is meant to help to balance development vs. execution time by helping to identify the most promising sections of code to optimize and projecting potential gains. The package is an addition to R's standard profiling tools and is not a wrapper for them.
 
 ## Dependencies
 
@@ -139,6 +139,51 @@ targetedSummary(fooaprof,target=7,findParent=TRUE)
 ```
 Function Parent Calls Time
 c   	   L7   168 3.36
+```
+
+## Memory statisics
+Using the previous function foo (made above), we can set "memory.profiling=TRUE",
+and obtain some basic memory profiling statistics. Statistics are summarized in
+Megabytes and included all operations (allocations and releases). 
+
+```r
+     # Profile the function
+     Rprof(tmp,line.profiling=TRUE,memory.profiling=TRUE)
+     foo(5e4)
+     Rprof(append=FALSE)
+     
+     # Create a aprof object
+     fooaprof<-aprof("foo.R",tmp)
+     plot(fooaprof)
+```
+
+![](http://i.imgur.com/61GZdot.png)
+
+Printing a aprof object will now include basic memory usage:
+```r
+fooaprof
+```
+
+```
+Source file:
+foo.R (9 lines).
+
+ Call Density and Execution time per line number:
+
+      Line  Call Density  Time Density (s)
+[1,]  7     282           5.64            
+[2,]  6     4             0.08            
+
+ Totals:
+ Calls		 287 
+ Time (s)	 5.76 	(interval = 	 0.02 (s))
+
+ Memory statistics time per line number:
+
+      Line   MB   
+[1,]  6      0.259
+[2,]  7      2.951
+
 ```
 
 ## Thanks

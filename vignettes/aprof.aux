@@ -1,2 +1,14 @@
 \relax 
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
+\citation{Porter1990}
+\citation{Bryant2010}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Profiling}{1}}
+\newlabel{profiling}{{1}{1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Output from $aprof$'s PlotExcDens function. It shows the source code for our function $InterpreterQuirks$ in the left panel with the execution time per line of code in the right panel. We see a classical interpreted language problem, where more parentheses and brackets mean that the R interpreter has to evaluate more often, while some symbols (here "\{" and "\}") are interpreted faster (i.e. the lookup speed for these symbols is likely faster). Use $profile.plot$ for larger pieces of code. }}{3}}
+\newlabel{fig:intquirks}{{1}{3}}
+\citation{Chambers2009}
+\citation{Kernighan1978}
+\citation{Amdahl1967}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Guidelines for optimization}{4}}
+\citation{Bryant2010}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Maximal improvement in program execution speed, or "speed up factor" (S) as predicted by Amdahl's law, either through optimizing code by a factor I or running computations in parallel on I workers. (a) Speed up as function of $\alpha $, the proportion of the total execution time taken up by the section of code, which is improved by factor I. We see that only when a very large fraction ($\alpha $) of the execution time is consumed by the section of code to be optimized, will the overall speed gain come close to I. (b) Total expected speed-up gain for different levels of $\alpha $ as a function of I, which can either represent the improvement factor or number of parallel calculations conducted. We see that there are theoretical limits to the maximal improvement in speed and that it is crucially and asymptotically dependent on $\alpha $. This is also know as the "law of diminishing returns". Predictions based on Amdahl's law are subject to the scaling of the problem. }}{6}}
+\newlabel{fig:amdahl}{{2}{6}}

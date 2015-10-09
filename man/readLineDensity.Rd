@@ -11,9 +11,9 @@ readLineDensity(aprofobject = NULL, Memprof = FALSE)
 contains the stack calls sampled by the R profiler.}
 
 \item{Memprof}{Logical. Should the function return information
-specific to memory profiling with memory use per line in Mb?
+specific to memory profiling with memory use per line in MB?
 Otherwise, the default is to return line call density and execution time
-per line [NOTE: This feature is unavailable in the current version].}
+per line.}
 }
 \description{
 Reads and calculates the line density (in execution time or memory)

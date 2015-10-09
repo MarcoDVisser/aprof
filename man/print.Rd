@@ -14,6 +14,6 @@ function \code{aprof}.}
 }
 \description{
 Function that makes a pretty table, and returns
-some basic information
+some basic information.
 }
 

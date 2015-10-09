@@ -7,7 +7,7 @@
 \method{plot}{aprof}(x, y, ...)
 }
 \arguments{
-\item{x}{An aprof object as returned by apof().
+\item{x}{An aprof object as returned by aprof().
 If this object contains both memory and time profiling information
 both will be plotted (as proportions of total time and
 total memory allocations [Note: memory profiling ignored until the next
@@ -18,10 +18,10 @@ release].}
 \item{\dots}{Additional printing arguments. Unused at current.}
 }
 \description{
-Plot execution time per line of code from a previously
-profiled source file. The plot visually shows bottlenecks
-in a program's execution time, shown directly next to the code
-of the source file.
+Plot execution time, or total MB usage when memory profiling,
+per line of code from a previously profiled source file.
+The plot visually shows bottlenecks in a program's execution time,
+shown directly next to the code of the source file.
 }
 \examples{
 \dontrun{

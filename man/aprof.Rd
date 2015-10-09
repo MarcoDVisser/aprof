@@ -4,7 +4,7 @@
 \alias{aprof}
 \title{Create an 'aprof' object for usage in the package 'aprof'}
 \usage{
-aprof(src = NULL, output = NULL, memoutput = NULL)
+aprof(src = NULL, output = NULL)
 }
 \arguments{
 \item{src}{The name of the source code file (and path if not in the working
@@ -15,22 +15,10 @@ previously profiled program. If left empty, some "aprof" functions
 the call stack but this is not recommended (as the success of
 file name detection operations vary). Note that
 functions that require a defined source file will fail if
-the source file is not defined or detected in the call stack.
-
-Using aprof with knitr and within .Rmd or .Rnw documents
-is not yet supported. Setting the chuck option: engine="Rscript",
-disables line-profiling and will make aprof fail as well.
-In these cases users are advised to use the standard
-Rprof functions or "profr" (while setting engine="Rscript") and
-not to rely on line-profiling based packages (for the time
-being).}
+the source file is not defined or detected in the call stack.}
 
 \item{output}{The file name (and path if not in the working
 directory) of a previously created profiling exercise.}
-
-\item{memoutput}{Optional, the file name (and path)
-of the memory profile from a previous profiling exercise
-[NOTE: not available in this version].}
 }
 \value{
 An aprof object
@@ -44,10 +32,19 @@ The objects created through "aprof" can be used by the standard functions
 plot, summary and print (more specifically:
 \code{plot.aprof}, \code{summary.aprof} and \code{print.aprof}).
 See the exampe below for more details.
+
+Using aprof with knitr and within .Rmd or .Rnw documents
+is not yet supported by the R profiler. Note that setting the
+chuck option: engine="Rscript", disables line-profiling.
+Line profiling only works in a interactive session (Oct 2015).
+In these cases users are advised to use the standard
+Rprof functions or "profr" (while setting engine="Rscript") and
+not to rely on line-profiling based packages (for the time
+being).
 }
 \examples{
 \dontrun{
-   # create function to profile
+   ## create function to profile
      foo <- function(N){
              preallocate<-numeric(N)
              grow<-NULL
@@ -57,25 +54,38 @@ See the exampe below for more details.
                  }
      }
 
-     #save function to a source file and reload
+     ## save function to a source file and reload
      dump("foo",file="foo.R")
      source("foo.R")
 
-     # create file to save profiler output
+     ## create file to save profiler output
      tmp<-tempfile()
 
-     # Profile the function
+     ## Profile the function
      Rprof(tmp,line.profiling=TRUE)
      foo(1e4)
      Rprof(append=FALSE)
 
-     # Create a aprof object
+     ## Create a aprof object
      fooaprof<-aprof("foo.R",tmp)
-     #display basic information, summarize and plot the object
+     ## display basic information, summarize and plot the object
      fooaprof
      summary(fooaprof)
      plot(fooaprof)
      profileplot(fooaprof)
+
+     ## To continue with memory profiling:
+     ## enable memory.profiling=TRUE
+     Rprof(tmp,line.profiling=TRUE,memory.profiling=TRUE)
+     foo(1e4)
+     Rprof(append=FALSE)
+     ## Create a aprof object
+     fooaprof<-aprof("foo.R",tmp)
+     ## display basic information, and plot memory usage
+     fooaprof
+
+     plot(fooaprof)
+
 	}
 }
 \author{
