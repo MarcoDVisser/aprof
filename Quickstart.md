@@ -189,6 +189,7 @@ Megabytes and included all operations (allocations and releases).
 ![](http://i.imgur.com/61GZdot.png)
 
 Printing a aprof object will now include basic memory usage:
+
 ```r
 fooaprof
 ```
