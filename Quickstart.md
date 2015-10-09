@@ -170,6 +170,51 @@ c   	   L7   168 3.36
 
 This will give a detailed summary of the time taken by each function in a given line. In the example, a call to "c" ("combine" function) in line 7, takes most time. When the option "findParent" is set to "TRUE", aprof will attempt to detect any parent functions (functions nested within other functions) and report the parent and child functions. In this case the function c is only nested within the code in L7 (line 7), and has no further parent calls.   
 
+### Memory statisics
+Using the previous function foo (made above), we can set "memory.profiling=TRUE",
+and obtain some basic memory profiling statistics. Statistics are summarized in
+Megabytes and included all operations (allocations and releases). 
+
+```r
+     # Profile the function
+     Rprof(tmp,line.profiling=TRUE,memory.profiling=TRUE)
+     foo(5e4)
+     Rprof(append=FALSE)
+     
+     # Create a aprof object
+     fooaprof<-aprof("foo.R",tmp)
+     plot(fooaprof)
+```
+
+![](http://i.imgur.com/61GZdot.png)
+
+Printing a aprof object will now include basic memory usage:
+```r
+fooaprof
+```
+
+```
+Source file:
+foo.R (9 lines).
+
+ Call Density and Execution time per line number:
+
+      Line  Call Density  Time Density (s)
+[1,]  7     282           5.64            
+[2,]  6     4             0.08            
+
+ Totals:
+ Calls		 287 
+ Time (s)	 5.76 	(interval = 	 0.02 (s))
+
+ Memory statistics time per line number:
+
+      Line   MB   
+[1,]  6      0.259
+[2,]  7      2.951
+
+ Total MBs (allocated and released).
+```
 
 ### Another short case study.
 
