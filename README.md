@@ -184,6 +184,7 @@ foo.R (9 lines).
 [1,]  6      0.259
 [2,]  7      2.951
 
+ Total MBs (allocated and released).
 ```
 
 ## Thanks
