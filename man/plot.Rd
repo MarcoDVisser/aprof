@@ -10,8 +10,7 @@
 \item{x}{An aprof object as returned by aprof().
 If this object contains both memory and time profiling information
 both will be plotted (as proportions of total time and
-total memory allocations [Note: memory profiling ignored until the next
-release].}
+total memory allocations.}
 
 \item{y}{Unused and ignored at current.}
 

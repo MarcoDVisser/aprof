@@ -362,7 +362,7 @@ if(!is.null(aprofobject$calls)){
         }
     
   } else {
-    error("No profiler sampling information (removed?). Recreate aprof object.")
+    stop("No profiler sampling information (removed?). Recreate aprof object.")
   } 
        
 }
@@ -516,8 +516,7 @@ PlotSourceCode<-function(SourceFilename){
 #' @param x An aprof object as returned by aprof().
 #' If this object contains both memory and time profiling information
 #' both will be plotted (as proportions of total time and
-#' total memory allocations [Note: memory profiling ignored until the next
-#' release].
+#' total memory allocations.
 #' @param y Unused and ignored at current.
 #' @param \dots Additional printing arguments. Unused at current.
 #' 
@@ -692,9 +691,6 @@ profileplot <- function(aprofobject){
 
   SourceFilename <- aprofobject$sourcefile
 
-  if(!is.null(aprofobject$memcalls)){
-    if(is.null(aprofobject$calls)){stop("profileplot does not work on memory profiles")}}
-
   if(is.null(SourceFilename)){
     stop("aprof object requires a defined source code file for plotting")
   }
@@ -832,16 +828,6 @@ summary.aprof<-function(object,...){
 
   aprofobject<-object
 
-  if(!is.null(aprofobject$memcalls)){
-    if(is.null(aprofobject$calls)){
-      stop("Projected time gains cannot be summerized for memory profiling")
-    }}
-  
-  if(!is.null(aprofobject$calls)){
-    if(!is.null(aprofobject$memcalls)){
-      warning("memory profile not used in summary.aprof")}
-    
-    
     LineProf<-readLineDensity(aprofobject)
     PropLines<-LineProf$Time.Density/LineProf$Total.Time
 
@@ -882,8 +868,7 @@ summary.aprof<-function(object,...){
     cat("\n ** Asymtotic max. improvement at current scaling\n\n")
     
     invisible(SpeedTable)
-  }
-  
+ 
 }
 
 
@@ -902,10 +887,6 @@ summary.aprof<-function(object,...){
 #' "lm.fit" or "mean" a parent call of "mean.default".
 #' Note that currently, the option only returns the most frequently
 #' associated parent call when multiple unique parents exist.
-#' @param mem Logical, should statistics be adapted to a memory
-#' profile? This is only possible if the output from Rprofmem
-#' was included in the aprof-object [Note: unavailable for this
-#' release].
 #' @author Marco D. Visser
 #' 
 #' @export
@@ -914,18 +895,12 @@ targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
 
   if(is.null(target)){stop("Function requires target line number")}
 
-  if(mem) {
-    if(is.null(aprofobject$memcalls)){
-      stop("mem==TRUE yet no memory profiling detected")
-    }
-    calls <- aprofobject$memcalls
-    interval <- aprofobject$meminterval
-  } else {
     if(is.null(aprofobject$calls)){
-      stop("calls apear empty (and mem is set to FALSE)")}
+      stop("Calls appear empty - no call stack samples. Did the program run too fast? ")     }
+
     calls <- aprofobject$calls
     interval <- aprofobject$interval
-  }
+  
   
   if(is.null(aprofobject$sourcefile)) {
     TargetFile<-"1#"

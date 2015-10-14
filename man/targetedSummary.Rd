@@ -19,11 +19,6 @@ the parent of a function call? E.g. "lm" would be a parent call of
 "lm.fit" or "mean" a parent call of "mean.default".
 Note that currently, the option only returns the most frequently
 associated parent call when multiple unique parents exist.}
-
-\item{mem}{Logical, should statistics be adapted to a memory
-profile? This is only possible if the output from Rprofmem
-was included in the aprof-object [Note: unavailable for this
-release].}
 }
 \description{
 Allows a detailed look into certain lines of code,
