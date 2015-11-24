@@ -9,7 +9,7 @@ We are happy to organise the workshop "Speeding up ecological and evolutionary c
 On behalf my co-organisers, I would like to introduce the workshop and provide some details.  The course will start with a general overview and framework in the form of a 45-minute lecture, we will then proceed into break-out sessions geared towards more individual preferences and needs (20-35 minutes).
 
 
-Due to the short time slot made available for workshops over the lunch break, the workshop is will be limited to providing an overview of available techniques towards high-performance computing, and showing you how to identify bottlenecks in your programs. However, in the break-out session we also aim to provide a chance to apply the theory presented in the lecture section, or at least give you a chance to asked targeted questions. 
+Due to the short time slot made available for workshops over the lunch break, the workshop is limited to providing an overview of available techniques towards high-performance computing, and showing you how to identify bottlenecks in your programs. However, in the break-out session we also aim to provide a chance to apply the theory presented in the lecture section, or at least give you a chance to asked targeted questions. 
 
 
 We cannot tailor the break-out session to suite each person's individual needs, and therefore we will break out into three groups. The potential groups will include I) profiling and identifying bottlenecks in code, II) parallel computing and III) extending R with C. To make best use of the time, we require everyone to download the tutorial (S1_text) from the following publication:
