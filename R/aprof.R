@@ -138,9 +138,10 @@ Mem <- grepl("memory profiling",RprofSamples[1])
 
 if(Mem){
   tosplit <- grepl("#", RprofSamples[-1])
-  splPos<-regexpr(pattern = ":[[:digit:]]:", text =RprofSamples[-1][tosplit])
-  meminfo <- !splPos==-1
-  mem <- substr(RprofSamples[-1][tosplit][meminfo],1,splPos[meminfo])
+  splPos<-regexpr(pattern = "^:[0-9]+:[0-9]+:[0-9]+:[0-9]+:",text =RprofSamples[-1][tosplit])
+  meminfo <- !splPos==(-1)
+  cutlength <- attr(splPos,"match.length")
+  mem <- substr(RprofSamples[-1][tosplit][meminfo],1,cutlength[meminfo])
   mem <- t(sapply(strsplit(mem,":"),function(X) as.numeric(X[-1])))
   mem <- as.data.frame(mem)
   colnames(mem) <- c("sm_v_heap","lrg_v_heap","mem_in_node")
@@ -150,7 +151,7 @@ if(Mem){
   regular <- substring(RprofSamples[-1][tosplit],splPosReg)
   regular <- gsub(":","",regular)
   RprofSamples <- c(RprofSamples[1],regular)
-  mem$calllines <- 2:length(regular)
+  mem$calllines <- which(meminfo)
 }
 
 splitCalls<- sapply(RprofSamples[-1],
@@ -251,9 +252,18 @@ readLineDensity<-function(aprofobject=NULL,Memprof=FALSE){
   cleancalls<-sapply(calls[!idfiles],
     function(x) gsub("#File", NA, x))
     
-    LineCalls<- unlist(sapply(cleancalls, function(X)
-                       X[grep(paste(FileNumber,"#",sep=''),X)],
-                       USE.NAMES=FALSE))
+    LineCalls<- lapply(cleancalls, function(X)
+                       unique(X[grep(paste(FileNumber,"#",sep=''),X)],
+                              USE.NAMES=FALSE))
+    
+    ## in case of multiple line calls;
+    if(any(sapply(LineCalls,length)>1)){
+        LineCalls <- sapply(LineCalls,function(X) X[1])
+        warning("Some line calls stripped - BUGCODE: 02022016")
+         } 
+
+    LineCalls <- unlist(LineCalls)
+    
     
     Pathways<-unique(sapply(LineCalls, paste,collapse="-"))
 
