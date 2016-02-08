@@ -361,7 +361,7 @@ if(!is.null(aprofobject$calls)){
 
       
         if(!is.null(aprofobject$mem)){
-          cat("\n Memory statistics time per line number:\n\n")
+          cat("\n Memory statistics per line number:\n\n")
           memtable <- readLineDensity(aprofobject,Memprof=TRUE)$Total.Mem
           prettymem <- cbind(Line=names(memtable),
                              MB=round(as.double(memtable),3))
