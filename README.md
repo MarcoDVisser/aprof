@@ -1,4 +1,4 @@
-aprof (0.3.1) [Release notes](http://marcodvisser.github.io/aprof/).
+aprof (0.3.2) [Release notes](http://marcodvisser.github.io/aprof/).
 =====
 
 [![cran version](http://www.r-pkg.org/badges/version/aprof)](http://cran.rstudio.com/web/packages/aprof)
@@ -198,5 +198,5 @@ foo.R (9 lines).
 ```
 
 ## Thanks
-Special thanks to Tyler Rinker, Dason Kurkiewicz, Caspar Hallmann, Angel Rubio and Diego Mayer-Cantu for comments, bugreports, commits and additions to this package. Sean M. McMahon, Cory Merow, Philip Dixon, Sydne Record and Eelke Jongejans thanks for all the suggestions, comments and testing while I was developing this package.
+Special thanks to Tyler Rinker, Dason Kurkiewicz, Caspar Hallmann, Angel Rubio, Mark Miller and Diego Mayer-Cantu for comments, bugreports, commits and additions to this package. Sean M. McMahon, Cory Merow, Philip Dixon, Sydne Record and Eelke Jongejans thanks for all the suggestions, comments and testing while I was developing this package.
 
