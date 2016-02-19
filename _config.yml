@@ -3,7 +3,7 @@ markdown:         kramdown
 pygments:         true
 
 # Permalinks
-permalink:        /aprof
+permalink:        /aprof/
 
 # Setup
 title:            aprof 
