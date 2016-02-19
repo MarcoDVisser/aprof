@@ -23,7 +23,7 @@ Assists the evaluation of whether and where to focus code optimization, using [A
 
 ## Quick start and tutorials
 
-A "10 minute" quickstart guide is supplied on the aprof github-pages site [here](http://marcodvisser.github.io/aprof/Quickstart.html). Detailed tutorials on aprof usage are supplied in this [PLOS Computational Biology paper on efficient programming in R](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004140). Text S1 supplies a step-by step guide for R users of any level.
+A "10 minute" quickstart guide is supplied on the aprof github-pages site [here](http://marcodvisser.github.io/aprof//Quickstart). Detailed tutorials on aprof usage are supplied in this [PLOS Computational Biology paper on efficient programming in R](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004140). Text S1 supplies a step-by step guide for R users of any level.
 
 
 ## Installation
