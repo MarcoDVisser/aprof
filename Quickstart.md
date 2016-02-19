@@ -76,7 +76,7 @@ Now lets run the R profiler.
      
 Our first step before analysing any output is to create a aprof object. Here we link the profiler output to the source file.
      
-```r     
+```r
      # Create a aprof object
      fooaprof<-aprof("foo.R",tmp)
 ```
@@ -84,8 +84,9 @@ Our first step before analysing any output is to create a aprof object. Here we 
 That's it now we are ready to start our analysis of the function "foo". Basic information can be obtained by printing any aprof object:
 
 ```r
-fooaprof
+	fooaprof
 ```
+
 ```
 Source file:
 foo.R (9 lines).
