@@ -10,7 +10,7 @@ title:            aprof
 tagline:          Amdahl's profiler, directed optimization made easy.
 description:      This page provides tutorials on how to use <a href="http://github.com/MarcoDVisser/aprof" target="_blank">"aprof"</a> to effectively optimize R code. 
 
-url:              http://marcodvisser.github.io/aprof
+url:              http://marcodvisser.github.io/aprof/
 baseurl:          /aprof/
 
 author:
