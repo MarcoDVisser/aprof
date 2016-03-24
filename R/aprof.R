@@ -900,8 +900,7 @@ summary.aprof<-function(object,...){
 #' @author Marco D. Visser
 #' 
 #' @export
-targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE,
-                          mem=FALSE){
+targetedSummary<-function(target=NULL,aprofobject=NULL,findParent=FALSE){
 
   if(is.null(target)){stop("Function requires target line number")}
 
