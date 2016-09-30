@@ -45,6 +45,8 @@ aprof is meant to be light and has no other dependencies other than the base R i
 
 ## Examples
 
+The code below defines a simple function "foo" that illustrates the inefficiency of growing data. We then run R's profiler to time the execution of the function and its various components, we then use aprof to analyse the profiling data (see below under "Examples of output").
+
 ```r
 require(aprof)
 # create function to profile
@@ -73,6 +75,7 @@ require(aprof)
      fooaprof<-aprof("foo.R",tmp)
      plot(fooaprof)
 ```
+	 
 ### Examples of output
 The standard aprof plot. It shows the execution density for each
 line in a source code file.
