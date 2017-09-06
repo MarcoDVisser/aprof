@@ -1,0 +1,89 @@
+
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+
+   Welcome to R!
+
+   Today is Fri Apr 17 05:23:36 2015 
+
+   Please consider that, I am currently executing the following
+%CPU   PID CPUID USER     COMMAND
+ 2.7  6250     3 marcov   /usr/lib/virtualbox/VirtualBox --comment win7 --startvm 550dc0e4-caa8-49da-a781-adbf7a7840a7 --no-startvm-errormsgbox
+ 2.1 29642     4 marcov   /usr/lib/R/bin/exec/R
+ 1.5 15829     6 marcov   pavucontrol
+ 1.3 31809     0 marcov   /opt/google/chrome/chrome --type=renderer --enable-deferred-image-decoding --lang=en-US --force-fieldtrials=CTRequiredForEVTrial/RequirementEnforced/ChromeSuggestions/Default/DomRel-Enable/enable/EnhancedBookmarks/Default/ExtensionContentVerification/Enforce/ExtensionInstallVerification/None/NewProfileManagement/Enabled/OmniboxBundledExperimentV1/Stable_EthersuggestPrefix_A6/PasswordGeneration/Disabled/PrerenderFromOmnibox/OmniboxPrerenderEnabled/QUIC/EnabledNoIdForLargePopulation/RememberCertificateErrorDecisions/Disable/SHA1ToolbarUIJanuary2017/HTTP/SHA1ToolbarUIJune2016/Warning/SafeBrowsingIncidentReportingService/Default/SettingsEnforcement/no_enforcement/UMA-Dynamic-Binary-Uniformity-Trial/default/UMA-Population-Restrict/normal/UMA-Uniformity-Trial-1-Percent/group_61/UMA-Uniformity-Trial-10-Percent/group_09/UMA-Uniformity-Trial-100-Percent/group_01/UMA-Uniformity-Trial-20-Percent/group_03/UMA-Uniformity-Trial-5-Percent/group_19/UMA-Uniformity-Trial-50-Percent/default/UwSInterst
+ 1.2 11520     6 marcov   clementine
+ 1.0 27623     7 marcov   emacs
+ 0.9  8372     3 marcov   /opt/google/chrome/chrome --type=gpu-process --channel=6431.826.132050908 --supports-dual-gpus=false --gpu-driver-bug-workarounds=1,2,12,14,16,40 --disable-accelerated-video-decode --gpu-vendor-id=0x8086 --gpu-device-id=0x0166 --gpu-driver-vendor=Mesa --gpu-driver-version=8.0.5
+ 0.6  2996     7 marcov   /usr/bin/pulseaudio --start --log-target=syslog
+ 0.6  2261     7 root     /usr/bin/X11/X -nolisten tcp -auth /var/run/slim.auth vt07
+ 0.5  6431     1 marcov   /opt/google/chrome/chrome
+ 0.4  2968     0 marcov   htop
+ 0.3  9191     3 marcov   /home/marcov/.dropbox-dist/dropbox-lnx.x86_64-3.4.3/dropbox
+ 0.2 16472     4 marcov   icedove
+ 0.1  8447     0 marcov   /usr/lib/R/bin/exec/R
+ 0.1  3276     3 marcov   /usr/lib/R/bin/exec/R
+
+ ________________________________________
+/ The documentation is in Japanese. Good \
+| luck.                                  |
+|                                        |
+\ -- Rich $alz                           /
+ ----------------------------------------
+   \
+    \
+        .--.
+       |o_o |
+       |:_/ |
+      //   \ \
+     (|     | )
+    /'\_   _/`\
+    \___)=(___/
+
+> library(aprof,lib='~/R/lib')
+> 
+>  # create function to profile
+>           foo <- function(N){
++                   preallocate<-numeric(N)
++                   grow<-NULL
++                    for(i in 1:N){
++                        preallocate[i]<-N/(i+1)
++                        grow<-c(grow,N/(i+1))
++                       }
++           }
+>      
+>           #save function to a source file and reload
+>           dump("foo",file="foo.R")
+> 
+>   source("foo.R")
+> 
+>                                         # Profile the function
+> Rprof("foo.out",line.profiling=TRUE)
+> foo(3e4)
+> Rprof(append=FALSE)
+> 
+>                                         # Create a aprof object
+> fooaprof<-aprof("foo.R","foo.out")
+> saveRDS(fooaprof,"./fooaprof.rds")
+> 
+> proc.time()
+   user  system elapsed 
+  2.204   0.060   2.262 
