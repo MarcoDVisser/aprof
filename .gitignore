@@ -8,3 +8,6 @@
 # temp files
 *~
 *#
+
+## vignette for now
+./vignettes/
