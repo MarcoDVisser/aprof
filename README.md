@@ -1,4 +1,4 @@
-aprof (0.3.2) [Release notes](http://marcodvisser.github.io/aprof/).
+aprof (0.3.9) [Release notes](http://marcodvisser.github.io/aprof/).
 =====
 
 [![cran version](http://www.r-pkg.org/badges/version/aprof)](http://cran.rstudio.com/web/packages/aprof)
