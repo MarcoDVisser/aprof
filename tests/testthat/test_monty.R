@@ -45,13 +45,13 @@ testthat::test_that("Monty Hall Simulation: memory profiling", {
     tmp<-tempfile()
     
     
-    dump("foo",file=tmpsrc)
-    source(tmpsrc)
+    dump("foo",file="foo.R")
+    source("foo.R")
     
-    Rprof(tmp,line.profiling=TRUE,memory.profiling=TRUE)
-    foo(1e4)
+    Rprof("foo.prof",line.profiling=TRUE,memory.profiling=TRUE)
+    foo(1e5)
     Rprof(append=FALSE)
-    fooaprof<-aprof::aprof(tmpsrc,tmp)
+    fooaprof<-aprof::aprof("foo.R","foo.prof")
     sum<-capture.output(aprof:::summary.aprof(fooaprof))
 
 

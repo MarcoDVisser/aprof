@@ -1,0 +1,12 @@
+memory profiling: line profiling: sample.interval=20000
+#File 1: foo.R
+#File 2: clipboard
+:319194:653668:23351664:3658:"is.atomic" "ifelse" 1#21 "foo" 2#5 "eval" "eval" "withVisible" "source" ".x" 
+:343477:1153529:29244992:1019:1#20 "foo" 2#5 "eval" "eval" "withVisible" "source" ".x" 
+:340342:1091555:28491960:998:"sample" 1#11 "foo" 2#5 "eval" "eval" "withVisible" "source" ".x" 
+:343811:1162293:29337224:1122:"sample" 1#14 "foo" 2#5 "eval" "eval" "withVisible" "source" ".x" 
+:318386:638018:23154264:1095:"sample.int" "sample" 1#11 "foo" 2#5 "eval" "eval" "withVisible" "source" ".x" 
+:325859:790762:24959760:1212:"sample.int" "sample" 1#11 "foo" 2#5 "eval" "eval" "withVisible" "source" ".x" 
+:334405:968859:27042512:1233:1#20 "foo" 2#5 "eval" "eval" "withVisible" "source" ".x" 
+:343614:1163232:29304464:1240:"sample.int" "sample" 1#14 "foo" 2#5 "eval" "eval" "withVisible" "source" ".x" 
+:326190:800465:25050088:1241:"is.numeric" "sample" 1#17 "foo" 2#5 "eval" "eval" "withVisible" "source" ".x" 
