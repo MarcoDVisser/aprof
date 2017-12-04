@@ -41,7 +41,7 @@ testthat::test_that("Monty Hall Simulation: memory profiling", {
 ## NOW PROFILE
 ################################################################################
 ## create files to save profiler output and program code
-    tmpsrc<-tempfile()
+    tmpsrc<-paste0(dirname(tempfile()),"foo.R")
     tmp<-tempfile()
     
     
