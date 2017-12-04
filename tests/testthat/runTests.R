@@ -5,8 +5,8 @@
 
 testthat::context('Monty Hall Simulation: memory profiling')
 testthat::test_that("Monty Hall Simulation: memory profiling", {
-
-
+    
+    
     foo <- function(N) {
         
         game.interactions  <- 10000
@@ -40,18 +40,21 @@ testthat::test_that("Monty Hall Simulation: memory profiling", {
 ################################################################################
 ## NOW PROFILE
 ################################################################################
-dump("foo",file="foo.R")
-source("foo.R")
-## create file to save profiler output
-tmp<-tempfile()
-
-Rprof(tmp,line.profiling=TRUE,memory.profiling=TRUE)
-foo(1e4)
-Rprof(append=FALSE)
-fooaprof<-aprof::aprof("foo.R",tmp)
-sum<-capture.output(aprof:::summary.aprof(fooaprof))
-
+## create files to save profiler output and program code
+    tmpsrc<-tempfile()
+    tmp<-tempfile()
     
+    
+    dump("foo",file=tmpsrc)
+    source(tmpsrc)
+    
+    Rprof(tmp,line.profiling=TRUE,memory.profiling=TRUE)
+    foo(1e4)
+    Rprof(append=FALSE)
+    fooaprof<-aprof::aprof("foo.R",tmp)
+    sum<-capture.output(aprof:::summary.aprof(fooaprof))
+
+
   testthat::expect_that(length(fooaprof$call)>0,testthat::equals(TRUE))
   testthat::expect_that(length(fooaprof$mem$mb)>0,testthat::equals(TRUE))
   testthat::expect_that(length(sum)>0,testthat::equals(TRUE))
