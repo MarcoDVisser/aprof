@@ -134,7 +134,8 @@ readOutput<-function(outputfilename="Rprof.out"){
 RprofSamples<-readLines(outputfilename)
 if(length(grep("line profiling",RprofSamples[1]))==0){
     stop(paste("Line profiling is required.",
-               "\nPlease run the profiler with line profiling enabled")}
+               "\nPlease run the profiler with line profiling enabled"))}
+    
 
 Mem <- grepl("memory profiling",RprofSamples[1])
 

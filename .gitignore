@@ -11,3 +11,4 @@
 
 ## vignette for now
 ./vignettes/
+/tests/testthat/.#runTests.R
