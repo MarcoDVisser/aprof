@@ -27,7 +27,7 @@ Calculations are subject to the scaling of the problem
 at profiling. The table output aims to answer whether it is
 worthwhile to spend hours of time optimizing bits of
 code (e.g. refactoring in C) and, additionally,
-identifies where these efforts should be focussed.
+identifies where these efforts should be focused.
 Using aprof one can get estimates of the maximum possible
 gain. Such considerations are important when one
 wishes to balance development time vs execution time.
@@ -39,7 +39,7 @@ Marco D. Visser
 }
 \references{
 Amdahl, Gene (1967). Validity of the Single Processor
-Approach to Achieving Large-Scale Computing Capabilities. AFIPS
+Approach to Achieving Large-Scale Computing Capabilities. AFIS
 Conference Proceedings (30): 483-485.
 }
 \concept{

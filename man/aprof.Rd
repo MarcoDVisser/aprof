@@ -30,8 +30,8 @@ Create 'aprof' objects for usage with 'aprof' functions
 Creates an "aprof" object from the R-profiler's output and a source file.
 The objects created through "aprof" can be used by the standard functions
 plot, summary and print (more specifically:
-\code{plot.aprof}, \code{summary.aprof} and \code{print.aprof}).
-See the exampe below for more details.
+\code{plot.aprof}, \code{summary.aprof} and \code{print.arof}).
+See the example below for more details.
 
 Using aprof with knitr and within .Rmd or .Rnw documents
 is not yet supported by the R profiler. Note that setting the

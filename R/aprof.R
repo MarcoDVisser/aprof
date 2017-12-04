@@ -3,8 +3,8 @@
 ##' Creates an "aprof" object from the R-profiler's output and a source file.
 ##' The objects created through "aprof" can be used by the standard functions
 ##' plot, summary and print (more specifically:
-##' \code{plot.aprof}, \code{summary.aprof} and \code{print.aprof}).
-##' See the exampe below for more details.
+##' \code{plot.aprof}, \code{summary.aprof} and \code{print.arof}).
+##' See the example below for more details.
 ##'
 ##' Using aprof with knitr and within .Rmd or .Rnw documents
 ##' is not yet supported by the R profiler. Note that setting the
@@ -594,7 +594,7 @@ plot.aprof<-function(x,y,...){
 
   layoutmat<-matrix(c(
                       1,1,1,1,3,3, rep(c(2,2,2,2,4,4),10)),
-                    byrow=T,ncol=6)
+                    byrow=TRUE,ncol=6)
   
   graphics::layout(layoutmat)
   opar<-graphics::par("mar","bg")
@@ -738,7 +738,7 @@ profileplot <- function(aprofobject){
   opar<-graphics::par("mar","bg")
   maxtimesteps <- max(timesteps)
 
-  layoutmat<-matrix(c(rep(c(1,1,1,1,2,2),10)), byrow=T,ncol=6)
+  layoutmat<-matrix(c(rep(c(1,1,1,1,2,2),10)), byrow=TRUE,ncol=6)
   
   graphics::layout(layoutmat)
   
@@ -825,7 +825,7 @@ AmLaw<-function(P=1,S=2){
 #' at profiling. The table output aims to answer whether it is
 #' worthwhile to spend hours of time optimizing bits of
 #' code (e.g. refactoring in C) and, additionally,
-#' identifies where these efforts should be focussed.
+#' identifies where these efforts should be focused.
 #' Using aprof one can get estimates of the maximum possible
 #' gain. Such considerations are important when one
 #' wishes to balance development time vs execution time.
@@ -836,7 +836,7 @@ AmLaw<-function(P=1,S=2){
 #' @param \dots Additional [and unused] arguments.
 #' @title Projected optimization gains using Amdahl's law.
 #' @references Amdahl, Gene (1967). Validity of the Single Processor
-#' Approach to Achieving Large-Scale Computing Capabilities. AFIPS
+#' Approach to Achieving Large-Scale Computing Capabilities. AFIS
 #' Conference Proceedings (30): 483-485.
 #' @author Marco D. Visser
 #' @concept Line profiling
@@ -901,7 +901,7 @@ summary.aprof<-function(object,...){
 #' in combination with a source file.
 #' 
 #' @param target The specific line of code to take a detailed look
-#' at. This can be identfied using \code{summary.aprof}.
+#' at. This can be identified using \code{summary.aprof}.
 #' @param aprofobject object of class "aprof" returned by
 #' the function \code{aprof}.
 #' @param findParent Logical, should an attempt be made to find

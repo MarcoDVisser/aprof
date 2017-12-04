@@ -8,7 +8,7 @@ targetedSummary(target = NULL, aprofobject = NULL, findParent = FALSE)
 }
 \arguments{
 \item{target}{The specific line of code to take a detailed look
-at. This can be identfied using \code{summary.aprof}.}
+at. This can be identified using \code{summary.aprof}.}
 
 \item{aprofobject}{object of class "aprof" returned by
 the function \code{aprof}.}
