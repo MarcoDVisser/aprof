@@ -48,8 +48,8 @@ tmp<-tempfile()
 Rprof(tmp,line.profiling=TRUE,memory.profiling=TRUE)
 foo(1e4)
 Rprof(append=FALSE)
-fooaprof<-aprof("foo.R",tmp)
-sum<-capture.output(summary.aprof(fooaprof))
+fooaprof<-aprof::aprof("foo.R",tmp)
+sum<-capture.output(aprof:::summary.aprof(fooaprof))
 
     
   testthat::expect_that(length(fooaprof$call)>0,testthat::equals(TRUE))
