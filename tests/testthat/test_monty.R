@@ -9,9 +9,6 @@ testthat::test_that("Monty Hall Simulation: memory profiling", {
     dump("foo",file="foo.R")
     source("foo.R")
     
-    Rprof("foo.prof",line.profiling=TRUE,memory.profiling=TRUE)
-    foo(1e5)
-    Rprof(append=FALSE)
     fooaprof<-aprof::aprof("foo.R","foo.prof")
     sum<-capture.output(aprof:::summary.aprof(fooaprof))
 

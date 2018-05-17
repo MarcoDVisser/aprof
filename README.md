@@ -1,4 +1,4 @@
-aprof (0.3.9) [Release notes](http://marcodvisser.github.io/aprof/).
+aprof (0.4.1) [Release notes](http://marcodvisser.github.io/aprof/).
 =====
 
 [![cran version](http://www.r-pkg.org/badges/version/aprof)](http://cran.rstudio.com/web/packages/aprof)
@@ -28,7 +28,7 @@ A "10 minute" quickstart guide is supplied on the aprof github-pages site [here]
 
 ## Installation
 
-There is a release on [CRAN](http://cran.r-project.org/web/packages/aprof/index.html),
+There is a release on [CRAN](https://cran.rstudio.com/web/packages/aprof/),
 but to install a more recent developmental version from github you can download the most recent version as [zip](https://github.com/MarcoDVisser/aprof/zipball/master) 
 or [tar ball](https://github.com/MarcoDVisser/aprof/tarball/master).
 To install decompress these and run R CMD INSTALL on the contents of the archives, or use the **devtools** package to install the current development version from R.

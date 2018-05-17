@@ -1,8 +1,8 @@
 Package: aprof
 Type: Package
 Title: Amdahl's Profiler, Directed Optimization Made Easy
-Version: 0.3.9
-Date: 2017-12-06
+Version: 0.4.1
+Date: 2018-17-05
 Author: Marco D. Visser
 Maintainer: Marco D. Visser <marco.d.visser@gmail.com>
 Description: Assists the evaluation of whether and
@@ -19,6 +19,7 @@ BugReports: http://github.com/MarcoDVisser/aprof/issues
 Imports:
     graphics,
     grDevices,
-    stats
+    stats,
+    testthat 	
 Repository: CRAN
 RoxygenNote: 5.0.1
