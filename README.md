@@ -199,6 +199,9 @@ foo.R (9 lines).
 
  Total MBs (allocated and released).
 ```
+## to do list
+Fix memprofiler bug 
+Make a pretty line extraction tool as suggested by "readLines("foursail.R")[38]"
 
 ## Thanks
 Special thanks to Tyler Rinker, Dason Kurkiewicz, Caspar Hallmann, Angel Rubio, Mark Miller and Diego Mayer-Cantu for comments, bugreports, commits and additions to this package. Sean M. McMahon, Cory Merow, Philip Dixon, Sydne Record and Eelke Jongejans thanks for all the suggestions, comments and testing while I was developing this package.
