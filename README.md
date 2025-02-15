@@ -1,9 +1,9 @@
 aprof (0.4.1) [Release notes](http://marcodvisser.github.io/aprof/).
 =====
 
-[![cran version](http://www.r-pkg.org/badges/version/aprof)](http://cran.rstudio.com/web/packages/aprof)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/aprof?color=E664A4)](https://github.com/metacran/cranlogs.app)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/aprof?color=333FFF)](https://github.com/metacran/cranlogs.app)
+[![cran version](https://www.r-pkg.org/badges/version/aprof)](http://cran.rstudio.com/web/packages/aprof)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/aprof?color=E664A4)](https://github.com/metacran/cranlogs.app)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/aprof?color=333FFF)](https://github.com/metacran/cranlogs.app)
 
 
 
